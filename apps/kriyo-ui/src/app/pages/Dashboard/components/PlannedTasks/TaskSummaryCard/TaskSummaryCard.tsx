@@ -14,7 +14,7 @@ const colorStyles = {
   danger: "bg-gradient-to-br from-[#FF6A6A] to-[#FF3D3D] text-white",
 };
 
-export const TaskSummaryCard: React.FC<TaskSummaryCardProps> = ({
+const TaskSummaryCard: React.FC<TaskSummaryCardProps> = ({
   title,
   count,
   color,
@@ -37,3 +37,5 @@ export const TaskSummaryCard: React.FC<TaskSummaryCardProps> = ({
     </Card>
   );
 };
+
+export default TaskSummaryCard;

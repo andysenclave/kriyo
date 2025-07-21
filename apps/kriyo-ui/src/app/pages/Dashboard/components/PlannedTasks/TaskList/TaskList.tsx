@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import React from "react";
 
-interface PlannedTask {
+export interface PlannedTask {
   status: "In progress" | "To do";
   title: string;
   date: string;
@@ -16,7 +16,7 @@ interface PlannedTaskListProps {
   tasks: PlannedTask[];
 }
 
-export const PlannedTaskList: React.FC<PlannedTaskListProps> = ({ tasks }) => {
+const PlannedTaskList: React.FC<PlannedTaskListProps> = ({ tasks }) => {
   return (
     <div className="divide-y divide-muted rounded-xl border bg-background p-4">
       {tasks.map((task, idx) => (
@@ -30,3 +30,5 @@ export const PlannedTaskList: React.FC<PlannedTaskListProps> = ({ tasks }) => {
     </div>
   );
 };
+
+export default PlannedTaskList;
