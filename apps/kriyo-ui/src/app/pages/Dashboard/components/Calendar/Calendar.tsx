@@ -5,8 +5,8 @@ const dates = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const Calendar: React.FC = () => {
   return (
-    <div className="rounded-2xl bg-white shadow p-6 w-full max-w-md">
-      <div className="flex items-center justify-between mb-4">
+    <div className="rounded-2xl bg-white shadow p-6 w-full max-w-md h-[370px]">
+      <div className="flex items-center justify-between mb-8">
         <button className="text-xl font-bold">&#60;</button>
         <div className="font-semibold text-lg">April 2024</div>
         <button className="text-xl font-bold">&#62;</button>
@@ -28,7 +28,7 @@ const Calendar: React.FC = () => {
           </div>
         ))}
       </div>
-      <div className="flex gap-4 mt-4 justify-center text-xs">
+      <div className="flex gap-4 mt-8 justify-center text-xs">
         <span className="flex items-center gap-1">
           <span className="h-2 w-2 rounded-full bg-primary inline-block" /> Personal
         </span>

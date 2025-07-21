@@ -23,7 +23,7 @@ const PlannedTasks: React.FC<PlannedTasksProps> = ({ plannedTasks, userName }) =
         </span>{' '}
         to complete today.
       </div>
-      <div className="flex gap-4 mb-6">
+      <div className="gap-4 mb-6 flex">
         <TaskSummaryCard
           title="Overdue tasks"
           count={12}
