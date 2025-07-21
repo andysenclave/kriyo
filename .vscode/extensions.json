@@ -1,0 +1,11 @@
+{
+  "recommendations": [
+    "dbaeumer.vscode-eslint",          // ESLint support
+    "esbenp.prettier-vscode",          // Prettier formatter
+    "formulahendry.auto-rename-tag",   // Auto rename paired HTML/JSX tags
+    "ms-azuretools.vscode-docker",     // Docker support (for infra later)
+    "bradlc.vscode-tailwindcss",       // TailwindCSS intellisense
+    "github.vscode-pull-request-github", // PRs from VSCode
+    "eamodio.gitlens"                  // Git superpowers
+  ]
+}

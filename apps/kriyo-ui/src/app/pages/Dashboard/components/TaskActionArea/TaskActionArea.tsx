@@ -1,13 +1,16 @@
-import React from "react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { FiSearch, FiPlus } from "react-icons/fi";
+import React from 'react';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
+import { FiSearch, FiPlus } from 'react-icons/fi';
 
 const TaskActionArea: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row items-center justify-between gap-4 mb-6">
       <form className="w-full md:w-1/2 flex items-center relative">
-        <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" size={18} />
+        <FiSearch
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          size={18}
+        />
         <Input
           type="text"
           placeholder="Search tasks..."

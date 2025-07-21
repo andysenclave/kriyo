@@ -25,6 +25,5 @@ build/
 dist/
 
 # IDE
-.vscode/
 .idea/
 *.swp
