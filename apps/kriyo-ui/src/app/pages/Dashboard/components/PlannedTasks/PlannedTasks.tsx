@@ -1,28 +1,17 @@
+'use client';
 import { FaRegClock, FaRegFlag } from 'react-icons/fa';
-import PlannedTaskList, { PlannedTask } from './TaskList';
-import TaskSummaryCard from './TaskSummaryCard';
+import PlannedTaskList from './components/TaskList';
+import TaskSummaryCard from './components/TaskSummaryCard';
+import UserGreeting from './components/UserGreeting';
 
-interface PlannedTasksProps {
-  plannedTasks: PlannedTask[];
+export interface PlannedTasksProps {
   userName: string;
 }
 
-const PlannedTasks: React.FC<PlannedTasksProps> = ({ plannedTasks, userName }) => {
-  const tasksCount = plannedTasks.length;
-
+const PlannedTasks: React.FC<PlannedTasksProps> = ({ userName }) => {
   return (
     <div className="flex-1 min-w-[320px]">
-      <div className="text-lg font-semibold mb-1">
-        Hello, <span className="text-primary font-bold">{userName}</span>
-      </div>
-      <div className="text-muted-foreground mb-6 text-sm">
-        You have{' '}
-        <span className="font-semibold text-primary">
-          {tasksCount}
-          {` ${tasksCount > 1 ? `tasks` : `task`}`}
-        </span>{' '}
-        to complete today.
-      </div>
+      <UserGreeting userName={userName} />
       <div className="gap-4 mb-6 flex">
         <TaskSummaryCard
           title="Overdue tasks"
@@ -43,7 +32,7 @@ const PlannedTasks: React.FC<PlannedTasksProps> = ({ plannedTasks, userName }) =
           View all <span>→</span>
         </button>
       </div>
-      <PlannedTaskList tasks={plannedTasks} />
+      <PlannedTaskList />
     </div>
   );
 };
