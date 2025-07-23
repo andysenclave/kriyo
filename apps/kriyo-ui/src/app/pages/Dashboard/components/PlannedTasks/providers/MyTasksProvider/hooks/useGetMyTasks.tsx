@@ -11,6 +11,8 @@ interface ScopedTasks {
   pendingCount: number;
   overdue: Task[];
   overdueCount: number;
+  highPriority: Task[];
+  highPriorityCount: number;
 }
 
 export interface MyTasksContextData {
@@ -65,6 +67,12 @@ const getMyOverDueTasks = (tasks: Task[]): Task[] => {
   );
 };
 
+const getMyHighPriorityTasks = (tasks: Task[]): Task[] => {
+  return tasks.filter(
+    (task) => PENDING_TASKS_STATUS.includes(task.status) && task.priority === 'high'
+  );
+};
+
 const useGetMyTasks = (): TaskDataState => {
   const [state, setState] = useState<TaskDataState>(initialState);
 
@@ -74,6 +82,7 @@ const useGetMyTasks = (): TaskDataState => {
     const response = await getMyTasksData();
     const pendingTasks = getMyOpenTasks(response);
     const overdueTasks = getMyOverDueTasks(response);
+    const highPriorityTasks = getMyHighPriorityTasks(response);
     const updatedState = {
       tasks: response,
       tasksCount: response.length,
@@ -82,6 +91,8 @@ const useGetMyTasks = (): TaskDataState => {
         pendingCount: pendingTasks.length,
         overdue: overdueTasks,
         overdueCount: overdueTasks.length,
+        highPriority: highPriorityTasks,
+        highPriorityCount: highPriorityTasks.length,
       },
     };
 

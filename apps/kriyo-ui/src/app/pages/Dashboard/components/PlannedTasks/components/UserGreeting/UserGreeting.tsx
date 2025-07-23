@@ -18,7 +18,7 @@ const UserGreeting: React.FC<UserGreetingProps> = ({ userName }) => {
           {tasksCount}
           {` ${tasksCount > 1 ? `tasks` : `task`}`}
         </span>{' '}
-        to complete today.
+        to complete.
       </h4>
     </div>
   );

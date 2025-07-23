@@ -5,13 +5,13 @@ const dates = Array.from({ length: 30 }, (_, i) => i + 1);
 
 const Calendar: React.FC = () => {
   return (
-    <div className="rounded-2xl bg-white shadow p-6 w-full max-w-md h-[370px]">
-      <div className="flex items-center justify-between mb-8">
+    <div className="rounded-2xl p-8 w-full">
+      <div className="flex items-center justify-between mb-8 mt-2">
         <button className="text-xl font-bold">&#60;</button>
         <div className="font-semibold text-lg">April 2024</div>
         <button className="text-xl font-bold">&#62;</button>
       </div>
-      <div className="grid grid-cols-7 gap-2 text-center text-xs text-muted-foreground mb-2">
+      <div className="grid grid-cols-7 gap-2 text-center text-xs text-muted-foreground mb-4">
         {daysOfWeek.map((day) => (
           <div key={day} className="font-medium">
             {day}

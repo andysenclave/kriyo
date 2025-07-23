@@ -1,6 +1,7 @@
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import React from 'react';
+import { ChevronRightIcon } from 'lucide-react';
 
 interface TaskSummaryCardProps {
   title: string;
@@ -17,20 +18,19 @@ const colorStyles = {
 const TaskSummaryCard: React.FC<TaskSummaryCardProps> = ({ title, count, color, icon }) => {
   return (
     <Card
-      className={`flex flex-col justify-between p-6 rounded-md shadow-md w-[245px] h-[100px] ${colorStyles[color]}`}
+      className={`flex gap-0 flex-col justify-between p-4 rounded-md shadow-md w-[245px] h-[110px] ${colorStyles[color]}`}
     >
-      <div className="flex items-center gap-3">
-        {icon}
-        <div>
-          <div className="text-lg font-semibold">{title}</div>
-          <div className="text-sm opacity-80">{count} tasks</div>
-        </div>
-      </div>
-      <div className="flex justify-end">
-        <Button variant="ghost" className="text-white/80 hover:text-white">
-          <span className="mr-2">→</span>
+      <div className="flex items-center gap-3">{icon}</div>
+      <div className="flex items-center gap-3 justify-between w-full">
+        <span className="text-md font-semibold">{title}</span>
+        <Button variant="ghost" size="icon" className="size-8 cursor-pointer :hover:bg-white/10">
+          <ChevronRightIcon />
         </Button>
       </div>
+      <div className="flex items-center gap-3">
+        <span className="text-sm opacity-80">{count} tasks</span>
+      </div>
+      <div className="flex justify-end"></div>
     </Card>
   );
 };

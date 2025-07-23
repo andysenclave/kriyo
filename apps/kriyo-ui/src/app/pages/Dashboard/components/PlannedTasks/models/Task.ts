@@ -15,6 +15,7 @@ export default interface Task {
   dueDate?: string;
   status: 'todo' | 'in-progress' | 'in-review' | 'done' | 'blocked' | 'cancelled';
   priority?: 'low' | 'medium' | 'high';
+  priorityRank?: number;
   createdAt: string;
   updatedAt: string;
   assignedTo?: UserInfo;

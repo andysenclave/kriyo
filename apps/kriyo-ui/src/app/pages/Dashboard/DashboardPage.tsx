@@ -1,3 +1,4 @@
+// import { Calendar } from '@/components/ui/calendar';
 import PlannedTasks from './components/PlannedTasks';
 import ProjectList from './components/ProjectList';
 import Calendar from './components/Calendar';
@@ -12,7 +13,10 @@ const DashboardPage: React.FC = () => {
         </div>
         <div className="md:col-span-1">
           <TaskActionArea />
-          <Calendar />
+          <div className="rounded-2xl bg-white shadow w-full max-w-md h-[383px] border-none">
+            <Calendar />
+            {/* <Calendar mode="single" selected={new Date()} className="rounded-lg h-full w-full" /> */}
+          </div>
         </div>
       </div>
       <ProjectList />

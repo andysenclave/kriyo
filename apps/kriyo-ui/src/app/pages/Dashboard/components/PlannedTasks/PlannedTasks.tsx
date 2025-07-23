@@ -3,34 +3,37 @@ import { FaRegClock, FaRegFlag } from 'react-icons/fa';
 import PlannedTaskList from './components/TaskList';
 import TaskSummaryCard from './components/TaskSummaryCard';
 import UserGreeting from './components/UserGreeting';
+import { useMyTasks } from './providers/MyTasksProvider';
+import { ViewAllBtn } from '@/app/components/buttons';
 
 export interface PlannedTasksProps {
   userName: string;
 }
 
 const PlannedTasks: React.FC<PlannedTasksProps> = ({ userName }) => {
+  const { scopedTasks } = useMyTasks();
+  const { overdueCount, highPriorityCount } = scopedTasks || {};
+
   return (
     <div className="flex-1 min-w-[320px]">
       <UserGreeting userName={userName} />
-      <div className="gap-4 mb-6 flex">
+      <div className="gap-4 mb-4 flex">
         <TaskSummaryCard
           title="Overdue tasks"
-          count={12}
+          count={overdueCount || 0}
           color="primary"
-          icon={<FaRegClock size={28} />}
+          icon={<FaRegClock size={24} />}
         />
         <TaskSummaryCard
           title="High priority tasks"
-          count={5}
+          count={highPriorityCount || 0}
           color="danger"
-          icon={<FaRegFlag size={28} />}
+          icon={<FaRegFlag size={24} />}
         />
       </div>
       <div className="flex items-center justify-between mb-2">
-        <div className="font-semibold text-base">Planned tasks</div>
-        <button className="text-primary text-xs font-medium flex items-center gap-1 hover:underline">
-          View all <span>→</span>
-        </button>
+        <h4 className="font-bold text-base">Planned tasks</h4>
+        <ViewAllBtn />
       </div>
       <PlannedTaskList />
     </div>
