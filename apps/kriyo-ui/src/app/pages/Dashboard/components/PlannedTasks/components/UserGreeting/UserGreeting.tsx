@@ -1,4 +1,4 @@
-import { useMyTasks } from '../../providers/MyTasksProvider';
+import { useMyTasks } from '@/app/providers/MyTasksProvider';
 
 interface UserGreetingProps {
   userName: string;
@@ -8,7 +8,7 @@ const UserGreeting: React.FC<UserGreetingProps> = ({ userName }) => {
   const { tasksCount } = useMyTasks();
 
   return (
-    <div className="mb-4">
+    <div className="mb-2">
       <h2 className="scroll-m-20 text-xl font-normal tracking-tight mb-2">
         Hello, <span className="font-extrabold">{userName}</span>
       </h2>

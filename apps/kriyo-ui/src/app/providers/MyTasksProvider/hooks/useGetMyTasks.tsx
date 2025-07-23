@@ -1,10 +1,10 @@
 'use client';
 
-import { get } from '@/app/services/api/axios';
-import apiConfig from '@/services/apiConfig';
 import { Task } from '../models';
 import { useEffect, useState } from 'react';
 import seedGetMyPendingTasks from '@/app/mocks/seedData/tasksHandlers/seedGetMyPendingTasks';
+import { get } from '@/services/api/axios';
+import apiConfig from '@/services/api/config';
 
 interface ScopedTasks {
   pending: Task[];

@@ -3,8 +3,8 @@ import { FaRegClock, FaRegFlag } from 'react-icons/fa';
 import PlannedTaskList from './components/TaskList';
 import TaskSummaryCard from './components/TaskSummaryCard';
 import UserGreeting from './components/UserGreeting';
-import { useMyTasks } from './providers/MyTasksProvider';
 import { ViewAllBtn } from '@/app/components/buttons';
+import { useMyTasks } from '@/app/providers/MyTasksProvider';
 
 export interface PlannedTasksProps {
   userName: string;
@@ -17,7 +17,7 @@ const PlannedTasks: React.FC<PlannedTasksProps> = ({ userName }) => {
   return (
     <div className="flex-1 min-w-[320px]">
       <UserGreeting userName={userName} />
-      <div className="gap-4 mb-4 flex">
+      <div className="gap-4 mb-2 flex">
         <TaskSummaryCard
           title="Overdue tasks"
           count={overdueCount || 0}

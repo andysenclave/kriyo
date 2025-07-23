@@ -1,5 +1,6 @@
 import { JsonBodyType, HttpResponseInit, http, HttpResponse } from 'msw';
 import seedGetMyPendingTasks from './seedData/tasksHandlers/seedGetMyPendingTasks';
+import seedPostMyTask from './seedData/tasksHandlers/seedPostMyTask';
 
 const mockRequestGet = (url: string, response: JsonBodyType, init?: HttpResponseInit) => {
   return http.get(url, () => {
@@ -37,6 +38,9 @@ const mockRequestGetXml = (url: string, response: string, init?: HttpResponseIni
   });
 };
 
-const seedHandlers = [mockRequestGet(seedGetMyPendingTasks.url, seedGetMyPendingTasks.response)];
+const seedHandlers = [
+  mockRequestGet(seedGetMyPendingTasks.url, seedGetMyPendingTasks.response),
+  mockRequestPost(seedPostMyTask.url, seedPostMyTask.response),
+];
 
 export default seedHandlers;
