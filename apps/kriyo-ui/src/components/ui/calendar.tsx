@@ -7,6 +7,10 @@ import { DayButton, DayPicker, getDefaultClassNames } from 'react-day-picker';
 import { cn } from '@/lib/utils';
 import { Button, buttonVariants } from '@/components/ui/button';
 
+export interface CalendarProps {
+  buttonVariant?: React.ComponentProps<typeof Button>['variant'];
+}
+
 function Calendar({
   className,
   classNames,
@@ -16,14 +20,13 @@ function Calendar({
   formatters,
   components,
   ...props
-}: React.ComponentProps<typeof DayPicker> & {
-  buttonVariant?: React.ComponentProps<typeof Button>['variant'];
-}) {
+}: React.ComponentProps<typeof DayPicker> & CalendarProps) {
   const defaultClassNames = getDefaultClassNames();
 
   return (
     <DayPicker
       showOutsideDays={showOutsideDays}
+      onDayClick={props.onDayClick}
       className={cn(
         'bg-background group/calendar p-3 [--cell-size:--spacing(8)] [[data-slot=card-content]_&]:bg-transparent [[data-slot=popover-content]_&]:bg-transparent',
         String.raw`rtl:**:[.rdp-button\_next>svg]:rotate-180`,
@@ -143,6 +146,7 @@ function CalendarDayButton({
   ...props
 }: React.ComponentProps<typeof DayButton>) {
   const defaultClassNames = getDefaultClassNames();
+  const currentDay = day.date.toISOString().slice(0, 10);
 
   const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
@@ -154,7 +158,7 @@ function CalendarDayButton({
       ref={ref}
       variant="ghost"
       size="icon"
-      data-day={day.date.toISOString().slice(0, 10)}
+      data-day={currentDay}
       data-selected-single={
         modifiers.selected &&
         !modifiers.range_start &&

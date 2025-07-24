@@ -4,20 +4,14 @@ import React from 'react';
 import { useForm, Controller, SubmitHandler, FieldPath } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AddTaskSchema, AddTaskFormValues } from './AddTaskSchemaYup';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogClose,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useAddTask } from './hooks';
 import { Button } from '@/components/ui/button';
 
 interface AddTaskModalProps {
+  selectedDate?: Date;
   open: boolean;
   onClose: () => void;
-  onTaskAdded?: () => void;
 }
 
 const statusOptions = [
@@ -35,7 +29,11 @@ const priorityOptions = [
   { label: 'High', value: 'high' },
 ];
 
-const AddTaskModal: React.FC<AddTaskModalProps> = ({ open, onClose }) => {
+const AddTaskModal: React.FC<AddTaskModalProps> = ({
+  open,
+  onClose,
+  selectedDate = new Date(),
+}) => {
   const { addMyTask } = useAddTask();
   const { control, handleSubmit, reset } = useForm<AddTaskFormValues>({
     resolver: yupResolver(AddTaskSchema),
@@ -49,6 +47,15 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ open, onClose }) => {
       project: { id: '', name: '' },
     },
   });
+
+  const selectedTaskDate = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+    .format(selectedDate)
+    .split('/');
+  const formattedDate = `${selectedTaskDate[2]}-${selectedTaskDate[0]}-${selectedTaskDate[1]}`;
 
   const onSubmit: SubmitHandler<AddTaskFormValues> = async (data: AddTaskFormValues) => {
     await addMyTask(data);
@@ -94,7 +101,12 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ open, onClose }) => {
             name={'dueDate' as FieldPath<AddTaskFormValues>}
             control={control}
             render={({ field }) => (
-              <input {...field} type="date" className="w-full border rounded px-3 py-2" />
+              <input
+                {...field}
+                type="date"
+                value={formattedDate}
+                className="w-full border rounded px-3 py-2"
+              />
             )}
           />
           <Controller

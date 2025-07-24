@@ -4,7 +4,11 @@ import { useState } from 'react';
 import { FiPlus } from 'react-icons/fi';
 import AddTaskModal from './AddTaskModal';
 
-const AddNewTaskBtn: React.FC = () => {
+interface AddNewTaskBtnProps {
+  selectedDate?: Date;
+}
+
+const AddNewTaskBtn: React.FC<AddNewTaskBtnProps> = ({ selectedDate }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleAddNewBtnClick = () => {
@@ -24,7 +28,7 @@ const AddNewTaskBtn: React.FC = () => {
       >
         <FiPlus size={20} /> Add new task
       </Button>
-      <AddTaskModal open={isModalOpen} onClose={handleModalClose} />
+      <AddTaskModal open={isModalOpen} onClose={handleModalClose} selectedDate={selectedDate} />
     </>
   );
 };
