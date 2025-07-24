@@ -51,19 +51,24 @@ const TaskCalendar: React.FC = () => {
   }, [selectedDate, tasks]);
 
   return (
-    <div className="rounded-2xl bg-white shadow w-full max-w-md h-[366px] border-none">
+    <div
+      className="rounded-2xl bg-white shadow w-full max-w-md h-[366px] border-none"
+      data-testid="task-calendar-root"
+    >
       <Calendar
         fixedWeeks={true}
         mode="single"
         selected={new Date()}
         className="rounded-lg h-100% w-full"
         onDayClick={handleDayClick}
+        data-testid="calendar"
       />
       <DayTasksModal
         open={showDayTasksModal}
         onClose={handleDayTasksModalClose}
         date={selectedDate}
         tasks={dayTasks}
+        data-testid="day-tasks-modal"
       />
     </div>
   );

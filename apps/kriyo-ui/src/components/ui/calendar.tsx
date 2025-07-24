@@ -25,6 +25,7 @@ function Calendar({
 
   return (
     <DayPicker
+      data-testid="calendar"
       showOutsideDays={showOutsideDays}
       onDayClick={props.onDayClick}
       className={cn(
@@ -122,7 +123,7 @@ function Calendar({
 
           return <ChevronDownIcon className={cn('size-4', className)} {...props} />;
         },
-        DayButton: CalendarDayButton,
+        DayButton: (props) => <CalendarDayButton {...props} />,
         WeekNumber: ({ children, ...props }) => {
           return (
             <td {...props}>
@@ -139,19 +140,18 @@ function Calendar({
   );
 }
 
-function CalendarDayButton({
-  className,
-  day,
-  modifiers,
-  ...props
-}: React.ComponentProps<typeof DayButton>) {
+const CalendarDayButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ComponentProps<typeof DayButton>
+>(({ className, day, modifiers, ...props }, ref) => {
   const defaultClassNames = getDefaultClassNames();
   const currentDay = day.date.toISOString().slice(0, 10);
 
-  const ref = React.useRef<HTMLButtonElement>(null);
   React.useEffect(() => {
-    if (modifiers.focused) ref.current?.focus();
-  }, [modifiers.focused]);
+    if (modifiers.focused && ref && typeof ref === 'object' && ref !== null && 'current' in ref) {
+      (ref as React.RefObject<HTMLButtonElement>).current?.focus();
+    }
+  }, [modifiers.focused, ref]);
 
   return (
     <Button
@@ -176,6 +176,7 @@ function CalendarDayButton({
       {...props}
     />
   );
-}
+});
+CalendarDayButton.displayName = 'CalendarDayButton';
 
 export { Calendar, CalendarDayButton };
