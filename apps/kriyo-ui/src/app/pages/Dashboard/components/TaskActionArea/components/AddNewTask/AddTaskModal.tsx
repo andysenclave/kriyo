@@ -35,18 +35,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   selectedDate = new Date(),
 }) => {
   const { addMyTask } = useAddTask();
-  const { control, handleSubmit, reset } = useForm<AddTaskFormValues>({
-    resolver: yupResolver(AddTaskSchema),
-    defaultValues: {
-      title: '',
-      description: '',
-      dueDate: '',
-      status: 'todo',
-      priority: 'medium',
-      assignedTo: { id: '', name: '' },
-      project: { id: '', name: '' },
-    },
-  });
 
   const selectedTaskDate = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
@@ -56,6 +44,19 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     .format(selectedDate)
     .split('/');
   const formattedDate = `${selectedTaskDate[2]}-${selectedTaskDate[0]}-${selectedTaskDate[1]}`;
+
+  const { control, handleSubmit, reset } = useForm<AddTaskFormValues>({
+    resolver: yupResolver(AddTaskSchema),
+    defaultValues: {
+      title: '',
+      description: '',
+      dueDate: formattedDate,
+      status: 'todo',
+      priority: 'medium',
+      assignedTo: { id: '', name: '' },
+      project: { id: '', name: '' },
+    },
+  });
 
   const onSubmit: SubmitHandler<AddTaskFormValues> = async (data: AddTaskFormValues) => {
     await addMyTask(data);
@@ -101,12 +102,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
             name={'dueDate' as FieldPath<AddTaskFormValues>}
             control={control}
             render={({ field }) => (
-              <input
-                {...field}
-                type="date"
-                value={formattedDate}
-                className="w-full border rounded px-3 py-2"
-              />
+              <input {...field} type="date" className="w-full border rounded px-3 py-2" />
             )}
           />
           <Controller

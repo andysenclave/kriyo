@@ -1,4 +1,4 @@
-import { Task } from '@/app/providers/models';
+import { Task } from '@/app/providers/MyTasksProvider/models';
 
 interface StatusLabelProps {
   status: Task['status'];
