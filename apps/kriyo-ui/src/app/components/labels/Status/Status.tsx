@@ -1,4 +1,4 @@
-import { Task } from '@/app/pages/Dashboard/components/PlannedTasks/models';
+import { Task } from '@/app/providers/models';
 
 interface StatusLabelProps {
   status: Task['status'];
