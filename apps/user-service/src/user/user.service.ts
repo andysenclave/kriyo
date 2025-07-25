@@ -8,64 +8,62 @@ import { PrismaService } from '@kriyo/db';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-  private users: User[] = [];
-  private idCounter = 1;
+// Removed in-memory storage and ID counter.
 
   /**
    * Create a new user
    */
-  create(createUserDto: CreateUserDto): User {
-    const newUser: User = {
-      id: this.idCounter++,
-      email: createUserDto.email,
-      name: createUserDto.name,
-      betterAuthId: createUserDto.betterAuthId,
-      phoneNumber: createUserDto.phoneNumber,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    };
-
-    this.users.push(newUser);
-    return newUser;
+  async create(createUserDto: CreateUserDto): Promise<User> {
+    return this.prisma.user.create({
+      data: {
+        email: createUserDto.email,
+        name: createUserDto.name,
+        betterAuthId: createUserDto.betterAuthId,
+        phoneNumber: createUserDto.phoneNumber,
+      },
+    });
   }
 
   /**
    * Get all users
    */
-  findAll(): User[] {
-    return this.users;
+  async findAll(): Promise<User[]> {
+    return this.prisma.user.findMany();
   }
 
   /**
    * Get a single user by ID
    */
-  findOne(id: number): User | null {
-    return this.users.find((user) => user.id === id) || null;
+  async findOne(id: number): Promise<User | null> {
+    return this.prisma.user.findUnique({
+      where: { id },
+    });
   }
 
   /**
    * Update a user by ID
    */
-  update(id: number, updateUserDto: UpdateUserDto): User | null {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index === -1) return null;
-
-    const existing = this.users[index];
-    const updated: User = {
-      ...existing,
-      ...updateUserDto,
-      updatedAt: new Date(),
-    };
-
-    this.users[index] = updated;
-    return updated;
+  async update(id: number, updateUserDto: UpdateUserDto): Promise<User | null> {
+    try {
+      return await this.prisma.user.update({
+        where: { id },
+        data: {
+          ...updateUserDto,
+          updatedAt: new Date(),
+        },
+      });
+    } catch (error) {
+      return null; // Return null if the user does not exist.
+    }
   }
 
   /**
    * Delete a user by ID
    */
-  remove(id: number): void {
-    this.users = this.users.filter((user) => user.id !== id);
+  async remove(id: number): Promise<void> {
+    await this.prisma.user.delete({
+      where: { id },
+    });
   }
 
   async findOrCreateByBetterAuth(payload: {
