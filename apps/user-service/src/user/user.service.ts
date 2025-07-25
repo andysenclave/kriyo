@@ -2,9 +2,12 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { User } from './entities/user.entity';
+import { PrismaService } from '@kriyo/db';
 
 @Injectable()
 export class UserService {
+  constructor(private prisma: PrismaService) {}
+
   private users: User[] = [];
   private idCounter = 1;
 
@@ -63,5 +66,27 @@ export class UserService {
    */
   remove(id: number): void {
     this.users = this.users.filter((user) => user.id !== id);
+  }
+
+  async findOrCreateByBetterAuth(payload: {
+    betterAuthId: string;
+    email: string;
+    name: string;
+    phoneNumber: string;
+  }) {
+    const existing = await this.prisma.user.findUnique({
+      where: { betterAuthId: payload.betterAuthId },
+    });
+
+    if (existing) return existing;
+
+    return this.prisma.user.create({
+      data: {
+        betterAuthId: payload.betterAuthId,
+        email: payload.email,
+        name: payload.name,
+        phoneNumber: payload.phoneNumber,
+      },
+    });
   }
 }
