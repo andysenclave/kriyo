@@ -29,8 +29,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   async validate(payload: JwtPayload) {
     const { sub, email, name, phoneNumber } = payload;
 
-    if (!sub || !email || !phoneNumber) {
-      throw new UnauthorizedException('Invalid JWT payload');
+    if (!sub || !email || !name || !phoneNumber) {
+      throw new UnauthorizedException('Invalid JWT payload: missing sub, email, name, or phoneNumber');
     }
 
     const user = await this.userService.findOrCreateByBetterAuth({
