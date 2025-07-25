@@ -2,7 +2,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@shared/*": ["packages/shared/*"],
       "@kriyo/db": ["packages/db/src"]
     }
   }
