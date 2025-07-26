@@ -8,4 +8,4 @@ import { PrismaService } from '@kriyo/db';
   controllers: [UserController],
   providers: [UserService, PrismaService],
 })
-export class AppModule {}
+export class UserModule {}

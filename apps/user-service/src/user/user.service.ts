@@ -8,7 +8,7 @@ import { PrismaService } from '@kriyo/db';
 export class UserService {
   constructor(private prisma: PrismaService) {}
 
-// Removed in-memory storage and ID counter.
+  // Removed in-memory storage and ID counter.
 
   /**
    * Create a new user
@@ -52,6 +52,7 @@ export class UserService {
           updatedAt: new Date(),
         },
       });
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (error) {
       return null; // Return null if the user does not exist.
     }
