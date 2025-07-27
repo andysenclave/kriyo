@@ -6,7 +6,7 @@ import TaskActionArea from './components/TaskActionArea';
 import DashboardHeader from './components/DashboardHeader';
 import { useAuth } from '@/lib/auth-context';
 
-const DashboardPage: React.FC = () => {
+const Dashboard: React.FC = () => {
   const { user } = useAuth();
 
   return (
@@ -28,4 +28,4 @@ const DashboardPage: React.FC = () => {
   );
 };
 
-export default DashboardPage;
+export default Dashboard;

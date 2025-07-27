@@ -1,6 +1,6 @@
 import MyTasksProvider from '@/app/providers/MyTasksProvider';
-import ProtectedRoute from '@/components/ProtectedRoute';
-import DashboardPage from './DashboardPage';
+import DashboardPage from './Dashboard';
+import { ProtectedRoute } from '@/app/components/auth';
 
 const DashboardPageWithProvider: React.FC = () => {
   return (

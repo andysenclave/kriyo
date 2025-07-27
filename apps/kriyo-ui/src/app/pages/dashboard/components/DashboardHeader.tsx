@@ -13,7 +13,7 @@ const DashboardHeader: React.FC = () => {
   const handleLogout = async () => {
     try {
       await signOut();
-      router.push('/auth/signin');
+      router.push('/auth/login');
     } catch (error) {
       console.error('Logout error:', error);
     }

@@ -1,8 +1,8 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { User } from './auth';
-import { AuthClient } from './auth-client';
+import { User } from './models';
+import AuthClient, { getSession } from './AuthClient';
 
 interface AuthContextType {
   user: User | null;
@@ -13,7 +13,7 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export default function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -62,3 +62,12 @@ export function useAuth() {
   }
   return context;
 }
+
+export const useSession = () => {
+  const session = getSession();
+
+  return {
+    data: session,
+    isPending: false,
+  };
+};
