@@ -1,6 +1,6 @@
 import MyTasksProvider from '@/app/providers/MyTasksProvider';
 import { render, screen } from '@testing-library/react';
-import PlannedTaskList from '../';
+import PlannedTaskList from '..';
 
 describe('PlannedTaskList', () => {
   const renderComponent = () => {

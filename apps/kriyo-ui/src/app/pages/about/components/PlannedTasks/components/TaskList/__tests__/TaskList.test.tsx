@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
-import PlannedTaskList from '../';
+import PlannedTaskList from '..';
 import { useMyTasks } from '@/app/providers/MyTasksProvider';
 import { Task } from '@/app/providers/MyTasksProvider/models';
 import { isToday, formatDistanceToNow } from 'date-fns';

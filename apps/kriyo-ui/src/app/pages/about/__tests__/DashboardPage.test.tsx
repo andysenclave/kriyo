@@ -13,7 +13,7 @@ jest.mock('../components/TaskActionArea', () => () => (
   <div data-testid="task-action-area">TaskActionArea</div>
 ));
 
-import DashboardPage from '../';
+import DashboardPage from '..';
 
 describe('DashboardPage', () => {
   it('renders all main dashboard sections', () => {
