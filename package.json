@@ -8,7 +8,8 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "dev:user": "turbo run build --filter=@kriyo/db && turbo run dev --filter=user-service"
+    "dev:user": "turbo run build --filter=@kriyo/db && turbo run dev --filter=user-service",
+    "start:apps": "cd packages/db && npx prisma generate && cd ../../ && node ./scripts/concurrently.js"
   },
   "keywords": [],
   "workspaces": [
@@ -20,6 +21,7 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    "concurrently": "^9.2.0",
     "eslint": "^9.31.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.3",
