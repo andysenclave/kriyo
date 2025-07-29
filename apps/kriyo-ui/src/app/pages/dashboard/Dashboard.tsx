@@ -4,7 +4,7 @@ import ProjectList from './components/ProjectList';
 import Calendar from './components/Calendar';
 import TaskActionArea from './components/TaskActionArea';
 import DashboardHeader from './components/DashboardHeader';
-import { useAuth } from '@/lib/auth-context';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();

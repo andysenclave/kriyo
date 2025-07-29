@@ -3,8 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { signOut } from '@/lib/auth-client';
-import { useAuth } from '@/lib/auth-context';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const DashboardHeader: React.FC = () => {
   const { user } = useAuth();
