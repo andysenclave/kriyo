@@ -9,7 +9,7 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "dev:user": "turbo run build --filter=@kriyo/db && turbo run dev --filter=user-service",
-    "start:apps": "cd packages/db && npx prisma generate && cd ../../ && node ./scripts/concurrently.js"
+    "start:apps": "node ./concurrently.js"
   },
   "keywords": [],
   "workspaces": [

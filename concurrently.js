@@ -6,11 +6,6 @@ async function startServices() {
     // Define the services to run
     const services = [
       {
-        name: 'user-service',
-        command: 'npm run start:dev --workspace apps/user-service',
-        prefixColor: 'bgGreen',
-      },
-      {
         name: 'kriyo-ui',
         command: 'npm run dev --workspace apps/kriyo-ui',
         prefixColor: 'bgMagenta',
