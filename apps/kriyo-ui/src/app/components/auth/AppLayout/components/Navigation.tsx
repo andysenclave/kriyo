@@ -27,7 +27,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
 
   const handleItemClick = (itemId: string) => {
     const selectedRoute = items.find((item) => item.id === itemId)?.route;
-    redirect(selectedRoute || '/');
+    router.push(selectedRoute || '/');
   };
 
   return (
