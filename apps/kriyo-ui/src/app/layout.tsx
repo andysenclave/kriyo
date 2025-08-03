@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import MSWInitializer from './MSWInitializer';
+import AuthProvider from './providers/AuthProvider';
+import { AppLayout } from './components/auth';
+import AppMenuItems from './AppMenuItems';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,7 +33,9 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <MSWInitializer />
-        {children}
+        <AuthProvider>
+          <AppLayout menuItems={AppMenuItems}>{children}</AppLayout>
+        </AuthProvider>
       </body>
     </html>
   );
