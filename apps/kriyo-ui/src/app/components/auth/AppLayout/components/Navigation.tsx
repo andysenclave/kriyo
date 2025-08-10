@@ -2,8 +2,9 @@
 
 import React, { useMemo, useState } from 'react';
 import NavigationItem from '../models';
-import { redirect, usePathname } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useClickOutside } from '@/app/hooks';
+import router from 'next/router';
 
 interface NavigationProps {
   items: NavigationItem[];
