@@ -25,8 +25,9 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, menuItems }) => {
       <Header />
       <div className="flex">
         <Navigation items={menuItems} />
-
-        <ProtectedRoute>{children}</ProtectedRoute>
+        <ProtectedRoute>
+          <div className="flex-1">{children}</div>
+        </ProtectedRoute>
       </div>
     </div>
   );

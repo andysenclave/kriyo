@@ -1,34 +1,26 @@
 import { Auth } from '@/app/providers/AuthProvider/models';
-import apiConfig from '@/services/api/config';
 import LoginPayload from '../models';
-import { post } from '@/services/api/axios';
 import config from '@/services/api/config';
+import { authClient } from '@/lib/authClient';
 
 interface LoginData {
   login: (loginPayload: LoginPayload) => Promise<Auth | null>;
 }
 
-const getLoginPath = () => {
-  return `${apiConfig.baseUrl}${apiConfig.loginUrl}`;
-};
-
 const useLogin = (): LoginData => {
   const login = async (credentials: LoginPayload) => {
     try {
-      const response = await post(getLoginPath(), credentials);
+      const { data, error } = await authClient.signIn.email({
+        email: credentials.email,
+        password: credentials.password,
+        callbackURL: `${config.appBaseUrl}/dashboard`,
+      });
 
-      if (response.data.token && response.data.user) {
-        const authData = (await response.data) as Auth;
+      console.log('Login response:', { data, error });
 
-        localStorage.setItem(config.authTokenKey, authData.token);
-        localStorage.setItem(config.userKey, JSON.stringify(authData.user));
-
-        return authData;
-      }
-
-      return null;
+      return data as unknown as Auth;
     } catch (error) {
-      console.error('Sign in error:', error);
+      console.error('Log in error:', error);
       return null;
     }
   };

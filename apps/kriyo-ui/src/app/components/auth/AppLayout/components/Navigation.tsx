@@ -2,9 +2,8 @@
 
 import React, { useMemo, useState } from 'react';
 import NavigationItem from '../models';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useClickOutside } from '@/app/hooks';
-import router from 'next/router';
 
 interface NavigationProps {
   items: NavigationItem[];
@@ -14,6 +13,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => setOpen(false));
+  const router = useRouter();
 
   const styles = useMemo(
     () => ({
@@ -23,7 +23,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
       item: `transition-all duration-300 ease-in-out overflow-hidden ${open ? 'w-36' : 'w-13'} text-left px-2 py-2 hover:bg-gray-50 transition-colors flex items-center rounded-md mx-2`,
       label: `transition-all duration-300 ease-in-out overflow-hidden ${open ? 'w-24' : 'w-1'}`,
     }),
-    [open]
+    [open],
   );
 
   const handleItemClick = (itemId: string) => {
@@ -39,7 +39,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
             <li key={item.id}>
               <button
                 onClick={() => handleItemClick(item.id)}
-                className={`${styles.item} text-xs ${
+                className={`${styles.item} cursor-pointer text-xs ${
                   pathname === item.route
                     ? 'bg-gradient-to-br from-[#6D5DF61A] to-[#4B3DF61A] text-gray-900 font-semibold'
                     : 'text-gray-600'

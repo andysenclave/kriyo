@@ -45,8 +45,8 @@ const SignupForm: React.FC = () => {
         setError('Invalid email or password');
       }
     } catch (err) {
-      console.error('Sign in error:', err);
-      setError('An error occurred during sign in. Please try again.');
+      console.error('Sign up error:', err);
+      setError('An error occurred during sign up. Please try again.');
     } finally {
       setIsLoading(false);
     }

@@ -26,12 +26,6 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  // window.alert = function () {};
-  // global.alert = function () {};
-  // // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // // @ts-ignore
-  // window.confirm = function () {};
-
   return (
     <html lang="en">
       <head>
