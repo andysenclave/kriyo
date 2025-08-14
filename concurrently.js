@@ -6,9 +6,19 @@ async function startServices() {
     // Define the services to run
     const services = [
       {
+        name: 'user-service',
+        command: 'npm run dev --workspace apps/user-service',
+        prefixColor: 'bgYellow',
+      },
+      {
+        name: 'better-auth-service',
+        command: 'npm run dev --workspace apps/better-auth-service',
+        prefixColor: 'bgRedBright',
+      },
+      {
         name: 'kriyo-ui',
         command: 'npm run dev --workspace apps/kriyo-ui',
-        prefixColor: 'bgMagenta',
+        prefixColor: 'bgBlueBright',
       },
       // Add additional services here in the future
     ];

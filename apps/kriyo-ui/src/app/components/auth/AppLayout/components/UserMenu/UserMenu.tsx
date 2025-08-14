@@ -1,6 +1,9 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useClickOutside } from '@/app/hooks';
+import { useRouter } from 'next/navigation';
+import React, { Ref, useState } from 'react';
+import { useLogout } from './hooks';
 
 interface UserMenuProps {
   userName: string;
@@ -8,14 +11,20 @@ interface UserMenuProps {
 
 const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const router = useRouter();
+  const ref = useClickOutside(() => setIsOpen(false)) as unknown as Ref<HTMLDivElement>;
+  const { logout } = useLogout();
 
-  const handleLogout = () => {
-    // TODO: Implement logout logic
-    console.log('Logout clicked');
+  const openProfile = () => {
     setIsOpen(false);
+    router.push('/profile');
   };
 
-  // Get initials from userName
+  const handleLogout = () => {
+    setIsOpen(false);
+    logout();
+  };
+
   const getInitials = (name: string) => {
     return name
       .split(' ')
@@ -28,7 +37,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center space-x-2 rounded-md p-1 transition-colors focus:outline-none"
+        className="flex items-center space-x-2 rounded-md p-1 transition-colors focus:outline-none cursor-pointer"
       >
         <div className="w-8 h-8 bg-gray-200 rounded-full flex items-center justify-center text-sm font-medium text-gray-700">
           {getInitials(userName)}
@@ -45,11 +54,19 @@ const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50">
-          <div className="px-4 py-2 text-sm text-gray-900 border-b border-gray-100">Profile</div>
+        <div
+          ref={ref}
+          className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-1 z-50"
+        >
+          <button
+            onClick={openProfile}
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
+          >
+            Profile
+          </button>
           <button
             onClick={handleLogout}
-            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors"
+            className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition-colors cursor-pointer"
           >
             Logout
           </button>

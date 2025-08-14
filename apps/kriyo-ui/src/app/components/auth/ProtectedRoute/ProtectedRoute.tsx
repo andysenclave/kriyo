@@ -9,16 +9,18 @@ interface ProtectedRouteProps {
 }
 
 export default function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const auth = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    const { isLoading, isAuthenticated, isAuthPending } = auth;
+
+    if (!isAuthPending && !isLoading && !isAuthenticated) {
       router.push('/auth/login');
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [auth, router]);
 
-  if (isLoading) {
+  if (auth.isLoading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 flex items-center justify-center">
         <div className="text-center">
@@ -29,7 +31,7 @@ export default function ProtectedRoute({ children }: ProtectedRouteProps) {
     );
   }
 
-  if (!isAuthenticated) {
+  if (!auth.isAuthenticated) {
     return null;
   }
 

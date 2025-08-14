@@ -1,3 +1,5 @@
+'use client';
+
 import MyTasksProvider from '@/app/providers/MyTasksProvider';
 import DashboardPage from './Dashboard';
 

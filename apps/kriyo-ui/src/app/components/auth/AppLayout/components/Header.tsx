@@ -4,17 +4,16 @@ import React from 'react';
 import UserMenu from './UserMenu';
 import Image from 'next/image';
 import { Permanent_Marker } from 'next/font/google';
-
-interface HeaderProps {
-  userName?: string;
-}
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const permanentMarker = Permanent_Marker({
   weight: '400',
   subsets: ['latin'],
 });
 
-const Header: React.FC<HeaderProps> = ({ userName = 'Andy' }) => {
+const Header: React.FC = () => {
+  const { user } = useAuth();
+
   return (
     <header className="bg-gradient-to-br from-[#6D5DF6] to-[#4B3DF6] text-white shadow-sm px-4 py-3 flex justify-between items-center">
       <div className="flex items-center space-x-4">
@@ -29,7 +28,7 @@ const Header: React.FC<HeaderProps> = ({ userName = 'Andy' }) => {
       </div>
 
       <div className="flex items-center space-x-4">
-        <UserMenu userName={userName} />
+        <UserMenu userName={user?.name || 'User'} />
       </div>
     </header>
   );
