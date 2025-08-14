@@ -1,56 +1,59 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useState, useEffect, useCallback, useMemo } from 'react';
 import { User } from './models';
-import AuthClient, { getSession } from './AuthClient';
+import { authClient } from '@/lib/authClient';
 
 interface AuthContextType {
+  isAuthPending: boolean;
   user: User | null;
   isLoading: boolean;
   isAuthenticated: boolean;
-  refreshAuth: () => void;
 }
+
+const initialState: AuthContextType = {
+  isAuthPending: true,
+  user: null,
+  isLoading: false,
+  isAuthenticated: false,
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export default function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [{ isAuthPending, user, isLoading, isAuthenticated }, setState] =
+    useState<AuthContextType>(initialState);
+  const getSession = useCallback(async () => {
+    const session = await authClient.getSession();
 
-  const refreshAuth = () => {
-    const currentUser = AuthClient.getCurrentUser();
-    const isAuth = AuthClient.isAuthenticated();
+    if (!session || !session.data || !session.data.user) {
+      setState({ isAuthPending: false, user: null, isLoading: false, isAuthenticated: false });
+      return;
+    }
 
-    setUser(currentUser);
-    setIsAuthenticated(isAuth);
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    // Initial auth check
-    refreshAuth();
-
-    // Listen for auth changes (e.g., when user signs in/out)
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'kriyo_auth_token' || e.key === 'kriyo_user') {
-        refreshAuth();
-      }
-    };
-
-    window.addEventListener('storage', handleStorageChange);
-
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    setState({
+      isAuthPending: false,
+      user: session.data.user as unknown as User,
+      isLoading: false,
+      isAuthenticated: true,
+    });
   }, []);
 
-  const value: AuthContextType = {
-    user,
-    isLoading,
-    isAuthenticated,
-    refreshAuth,
-  };
+  useEffect(() => {
+    if (isAuthPending) {
+      getSession();
+    }
+  }, [isAuthPending, getSession]);
+
+  const value: AuthContextType = useMemo(
+    () => ({
+      isAuthPending,
+      user,
+      isLoading,
+      isAuthenticated,
+    }),
+    [isAuthPending, user, isLoading, isAuthenticated],
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
@@ -62,12 +65,3 @@ export function useAuth() {
   }
   return context;
 }
-
-export const useSession = () => {
-  const session = getSession();
-
-  return {
-    data: session,
-    isPending: false,
-  };
-};
