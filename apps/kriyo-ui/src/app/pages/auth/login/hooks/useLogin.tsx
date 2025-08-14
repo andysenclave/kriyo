@@ -10,13 +10,11 @@ interface LoginData {
 const useLogin = (): LoginData => {
   const login = async (credentials: LoginPayload) => {
     try {
-      const { data, error } = await authClient.signIn.email({
+      const { data } = await authClient.signIn.email({
         email: credentials.email,
         password: credentials.password,
         callbackURL: `${config.appBaseUrl}/dashboard`,
       });
-
-      console.log('Login response:', { data, error });
 
       return data as unknown as Auth;
     } catch (error) {

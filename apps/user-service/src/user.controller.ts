@@ -1,18 +1,21 @@
 import {
-  Controller,
   Get,
   Param,
   Post,
   Body,
   Put,
   Delete,
+  Controller,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { User as UserModel } from 'generated/prisma';
 import { CreateUserDto } from './dtos';
+import { Logger } from '@nestjs/common';
 
 @Controller('users')
 export class UserController {
+  private readonly logger = new Logger(UserController.name);
+
   constructor(private readonly userService: UserService) {}
 
   @Get('/:id')
@@ -22,7 +25,7 @@ export class UserController {
 
   @Get('/')
   async getAllUsers(): Promise<UserModel[]> {
-    console.log('Fetching all users');
+    this.logger.log('Fetching all users');
     return this.userService.getAllUsers({
       skip: 0,
       take: 10,

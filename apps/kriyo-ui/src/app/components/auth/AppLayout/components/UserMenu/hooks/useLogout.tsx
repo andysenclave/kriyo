@@ -11,9 +11,8 @@ const useLogout = (): LogoutData => {
 
   const logout = async () => {
     try {
-      const { data, error } = await authClient.signOut();
+      await authClient.signOut();
 
-      console.log('Logout response:', { data, error });
       router.push('/auth/login');
     } catch (error) {
       console.error('Logout error:', error);

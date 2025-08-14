@@ -12,14 +12,12 @@ interface SignupData {
 const useSignup = (): SignupData => {
   const signup = async (userData: SignupPayload): Promise<Auth | null> => {
     try {
-      const { data, error } = await authClient.signUp.email({
+      const { data } = await authClient.signUp.email({
         email: userData.email,
         password: userData.password,
         name: userData.name,
         callbackURL: `${config.appBaseUrl}/dashboard`,
       });
-
-      console.log('Signup response:', { data, error });
 
       return data as unknown as Auth;
     } catch (error) {
