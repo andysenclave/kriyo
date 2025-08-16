@@ -1,9 +1,9 @@
 'use client';
 
 import { useClickOutside } from '@/app/hooks';
+import { useAuth } from '@/app/providers/AuthProvider';
 import { useRouter } from 'next/navigation';
 import React, { Ref, useState } from 'react';
-import { useLogout } from './hooks';
 
 interface UserMenuProps {
   userName: string;
@@ -13,7 +13,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ userName }) => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
   const ref = useClickOutside(() => setIsOpen(false)) as unknown as Ref<HTMLDivElement>;
-  const { logout } = useLogout();
+  const { logout } = useAuth();
 
   const openProfile = () => {
     setIsOpen(false);
