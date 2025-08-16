@@ -1,6 +1,6 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "workbench.colorTheme": "Mayukai Mirage Gruvbox Darktooth",
+  "workbench.colorTheme": "Adapta Nokto",
   "editor.formatOnSave": true,
   "editor.codeLens": true,
   "javascript.referencesCodeLens.enabled": true,
