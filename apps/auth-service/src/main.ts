@@ -7,9 +7,9 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
-  const port = process.env.PUBLIC_API_PORT ?? 3000;
+  const port = process.env.PUBLIC_API_PORT ?? 4002;
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.KRIYO_UI_BASE_URL || 'http://localhost:3000'],
     credentials: true,
   });
 
