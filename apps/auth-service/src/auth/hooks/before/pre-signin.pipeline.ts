@@ -4,7 +4,7 @@ import { HookEndpointContext } from 'better-auth';
 
 const logger = new Logger('PreSignin');
 
-// @ts-expect-error
+// @ts-expect-error: createAuthMiddleware expects a different function signature, but HookEndpointContext is required here due to integration with better-auth hooks.
 const preSignin = createAuthMiddleware((ctx: HookEndpointContext) => {
   if (ctx.path !== '/sign-in/email' || ctx.method !== 'POST') {
     return;
