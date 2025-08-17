@@ -11,8 +11,8 @@ async function startServices() {
         prefixColor: 'bgYellow',
       },
       {
-        name: 'better-auth-service',
-        command: 'npm run dev --workspace apps/better-auth-service',
+        name: 'auth-service',
+        command: 'npm run dev --workspace apps/auth-service',
         prefixColor: 'bgRedBright',
       },
       {

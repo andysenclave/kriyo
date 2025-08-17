@@ -23,6 +23,12 @@ export class UserController {
     return await this.userService.findUser({ id });
   }
 
+  @Get('/verifyPhone/:phone')
+  async checkUserExists(@Param('phone') phone: string): Promise<boolean> {
+    const user = await this.userService.findUser({ phone });
+    return !!user?.id;
+  }
+
   @Get('/')
   async getAllUsers(): Promise<UserModel[]> {
     this.logger.log('Fetching all users');
