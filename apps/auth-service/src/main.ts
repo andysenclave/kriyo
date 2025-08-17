@@ -2,20 +2,16 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import 'dotenv/config';
-// import { toNodeHandler } from 'better-auth/node';
-// import { auth } from 'lib/auth';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
-  const port = process.env.PUBLIC_API_PORT ?? 3000;
+  const port = process.env.PUBLIC_API_PORT ?? 4002;
   app.enableCors({
-    origin: ['http://localhost:3000'],
+    origin: [process.env.KRIYO_UI_BASE_URL || 'http://localhost:3000'],
     credentials: true,
   });
-
-  // app.use('/api/auth/', auth);
 
   Logger.log(`Application is running on: http://localhost:${port}`);
 

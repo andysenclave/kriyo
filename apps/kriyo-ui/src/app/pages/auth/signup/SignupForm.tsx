@@ -5,14 +5,14 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { SignUpFormValues, SignUpSchema } from './SignupFormSchemaYup';
-import useSignup from './hooks';
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import './phone-input.css';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const SignupForm: React.FC = () => {
   const router = useRouter();
-  const { signup } = useSignup();
+  const { signup } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,7 +26,7 @@ const SignupForm: React.FC = () => {
       email: '',
       password: '',
       name: '',
-      phoneNumber: '',
+      phone: '',
       confirmPassword: '',
     },
   });
@@ -35,6 +35,7 @@ const SignupForm: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
+      console.log({ data });
 
       const result = await signup(data);
 
@@ -106,11 +107,11 @@ const SignupForm: React.FC = () => {
         </div>
 
         <div className="space-y-1">
-          <label htmlFor="phoneNumber" className="text-sm font-medium text-gray-700">
+          <label htmlFor="phone" className="text-sm font-medium text-gray-700">
             Phone Number
           </label>
           <Controller
-            name="phoneNumber"
+            name="phone"
             control={control}
             render={({ field: { onChange, value } }) => (
               <PhoneInput
@@ -119,14 +120,12 @@ const SignupForm: React.FC = () => {
                 value={value}
                 onChange={onChange}
                 disabled={isLoading}
-                className={`phone-input ${errors.phoneNumber ? 'border-red-300' : ''}`}
+                className={`phone-input ${errors.phone ? 'border-red-300' : ''}`}
                 placeholder="Enter your phone number"
               />
             )}
           />
-          {errors.phoneNumber && (
-            <p className="text-red-500 text-xs mt-1">{errors.phoneNumber.message}</p>
-          )}
+          {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
         </div>
 
         <div className="space-y-1">

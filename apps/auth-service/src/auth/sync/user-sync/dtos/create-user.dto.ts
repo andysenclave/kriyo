@@ -30,7 +30,7 @@ export class CreateUserDto {
 
   @ApiProperty({
     example: 'asjkadlbf3245jb2345jkb2',
-    description: 'Unique Better Auth ID',
+    description: 'Unique better auth id',
   })
   @IsString()
   betterAuthId: string;

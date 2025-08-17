@@ -1,6 +1,6 @@
+
 generator client {
   provider = "prisma-client-js"
-  // output   = "../generated/prisma"
 }
 
 datasource db {
@@ -20,7 +20,7 @@ model User {
   accounts      Account[]
 
   @@unique([email])
-  @@map("User")
+  @@map("user")
 }
 
 model Session {
@@ -35,7 +35,7 @@ model Session {
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([token])
-  @@map("Session")
+  @@map("session")
 }
 
 model Account {
@@ -54,7 +54,7 @@ model Account {
   createdAt             DateTime
   updatedAt             DateTime
 
-  @@map("Account")
+  @@map("account")
 }
 
 model Verification {
@@ -65,5 +65,5 @@ model Verification {
   createdAt  DateTime?
   updatedAt  DateTime?
 
-  @@map("Verification")
+  @@map("verification")
 }

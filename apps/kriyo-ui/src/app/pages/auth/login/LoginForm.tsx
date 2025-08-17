@@ -5,11 +5,11 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { LogInFormValues, LogInSchema } from './LoginFormSchemaYup';
-import useLogin from './hooks';
+import { useAuth } from '@/app/providers/AuthProvider';
 
 const LoginForm: React.FC = () => {
   const router = useRouter();
-  const { login } = useLogin();
+  const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
