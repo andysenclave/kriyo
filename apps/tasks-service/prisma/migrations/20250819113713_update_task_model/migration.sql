@@ -1,0 +1,5 @@
+-- AlterTable
+ALTER TABLE "public"."tasks" ALTER COLUMN "dueDate" DROP NOT NULL,
+ALTER COLUMN "status" DROP NOT NULL,
+ALTER COLUMN "priority" DROP NOT NULL,
+ALTER COLUMN "priorityRank" DROP NOT NULL;

@@ -7,6 +7,6 @@ export class AppController {
   @Get()
   @Version('1')
   ok() {
-    return { ok: true, service: 'api-gateway', version: 1 };
+    return { ok: true, service: 'kriyo-api', version: 1 };
   }
 }

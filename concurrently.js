@@ -16,11 +16,20 @@ async function startServices() {
         prefixColor: 'bgRedBright',
       },
       {
+        name: 'tasks-service',
+        command: 'npm run dev --workspace apps/tasks-service',
+        prefixColor: 'bgMagentaBright',
+      },
+      {
+        name: 'projects-service',
+        command: 'npm run dev --workspace apps/projects-service',
+        prefixColor: 'bgCyanBright',
+      },
+      {
         name: 'kriyo-ui',
         command: 'npm run dev --workspace apps/kriyo-ui',
         prefixColor: 'bgBlueBright',
       },
-      // Add additional services here in the future
     ];
 
     // Run the services concurrently
