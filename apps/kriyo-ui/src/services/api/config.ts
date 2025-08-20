@@ -8,6 +8,7 @@ const ADD_MY_TASK_URL = process.env.NEXT_PUBLIC_KRIYO_UI_API_ADD_MY_TASK_URL || 
 const API_USERS_URL = process.env.NEXT_PUBLIC_KRIYO_UI_API_USERS_URL || '';
 const LOGIN_URL = process.env.NEXT_PUBLIC_KRIYO_UI_API_LOGIN_URL || '';
 const SIGNUP_URL = process.env.NEXT_PUBLIC_KRIYO_UI_API_SIGNUP_URL || '';
+const CLIENT_ID = process.env.NEXT_PUBLIC_KRIYO_UI_API_CLIENT_ID || '';
 
 // Other constants
 const AUTH_TOKEN_KEY = process.env.NEXT_PUBLIC_AUTH_TOKEN_KEY || 'kriyo_auth_token';
@@ -24,6 +25,7 @@ const config = Object.freeze({
   signupUrl: SIGNUP_URL,
   authTokenKey: AUTH_TOKEN_KEY,
   userKey: USER_KEY,
+  clientId: CLIENT_ID,
 });
 
 export default config;

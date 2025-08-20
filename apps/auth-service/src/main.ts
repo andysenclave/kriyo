@@ -7,10 +7,11 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bodyParser: false,
   });
-  const port = process.env.PUBLIC_API_PORT ?? 4002;
+  const port = process.env.PUBLIC_API_PORT ?? 4000;
   app.enableCors({
     origin: [process.env.KRIYO_UI_BASE_URL || 'http://localhost:3000'],
     credentials: true,
+    allowedHeaders: 'CLIENT_ID',
   });
 
   Logger.log(`Application is running on: http://localhost:${port}`);
