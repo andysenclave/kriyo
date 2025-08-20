@@ -25,6 +25,12 @@ async function startServices() {
         command: 'npm run dev --workspace apps/projects-service',
         prefixColor: 'bgCyanBright',
       },
+
+      {
+        name: 'kriyo-api',
+        command: 'npm run dev --workspace apps/kriyo-api',
+        prefixColor: 'bgGreenBright',
+      },
       {
         name: 'kriyo-ui',
         command: 'npm run dev --workspace apps/kriyo-ui',
