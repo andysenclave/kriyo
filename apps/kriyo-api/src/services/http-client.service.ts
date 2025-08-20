@@ -13,7 +13,7 @@ export class HttpClientService {
     projects: process.env.PROJECTS_SERVICE_URL || 'http://localhost:4600',
   };
 
-  async get(service: keyof typeof this.services, path: string, headers?: any) {
+  async get(service: keyof typeof this.services, path: string, headers?: Record<string, string | string[]>) {
     const url = `${this.services[service]}${path}`;
     const response = await firstValueFrom(
       this.httpService.get(url, { headers }),
