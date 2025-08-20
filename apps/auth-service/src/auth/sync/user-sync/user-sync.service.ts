@@ -1,9 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateUserDto } from './dtos';
 import { APIError } from 'better-auth';
+import 'dotenv/config';
 
 @Injectable()
 export class UserSyncService {
+  private readonly CLIENT_ID = process.env.CLIENT_ID || '';
+
   private readonly userServiceUrl =
     process.env.USER_SERVICE_URL || 'localhost:4200/users';
   private readonly verifyUniquePhoneUrl = this.userServiceUrl + '/verifyPhone';
@@ -19,6 +22,7 @@ export class UserSyncService {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
+          CLIENT_ID: this.CLIENT_ID,
         },
         body: JSON.stringify(data),
       });

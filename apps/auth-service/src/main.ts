@@ -11,6 +11,7 @@ async function bootstrap() {
   app.enableCors({
     origin: [process.env.KRIYO_UI_BASE_URL || 'http://localhost:3000'],
     credentials: true,
+    allowedHeaders: 'CLIENT_ID',
   });
 
   Logger.log(`Application is running on: http://localhost:${port}`);

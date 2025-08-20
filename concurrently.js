@@ -4,6 +4,11 @@ async function startServices() {
   try {
     const services = [
       {
+        name: 'packages-middlewares',
+        command: 'npm run build --workspace packages/middlewares',
+        prefixColor: 'bgBlue',
+      },
+      {
         name: 'user-service',
         command: 'npm run dev --workspace apps/user-service',
         prefixColor: 'bgYellow',

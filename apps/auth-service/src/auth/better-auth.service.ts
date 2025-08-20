@@ -33,6 +33,7 @@ export class BetterAuthService {
         before: beforeAuthPipeline,
         after: afterAuthPipeline,
       },
+      returnHeaders: true,
     }) as unknown as Auth;
   }
 
