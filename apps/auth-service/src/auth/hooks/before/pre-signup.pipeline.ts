@@ -9,7 +9,7 @@ const logger = new Logger('PreSignup');
 
 function validateClientId(ctx: HookEndpointContext): void {
   logger.log('Validating client id in header');
-  const headers = ctx.request?.headers;
+  const headers = ctx?.headers;
   const allowedClientIds = process.env.ALLOWED_CLIENT_IDS?.split(',') || [];
 
   if (!headers) {
