@@ -2,7 +2,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@kriyo/db": ["packages/db/src"]
+      "@kriyo/db": ["packages/db/src"],
+      "@kriyo/middlewares": ["packages/middlewares/dist"]
     }
   }
 }

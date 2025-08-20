@@ -1,10 +1,13 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const concurrently = require('concurrently');
 
 async function startServices() {
   try {
-    // Define the services to run
     const services = [
+      {
+        name: 'packages-middlewares',
+        command: 'npm run build --workspace packages/middlewares',
+        prefixColor: 'bgBlue',
+      },
       {
         name: 'user-service',
         command: 'npm run dev --workspace apps/user-service',
@@ -24,6 +27,12 @@ async function startServices() {
         name: 'projects-service',
         command: 'npm run dev --workspace apps/projects-service',
         prefixColor: 'bgCyanBright',
+      },
+
+      {
+        name: 'kriyo-api',
+        command: 'npm run dev --workspace apps/kriyo-api',
+        prefixColor: 'bgGreenBright',
       },
       {
         name: 'kriyo-ui',

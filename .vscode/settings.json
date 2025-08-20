@@ -1,6 +1,6 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "workbench.colorTheme": "United Ubuntu",
+  "workbench.colorTheme": "SynthWave '84",
   "editor.formatOnSave": true,
   "editor.codeLens": true,
   "javascript.referencesCodeLens.enabled": true,

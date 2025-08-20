@@ -3,8 +3,35 @@ import { Logger } from '@nestjs/common';
 import { HookEndpointContext } from 'better-auth';
 import { isValidPhoneNumber } from 'libphonenumber-js';
 import { UserSyncService } from 'src/auth/sync/user-sync/user-sync.service';
+import 'dotenv/config';
 
 const logger = new Logger('PreSignup');
+
+function validateClientId(ctx: HookEndpointContext): void {
+  logger.log('Validating client id in header');
+  const headers = ctx?.headers;
+  const allowedClientIds = process.env.ALLOWED_CLIENT_IDS?.split(',') || [];
+
+  if (!headers) {
+    throw new APIError('UNAUTHORIZED', {
+      message: 'Invalid or missing CLIENT_ID',
+    });
+  }
+
+  const clientId = headers?.get('CLIENT_ID');
+
+  if (!clientId) {
+    throw new APIError('UNAUTHORIZED', {
+      message: 'Invalid or missing CLIENT_ID',
+    });
+  }
+
+  if (clientId && !allowedClientIds.includes(clientId)) {
+    throw new APIError('UNAUTHORIZED', {
+      message: 'Invalid or missing CLIENT_ID',
+    });
+  }
+}
 
 async function validateIndianPhoneNumber(ctx: HookEndpointContext) {
   logger.log('Checking valid indian phone number');
@@ -52,6 +79,7 @@ const preSignup = createAuthMiddleware(async (ctx: HookEndpointContext) => {
   }
 
   logger.log(`Pre-signup start: ${ctx.method} ${ctx.path}`);
+  validateClientId(ctx);
   await validateIndianPhoneNumber(ctx);
   await verifyIfPhoneAlreadyExists(ctx);
   logger.log('Pre-signup complete');

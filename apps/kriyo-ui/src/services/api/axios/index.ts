@@ -1,27 +1,21 @@
 import axios, { ResponseType } from 'axios';
+import config from '../config';
 
-// Function to get auth token from localStorage
-const getAuthToken = (): string | null => {
-  if (typeof window === 'undefined') return null;
-  return localStorage.getItem('kriyo_auth_token');
-};
-
-// Add auth header to requests
-const addAuthHeader = (config: Record<string, unknown> = {}) => {
-  const token = getAuthToken();
-  if (token) {
-    config.headers = {
-      ...(config.headers as Record<string, unknown>),
-      Authorization: `Bearer ${token}`,
-    };
-  }
-  return config;
+const getBaseConfig = (additionalConfig: Record<string, unknown> = {}) => {
+  return {
+    withCredentials: true,
+    headers: {
+      'CLIENT_ID': config.clientId,
+      ...(additionalConfig.headers as Record<string, unknown>),
+    },
+    ...additionalConfig,
+  };
 };
 
 /* istanbul ignore next */
 export const get = async (url: string, params = {}, responseType?: ResponseType) => {
-  const config = addAuthHeader({ params: params, withCredentials: true, responseType });
-  return await axios.get(url, config);
+  const requestConfig = getBaseConfig({ params: params, responseType });
+  return await axios.get(url, requestConfig);
 };
 
 export const post = async (
@@ -29,19 +23,19 @@ export const post = async (
   data: unknown,
   /* istanbul ignore next */
   params = {},
-  responseType?: ResponseType
+  responseType?: ResponseType,
 ) => {
-  const config = addAuthHeader({ params: params, responseType });
-  return await axios.post(url, data, config);
+  const requestConfig = getBaseConfig({ params: params, responseType });
+  return await axios.post(url, data, requestConfig);
 };
 
 export const patch = async (url: string, data: unknown) => {
-  const config = addAuthHeader();
-  return await axios.patch(url, data, config);
+  const requestConfig = getBaseConfig();
+  return await axios.patch(url, data, requestConfig);
 };
 
 /* istanbul ignore next */
 export const remove = async (url: string, params = {}) => {
-  const config = addAuthHeader({ params: params, withCredentials: true });
-  return await axios.delete(url, config);
+  const requestConfig = getBaseConfig({ params: params });
+  return await axios.delete(url, requestConfig);
 };

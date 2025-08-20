@@ -1,98 +1,345 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# 🌐 Kriyo API Gateway
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+<div align="center">
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+![NestJS](https://img.shields.io/badge/NestJS-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
+![Express](https://img.shields.io/badge/Express-000000?style=for-the-badge&logo=express&logoColor=white)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white)
 
-## Description
+**Centralized API Gateway for Kriyo Task Management Platform**
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+_Smart Routing • Authentication • Microservices Orchestration_
 
-## Project setup
+</div>
 
-```bash
-$ npm install
+---
+
+## 🚀 What is Kriyo API Gateway?
+
+The **Kriyo API Gateway** is the central nervous system of the Kriyo ecosystem. Built with **NestJS** and **TypeScript**, it provides intelligent routing, authentication, and seamless communication between frontend and backend microservices.
+
+### 🎯 Key Responsibilities
+
+🛣️ **Smart Routing** – Route requests to appropriate microservices  
+🔐 **Authentication Guard** – Validate Better Auth session cookies  
+⚡ **Load Balancing** – Distribute requests efficiently  
+🛡️ **Security Layer** – CORS, rate limiting, and request validation  
+📊 **Request Logging** – Centralized logging and monitoring  
+🔄 **Error Handling** – Graceful error responses and fallbacks
+
+---
+
+## 🏗️ Architecture
+
+### 🌐 Gateway Flow
+
+```mermaid
+sequenceDiagram
+    participant UI as 🖥️ Kriyo UI
+    participant GW as 🌐 API Gateway
+    participant AUTH as 🔐 Auth Service
+    participant TASKS as ✅ Tasks Service
+    participant PROJ as 📁 Projects Service
+    participant USER as 👤 User Service
+
+    UI->>GW: API Request + Session Cookie
+    GW->>GW: Validate Session
+    alt Authentication Required
+        GW->>AUTH: Verify Session
+        AUTH-->>GW: Session Valid
+    end
+    GW->>TASKS: Forward Request
+    TASKS-->>GW: Service Response
+    GW-->>UI: Formatted Response
 ```
 
-## Compile and run the project
+### 🎯 Route Categories
+
+| Route Pattern      | Access Level         | Description                               |
+| ------------------ | -------------------- | ----------------------------------------- |
+| **`/my/*`**        | 👤 **User-Owned**    | Resources belonging to authenticated user |
+| **`/protected/*`** | 🔐 **Authenticated** | Any authenticated user can access         |
+| **`/public/*`**    | 🌍 **Public**        | No authentication required                |
+
+---
+
+## 📡 API Endpoints
+
+### 🏠 Health & System
+
+- **`GET /api/v1/health`** - Service health check
+- **`GET /api/v1/version`** - API version information
+
+### 📊 Dashboard
+
+- **`GET /api/v1/my/dashboard/tasks`** - Personal task analytics
+- **`GET /api/v1/my/dashboard/projects`** - Project overview
+
+### ✅ Tasks Management
+
+- **`GET /api/v1/my/tasks`** - Get user's tasks
+- **`POST /api/v1/my/tasks`** - Create new task
+- **`PUT /api/v1/my/tasks/:id`** - Update task
+- **`DELETE /api/v1/my/tasks/:id`** - Delete task
+- **`GET /api/v1/my/tasks/:dueDate`** - Tasks by due date
+- **`GET /api/v1/protected/tasks/search/:search`** - Search tasks
+
+### 📁 Projects Management
+
+- **`GET /api/v1/my/projects`** - Get user's projects
+- **`POST /api/v1/my/projects`** - Create new project
+- **`PUT /api/v1/my/projects/:id`** - Update project
+- **`DELETE /api/v1/my/projects/:id`** - Delete project
+- **`GET /api/v1/protected/projects/search/:search`** - Search projects
+
+### 👤 User Profile
+
+- **`GET /api/v1/my/profile`** - Get user profile
+- **`PUT /api/v1/my/profile`** - Update profile
+
+> 📖 **Detailed API Documentation:** [View Complete API Routes Guide](./API_ROUTES.md)
+
+---
+
+## ⚙️ Tech Stack
+
+| Component          | Technology          | Purpose                          |
+| ------------------ | ------------------- | -------------------------------- |
+| **Framework**      | NestJS 11           | Scalable Node.js framework       |
+| **Language**       | TypeScript          | Type-safe development            |
+| **HTTP Client**    | Axios               | Service-to-service communication |
+| **Authentication** | Better Auth Cookies | Session validation               |
+| **Validation**     | Class Validator     | Request/response validation      |
+| **Testing**        | Jest + Supertest    | Unit and integration tests       |
+| **Documentation**  | Swagger (planned)   | API documentation                |
+
+---
+
+## 🚀 Quick Start
+
+### 📋 Prerequisites
 
 ```bash
-# development
-$ npm run start
-
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+Node.js >= 18.x
+npm >= 9.x
+PostgreSQL >= 14.x (for connected services)
 ```
 
-## Run tests
+### ⚡ Installation
 
 ```bash
-# unit tests
-$ npm run test
+# Navigate to the API Gateway
+cd apps/kriyo-api
 
-# e2e tests
-$ npm run test:e2e
+# Install dependencies
+npm install
 
-# test coverage
-$ npm run test:cov
+# Start in development mode
+npm run dev
+
+# Or start with file watching
+npm run start:dev
 ```
 
-## Deployment
+### 🌍 Access Points
 
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
+- **Gateway URL:** [http://localhost:4004](http://localhost:4004)
+- **Health Check:** [http://localhost:4004/api/v1/health](http://localhost:4004/api/v1/health)
+- **API Base:** `http://localhost:4004/api/v1`
 
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+---
+
+## 🔧 Development
+
+### 📜 Available Scripts
 
 ```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
+# 🔥 Development
+npm run dev              # Start with file watching
+npm run start:dev        # NestJS development mode
+npm run start:debug      # Debug mode with inspector
+
+# 📦 Production
+npm run build            # Compile TypeScript
+npm run start:prod       # Production mode
+
+# 🧪 Testing
+npm run test             # Unit tests
+npm run test:watch       # Tests in watch mode
+npm run test:e2e         # End-to-end tests
+npm run test:cov         # Test coverage
+
+# ✨ Code Quality
+npm run lint             # ESLint checking
+npm run format           # Prettier formatting
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+---
 
-## Resources
+## 🏛️ Project Structure
 
-Check out a few resources that may come in handy when working with NestJS:
+```
+src/
+├── 🔐 auth/                    # Authentication system
+│   ├── auth.guard.ts          # Session validation guard
+│   └── user.decorator.ts      # Current user decorator
+├── 📂 modules/                # Feature modules
+│   ├── dashboard/             # Dashboard endpoints
+│   ├── tasks/                 # Tasks management
+│   ├── projects/              # Projects management
+│   └── profile/               # User profile
+├── 🌐 services/               # Shared services
+│   ├── http-client.service.ts # HTTP client for microservices
+│   └── services.module.ts     # Services module
+├── 📋 dto/                    # Data Transfer Objects
+├── 🛡️ guards/                 # Request guards
+├── 🔧 interceptors/           # Request/response interceptors
+├── app.controller.ts          # Health check controller
+├── app.module.ts              # Main application module
+└── main.ts                    # Application bootstrap
+```
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+---
 
-## Support
+## 🛡️ Security Features
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### 🔐 Authentication
 
-## Stay in touch
+- **Session-based auth** via Better Auth cookies
+- **HTTP-only cookies** for security
+- **Automatic session validation** on protected routes
+- **User context injection** in controllers
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### 🛠️ Request Protection
 
-## License
+- **CORS configuration** for cross-origin requests
+- **Rate limiting** to prevent abuse
+- **Request validation** using DTOs
+- **Error sanitization** for production
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### 🔍 Monitoring
+
+- **Request logging** with correlation IDs
+- **Performance metrics** collection
+- **Health checks** for service monitoring
+- **Error tracking** integration ready
+
+---
+
+## 🧪 Testing
+
+### 🎯 Test Categories
+
+| Type            | Framework        | Files           | Purpose                |
+| --------------- | ---------------- | --------------- | ---------------------- |
+| **Unit**        | Jest             | `*.spec.ts`     | Component testing      |
+| **Integration** | Jest + Supertest | `*.e2e-spec.ts` | API endpoint testing   |
+| **Service**     | Jest             | Service mocking | Business logic testing |
+
+### 📊 Running Tests
+
+```bash
+# Run all tests
+npm run test
+
+# Watch mode for development
+npm run test:watch
+
+# Generate coverage report
+npm run test:cov
+
+# End-to-end API tests
+npm run test:e2e
+```
+
+### 🎭 Mocking Strategy
+
+- **HTTP clients** mocked for unit tests
+- **Database operations** mocked in service tests
+- **Authentication** bypassed in test environment
+- **External APIs** stubbed with test data
+
+---
+
+## 🚀 Deployment
+
+### 🐳 Docker Support (Planned)
+
+```dockerfile
+# Production-ready Dockerfile
+FROM node:18-alpine
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci --only=production
+COPY dist/ ./dist/
+CMD ["node", "dist/main.js"]
+```
+
+### ☁️ Environment Setup
+
+```bash
+# Production environment variables
+NODE_ENV=production
+PUBLIC_API_PORT=4004
+LOG_LEVEL=warn
+ENABLE_REQUEST_LOGGING=false
+```
+
+---
+
+## 🔮 Roadmap
+
+### 🔜 Next Features
+
+- [ ] 📊 **Swagger Documentation** - Auto-generated API docs
+- [ ] 🔄 **Rate Limiting** - Advanced request throttling
+- [ ] 📈 **Monitoring** - Prometheus metrics integration
+- [ ] 🔍 **Distributed Tracing** - OpenTelemetry support
+- [ ] 🛡️ **API Versioning** - Support for v2 endpoints
+
+### 🏗️ Infrastructure
+
+- [ ] 🐳 **Docker Configuration** - Container deployment
+- [ ] 🚀 **CI/CD Pipeline** - Automated deployment
+- [ ] ☁️ **Cloud Deployment** - AWS/GCP integration
+- [ ] 📊 **Load Balancing** - Multi-instance support
+
+---
+
+## 🤝 Contributing
+
+### 🔧 Development Workflow
+
+1. **Fork & Clone** the repository
+2. **Create feature branch:** `git checkout -b feature/api-enhancement`
+3. **Install dependencies:** `npm install`
+4. **Start development:** `npm run dev`
+5. **Run tests:** `npm run test`
+6. **Submit PR** with clear description
+
+### 📏 Code Standards
+
+- ✅ **TypeScript strict mode** enabled
+- 🧪 **Test coverage** > 80% for new features
+- 📝 **NestJS decorators** for clean architecture
+- 🔐 **Security-first** approach for all endpoints
+
+---
+
+## 📚 Resources
+
+- 📖 **[Complete API Routes Documentation](./API_ROUTES.md)**
+- 🌐 **[NestJS Documentation](https://docs.nestjs.com)**
+- 🔐 **[Better Auth Guide](https://better-auth.com)**
+- ⚡ **[Axios Documentation](https://axios-http.com)**
+
+---
+
+<div align="center">
+
+**🌐 Kriyo API Gateway - Powering the Kriyo Ecosystem**
+
+_Built with ❤️ using NestJS and TypeScript_
+
+</div>
