@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
-  const port = process.env.PUBLIC_API_PORT ?? 4004;
+  const port = process.env.PUBLIC_API_PORT ?? 8000;
 
   app.use(cookieParser());
 

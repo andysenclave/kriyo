@@ -9,7 +9,7 @@
 
 **Centralized API Gateway for Kriyo Task Management Platform**
 
-*Smart Routing • Authentication • Microservices Orchestration*
+_Smart Routing • Authentication • Microservices Orchestration_
 
 </div>
 
@@ -26,7 +26,7 @@ The **Kriyo API Gateway** is the central nervous system of the Kriyo ecosystem. 
 ⚡ **Load Balancing** – Distribute requests efficiently  
 🛡️ **Security Layer** – CORS, rate limiting, and request validation  
 📊 **Request Logging** – Centralized logging and monitoring  
-🔄 **Error Handling** – Graceful error responses and fallbacks  
+🔄 **Error Handling** – Graceful error responses and fallbacks
 
 ---
 
@@ -42,7 +42,7 @@ sequenceDiagram
     participant TASKS as ✅ Tasks Service
     participant PROJ as 📁 Projects Service
     participant USER as 👤 User Service
-    
+
     UI->>GW: API Request + Session Cookie
     GW->>GW: Validate Session
     alt Authentication Required
@@ -56,25 +56,28 @@ sequenceDiagram
 
 ### 🎯 Route Categories
 
-| Route Pattern | Access Level | Description |
-|---------------|--------------|-------------|
-| **`/my/*`** | 👤 **User-Owned** | Resources belonging to authenticated user |
-| **`/protected/*`** | 🔐 **Authenticated** | Any authenticated user can access |
-| **`/public/*`** | 🌍 **Public** | No authentication required |
+| Route Pattern      | Access Level         | Description                               |
+| ------------------ | -------------------- | ----------------------------------------- |
+| **`/my/*`**        | 👤 **User-Owned**    | Resources belonging to authenticated user |
+| **`/protected/*`** | 🔐 **Authenticated** | Any authenticated user can access         |
+| **`/public/*`**    | 🌍 **Public**        | No authentication required                |
 
 ---
 
 ## 📡 API Endpoints
 
 ### 🏠 Health & System
+
 - **`GET /api/v1/health`** - Service health check
 - **`GET /api/v1/version`** - API version information
 
 ### 📊 Dashboard
+
 - **`GET /api/v1/my/dashboard/tasks`** - Personal task analytics
 - **`GET /api/v1/my/dashboard/projects`** - Project overview
 
 ### ✅ Tasks Management
+
 - **`GET /api/v1/my/tasks`** - Get user's tasks
 - **`POST /api/v1/my/tasks`** - Create new task
 - **`PUT /api/v1/my/tasks/:id`** - Update task
@@ -83,6 +86,7 @@ sequenceDiagram
 - **`GET /api/v1/protected/tasks/search/:search`** - Search tasks
 
 ### 📁 Projects Management
+
 - **`GET /api/v1/my/projects`** - Get user's projects
 - **`POST /api/v1/my/projects`** - Create new project
 - **`PUT /api/v1/my/projects/:id`** - Update project
@@ -90,6 +94,7 @@ sequenceDiagram
 - **`GET /api/v1/protected/projects/search/:search`** - Search projects
 
 ### 👤 User Profile
+
 - **`GET /api/v1/my/profile`** - Get user profile
 - **`PUT /api/v1/my/profile`** - Update profile
 
@@ -99,21 +104,22 @@ sequenceDiagram
 
 ## ⚙️ Tech Stack
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Framework** | NestJS 11 | Scalable Node.js framework |
-| **Language** | TypeScript | Type-safe development |
-| **HTTP Client** | Axios | Service-to-service communication |
-| **Authentication** | Better Auth Cookies | Session validation |
-| **Validation** | Class Validator | Request/response validation |
-| **Testing** | Jest + Supertest | Unit and integration tests |
-| **Documentation** | Swagger (planned) | API documentation |
+| Component          | Technology          | Purpose                          |
+| ------------------ | ------------------- | -------------------------------- |
+| **Framework**      | NestJS 11           | Scalable Node.js framework       |
+| **Language**       | TypeScript          | Type-safe development            |
+| **HTTP Client**    | Axios               | Service-to-service communication |
+| **Authentication** | Better Auth Cookies | Session validation               |
+| **Validation**     | Class Validator     | Request/response validation      |
+| **Testing**        | Jest + Supertest    | Unit and integration tests       |
+| **Documentation**  | Swagger (planned)   | API documentation                |
 
 ---
 
 ## 🚀 Quick Start
 
 ### 📋 Prerequisites
+
 ```bash
 Node.js >= 18.x
 npm >= 9.x
@@ -121,6 +127,7 @@ PostgreSQL >= 14.x (for connected services)
 ```
 
 ### ⚡ Installation
+
 ```bash
 # Navigate to the API Gateway
 cd apps/kriyo-api
@@ -136,6 +143,7 @@ npm run start:dev
 ```
 
 ### 🌍 Access Points
+
 - **Gateway URL:** [http://localhost:4004](http://localhost:4004)
 - **Health Check:** [http://localhost:4004/api/v1/health](http://localhost:4004/api/v1/health)
 - **API Base:** `http://localhost:4004/api/v1`
@@ -165,34 +173,6 @@ npm run test:cov         # Test coverage
 # ✨ Code Quality
 npm run lint             # ESLint checking
 npm run format           # Prettier formatting
-```
-
-### 🔑 Environment Variables
-
-Create a `.env` file in the app root:
-
-```env
-# Server Configuration
-PUBLIC_API_PORT=4004
-NODE_ENV=development
-
-# Service URLs
-AUTH_SERVICE_URL=http://localhost:4001
-USER_SERVICE_URL=http://localhost:4002
-TASKS_SERVICE_URL=http://localhost:4003
-PROJECTS_SERVICE_URL=http://localhost:4005
-
-# Frontend Configuration
-KRIYO_UI_BASE_URL=http://localhost:3000
-
-# Security
-CORS_ORIGINS=http://localhost:3000,http://localhost:3001
-RATE_LIMIT_MAX=100
-RATE_LIMIT_WINDOW=900000
-
-# Logging
-LOG_LEVEL=debug
-ENABLE_REQUEST_LOGGING=true
 ```
 
 ---
@@ -225,18 +205,21 @@ src/
 ## 🛡️ Security Features
 
 ### 🔐 Authentication
+
 - **Session-based auth** via Better Auth cookies
 - **HTTP-only cookies** for security
 - **Automatic session validation** on protected routes
 - **User context injection** in controllers
 
 ### 🛠️ Request Protection
+
 - **CORS configuration** for cross-origin requests
 - **Rate limiting** to prevent abuse
 - **Request validation** using DTOs
 - **Error sanitization** for production
 
 ### 🔍 Monitoring
+
 - **Request logging** with correlation IDs
 - **Performance metrics** collection
 - **Health checks** for service monitoring
@@ -248,13 +231,14 @@ src/
 
 ### 🎯 Test Categories
 
-| Type | Framework | Files | Purpose |
-|------|-----------|-------|---------|
-| **Unit** | Jest | `*.spec.ts` | Component testing |
-| **Integration** | Jest + Supertest | `*.e2e-spec.ts` | API endpoint testing |
-| **Service** | Jest | Service mocking | Business logic testing |
+| Type            | Framework        | Files           | Purpose                |
+| --------------- | ---------------- | --------------- | ---------------------- |
+| **Unit**        | Jest             | `*.spec.ts`     | Component testing      |
+| **Integration** | Jest + Supertest | `*.e2e-spec.ts` | API endpoint testing   |
+| **Service**     | Jest             | Service mocking | Business logic testing |
 
 ### 📊 Running Tests
+
 ```bash
 # Run all tests
 npm run test
@@ -270,6 +254,7 @@ npm run test:e2e
 ```
 
 ### 🎭 Mocking Strategy
+
 - **HTTP clients** mocked for unit tests
 - **Database operations** mocked in service tests
 - **Authentication** bypassed in test environment
@@ -280,6 +265,7 @@ npm run test:e2e
 ## 🚀 Deployment
 
 ### 🐳 Docker Support (Planned)
+
 ```dockerfile
 # Production-ready Dockerfile
 FROM node:18-alpine
@@ -291,6 +277,7 @@ CMD ["node", "dist/main.js"]
 ```
 
 ### ☁️ Environment Setup
+
 ```bash
 # Production environment variables
 NODE_ENV=production
@@ -304,6 +291,7 @@ ENABLE_REQUEST_LOGGING=false
 ## 🔮 Roadmap
 
 ### 🔜 Next Features
+
 - [ ] 📊 **Swagger Documentation** - Auto-generated API docs
 - [ ] 🔄 **Rate Limiting** - Advanced request throttling
 - [ ] 📈 **Monitoring** - Prometheus metrics integration
@@ -311,6 +299,7 @@ ENABLE_REQUEST_LOGGING=false
 - [ ] 🛡️ **API Versioning** - Support for v2 endpoints
 
 ### 🏗️ Infrastructure
+
 - [ ] 🐳 **Docker Configuration** - Container deployment
 - [ ] 🚀 **CI/CD Pipeline** - Automated deployment
 - [ ] ☁️ **Cloud Deployment** - AWS/GCP integration
@@ -321,6 +310,7 @@ ENABLE_REQUEST_LOGGING=false
 ## 🤝 Contributing
 
 ### 🔧 Development Workflow
+
 1. **Fork & Clone** the repository
 2. **Create feature branch:** `git checkout -b feature/api-enhancement`
 3. **Install dependencies:** `npm install`
@@ -329,6 +319,7 @@ ENABLE_REQUEST_LOGGING=false
 6. **Submit PR** with clear description
 
 ### 📏 Code Standards
+
 - ✅ **TypeScript strict mode** enabled
 - 🧪 **Test coverage** > 80% for new features
 - 📝 **NestJS decorators** for clean architecture
@@ -349,6 +340,6 @@ ENABLE_REQUEST_LOGGING=false
 
 **🌐 Kriyo API Gateway - Powering the Kriyo Ecosystem**
 
-*Built with ❤️ using NestJS and TypeScript*
+_Built with ❤️ using NestJS and TypeScript_
 
 </div>

@@ -4,7 +4,7 @@ import 'dotenv/config';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  const port = process.env.PUBLIC_API_PORT ?? 4008;
+  const port = process.env.PUBLIC_API_PORT ?? 4600;
 
   app.enableCors({
     origin: [process.env.KRIYO_UI_BASE_URL || 'http://localhost:3000'],

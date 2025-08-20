@@ -1,9 +1,7 @@
-/* eslint-disable @typescript-eslint/no-require-imports */
 const concurrently = require('concurrently');
 
 async function startServices() {
   try {
-    // Define the services to run
     const services = [
       {
         name: 'user-service',

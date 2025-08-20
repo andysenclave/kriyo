@@ -5,7 +5,7 @@ import { APIError } from 'better-auth';
 @Injectable()
 export class UserSyncService {
   private readonly userServiceUrl =
-    process.env.USER_SERVICE_URL || 'localhost:4000/users';
+    process.env.USER_SERVICE_URL || 'localhost:4200/users';
   private readonly verifyUniquePhoneUrl = this.userServiceUrl + '/verifyPhone';
   private readonly logger = new Logger(UserSyncService.name);
 
