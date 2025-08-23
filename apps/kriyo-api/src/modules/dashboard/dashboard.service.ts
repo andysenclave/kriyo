@@ -1,50 +1,80 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/require-await */
-import { Injectable } from '@nestjs/common';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Project, Task } from 'src/models';
+import { HttpClientService } from 'src/services/http-client.service';
+import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class DashboardService {
-  async getDashboardTasks(userId: string) {
-    // TODO: Call tasks-service to get dashboard data
-    // This should return: { overdue: #count, highPriority: #count, tasks: #tasks[5] }
+  private readonly logger = new Logger(DashboardService.name);
 
-    return {
-      overdue: 3,
-      highPriority: 2,
-      tasks: [
-        {
-          id: '1',
-          title: 'Complete API Gateway',
-          description: 'Implement routing for all API endpoints',
-          dueDate: '2025-08-21',
-          status: 'pending',
-          priority: 'high',
-        },
-        {
-          id: '2',
-          title: 'Review pull request',
-          description: 'Review the new feature implementation',
-          dueDate: '2025-08-22',
-          status: 'pending',
-          priority: 'medium',
-        },
-      ],
-    };
+  constructor(private readonly httpClientService: HttpClientService) {}
+
+  async getDashboardTasks(userId: string) {
+    try {
+      this.logger.log(`Fetching dashboard tasks for user ${userId}`);
+
+      const tasks: Task[] = await this.httpClientService.get(
+        'tasks',
+        `/tasks/user/${userId}`,
+      );
+
+      this.logger.log(`Fetched ${tasks.length} tasks for user ${userId}`);
+
+      const overdueTasksCount = tasks.filter(
+        (task) => new Date(task.dueDate) < new Date(),
+      ).length;
+      const highPriorityTasksCount = tasks.filter(
+        (task) => task.priorityRank === 1,
+      ).length;
+      const mostImportantPendingTasks = tasks
+        .sort((a, b) => {
+          if (a.priorityRank === b.priorityRank) {
+            return (
+              new Date(a.dueDate).getTime() - new Date(b.dueDate).getTime()
+            );
+          }
+          return a.priorityRank - b.priorityRank;
+        })
+        .slice(0, 5);
+
+      this.logger.log('Dashboard Task model ready to use');
+
+      return {
+        overdue: overdueTasksCount,
+        highPriority: highPriorityTasksCount,
+        tasks: mostImportantPendingTasks,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch dashboard tasks for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(`Failed to fetch dashboard tasks`);
+    }
   }
 
   async getDashboardProjects(userId: string) {
-    // TODO: Call projects-service to get dashboard projects
+    try {
+      this.logger.log(`Fetching dashboard projects for user ${userId}`);
 
-    return {
-      projects: [
-        {
-          id: '1',
-          title: 'Kriyo Development',
-          description: 'Main development project',
-          status: 'active',
-          tasksCount: 12,
-        },
-      ],
-    };
+      const projects: Project[] = await this.httpClientService.get(
+        'projects',
+        `/projects/user/${userId}`,
+      );
+
+      this.logger.log(`Fetched ${projects.length} projects for user ${userId}`);
+
+      return {
+        projects,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch dashboard projects for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch dashboard projects`,
+      );
+    }
   }
 }

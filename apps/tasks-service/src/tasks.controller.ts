@@ -23,6 +23,16 @@ export class TasksController {
     return await this.tasksService.findTask({ id });
   }
 
+  @Get('/user/:userId')
+  async getTasksByUserId(
+    @Param('userId') userId: string,
+  ): Promise<TaskModel[]> {
+    this.logger.log(`Fetching tasks for user ${userId}`);
+    return await this.tasksService.getAllTasks({
+      where: { createdBy: userId, assignedTo: userId },
+    });
+  }
+
   @Get('/')
   async getAllTasks(): Promise<TaskModel[]> {
     this.logger.log('Fetching all tasks');

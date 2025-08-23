@@ -23,6 +23,16 @@ export class ProjectsController {
     return await this.projectsService.findProject({ id });
   }
 
+  @Get('/user/:userId')
+  async getProjectsByUserId(
+    @Param('userId') userId: string,
+  ): Promise<ProjectModel[]> {
+    this.logger.log(`Fetching my projects for user ${userId}`);
+    return await this.projectsService.getAllProjects({
+      where: { owner: userId, assignedTo: userId },
+    });
+  }
+
   @Get('/')
   async getAllProjects(): Promise<ProjectModel[]> {
     this.logger.log('Fetching all projects');
