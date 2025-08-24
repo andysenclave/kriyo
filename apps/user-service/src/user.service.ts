@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { Prisma, User } from 'generated/prisma';
@@ -13,10 +14,14 @@ export class UserService {
 
   async findUser(
     userWhereUniqueInput: Prisma.UserWhereUniqueInput,
-  ): Promise<User | null> {
-    return this.prisma.user.findUnique({
+  ): Promise<Partial<User> | null> {
+    const userData = await this.prisma.user.findUnique({
       where: userWhereUniqueInput,
     });
+
+    const { betterAuthId, passwordHash, ...user } = userData as User;
+
+    return user;
   }
 
   async getAllUsers(params: {
@@ -52,12 +57,17 @@ export class UserService {
   async updateUser(params: {
     where: Prisma.UserWhereUniqueInput;
     data: Prisma.UserUpdateInput;
-  }): Promise<User> {
+  }): Promise<Partial<User>> {
     const { where, data } = params;
-    return this.prisma.user.update({
-      data,
+    const userData = await this.prisma.user.update({
+      data: {
+        ...data,
+        updatedAt: new Date().toISOString(),
+      },
       where,
     });
+    const { betterAuthId, passwordHash, ...user } = userData;
+    return user;
   }
 
   async deleteUser(where: Prisma.UserWhereUniqueInput): Promise<User> {

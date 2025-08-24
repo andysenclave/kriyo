@@ -1,5 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
+import axios from 'axios';
 
 export interface AuthUser {
   id: string;
@@ -8,19 +9,39 @@ export interface AuthUser {
 }
 
 export const CurrentUser = createParamDecorator(
-  (data: unknown, ctx: ExecutionContext): AuthUser | null => {
+  async (_data: unknown, ctx: ExecutionContext): Promise<AuthUser | null> => {
     const request = ctx.switchToHttp().getRequest<Request>();
 
-    const sessionCookie = request.cookies?.['better-auth.session_token'];
+    const sessionToken = request.cookies?.['better-auth.session_token'];
 
-    if (!sessionCookie) {
+    if (!sessionToken) {
       return null;
     }
 
-    return {
-      id: 'mock-user-id',
-      email: 'user@example.com',
-      name: 'Mock User',
-    };
+    try {
+      const authServiceUrl = process.env.AUTH_SERVICE_URL;
+
+      const response = await axios.get(
+        `${authServiceUrl}/api/auth/get-session`,
+        {
+          headers: {
+            Cookie: `better-auth.session_token=${sessionToken}`,
+          },
+        },
+      );
+
+      if (response.data?.user) {
+        return {
+          id: response.data.user.id,
+          email: response.data.user.email,
+          name: response.data.user.name || response.data.user.email,
+        };
+      }
+
+      return null;
+    } catch (error) {
+      console.error('Session verification failed:', error);
+      return null;
+    }
   },
 );

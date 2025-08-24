@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { HttpService } from '@nestjs/axios';
 import { firstValueFrom } from 'rxjs';
 
 @Injectable()
 export class HttpClientService {
+  private readonly logger = new Logger(HttpClientService.name);
+
   constructor(private readonly httpService: HttpService) {}
 
   private readonly services = {
@@ -13,14 +15,22 @@ export class HttpClientService {
     projects: process.env.PROJECTS_SERVICE_URL || 'http://localhost:4600',
   };
 
+  private mergeHeaders(headers?: any) {
+    return {
+      ...headers,
+      CLIENT_ID: process.env.CLIENT_ID,
+    };
+  }
+
   async get(
     service: keyof typeof this.services,
     path: string,
     headers?: Record<string, string | string[]>,
   ) {
     const url = `${this.services[service]}${path}`;
+    this.logger.log(`Fetching ${service} with url ${url}`);
     const response = await firstValueFrom(
-      this.httpService.get(url, { headers }),
+      this.httpService.get(url, { headers: this.mergeHeaders(headers) }),
     );
     return response.data;
   }
@@ -33,7 +43,7 @@ export class HttpClientService {
   ) {
     const url = `${this.services[service]}${path}`;
     const response = await firstValueFrom(
-      this.httpService.post(url, data, { headers }),
+      this.httpService.post(url, data, { headers: this.mergeHeaders(headers) }),
     );
     return response.data;
   }
@@ -46,7 +56,7 @@ export class HttpClientService {
   ) {
     const url = `${this.services[service]}${path}`;
     const response = await firstValueFrom(
-      this.httpService.put(url, data, { headers }),
+      this.httpService.put(url, data, { headers: this.mergeHeaders(headers) }),
     );
     return response.data;
   }
@@ -58,7 +68,7 @@ export class HttpClientService {
   ) {
     const url = `${this.services[service]}${path}`;
     const response = await firstValueFrom(
-      this.httpService.delete(url, { headers }),
+      this.httpService.delete(url, { headers: this.mergeHeaders(headers) }),
     );
     return response.data;
   }

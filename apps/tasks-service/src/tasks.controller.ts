@@ -23,6 +23,75 @@ export class TasksController {
     return await this.tasksService.findTask({ id });
   }
 
+  @Get('/user/:userId')
+  async getTasksByUserId(
+    @Param('userId') userId: string,
+  ): Promise<TaskModel[]> {
+    this.logger.log(`Fetching tasks for user ${userId}`);
+    return await this.tasksService.getAllTasks({
+      where: {
+        OR: [{ createdBy: userId }, { assignedTo: userId }],
+      },
+    });
+  }
+
+  @Get('/user/:userId/:dueDate')
+  async getUserTasksForDueDate(
+    @Param('userId') userId: string,
+    @Param('dueDate') dueDate: string,
+  ): Promise<TaskModel[]> {
+    this.logger.log(
+      `Fetching tasks for user ${userId} with due date ${dueDate}`,
+    );
+
+    const targetDate = new Date(dueDate);
+    const targetYear = targetDate.getFullYear();
+    const targetMonth = targetDate.getMonth();
+    const targetDay = targetDate.getDate();
+
+    const allTasks = await this.tasksService.getAllTasks({
+      where: {
+        OR: [{ createdBy: userId }, { assignedTo: userId }],
+      },
+    });
+
+    return allTasks.filter((task) => {
+      if (!task.dueDate) return false;
+      const taskDate = new Date(task.dueDate);
+      return (
+        taskDate.getFullYear() === targetYear &&
+        taskDate.getMonth() === targetMonth &&
+        taskDate.getDate() === targetDay
+      );
+    });
+  }
+
+  @Get('/search/:searchTerm')
+  async searchTasks(
+    @Param('searchTerm') searchTerm: string,
+  ): Promise<TaskModel[]> {
+    this.logger.log(`Searching my tasks with term "${searchTerm}"`);
+
+    return await this.tasksService.getAllTasks({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+    });
+  }
+
   @Get('/')
   async getAllTasks(): Promise<TaskModel[]> {
     this.logger.log('Fetching all tasks');

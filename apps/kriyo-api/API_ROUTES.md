@@ -123,8 +123,26 @@ The API Gateway forwards requests to the following microservices:
 
 ## Next Steps
 
-1. Implement actual service-to-service HTTP calls in service classes
-2. Add proper session validation with auth-service
-3. Implement error handling and logging
-4. Add API documentation with Swagger
+1. ✅ **Add API documentation with Swagger** - Complete! Available at `/api/docs`
+2. Implement actual service-to-service HTTP calls in service classes
+3. Add proper session validation with auth-service
+4. Implement error handling and logging
 5. Add rate limiting and security middleware
+
+## API Documentation
+
+### Swagger UI
+
+Interactive API documentation is available at: `http://localhost:8000/api/docs`
+
+### Documentation Features
+
+- Complete endpoint documentation with request/response schemas
+- Interactive testing interface
+- Authentication support (cookie-based)
+- Comprehensive data model definitions
+- Example requests and responses
+
+### Additional Documentation
+
+See `API_DOCUMENTATION.md` for a comprehensive overview of all endpoints, authentication, and data models.

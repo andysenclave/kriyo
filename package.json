@@ -6,9 +6,10 @@
   "scripts": {
     "dev": "turbo run dev",
     "build": "turbo run build",
+    "build:middlewares": "cd packages/middlewares && npm run build",
     "lint": "turbo run lint",
     "test": "turbo run test",
-    "start": "node ./concurrently.js"
+    "start": "npm run build:middlewares && node ./concurrently.js"
   },
   "keywords": [],
   "workspaces": [
