@@ -26,6 +26,7 @@ export class AppModule implements NestModule {
 
     consumer
       .apply(clientIdMiddleware.use.bind(clientIdMiddleware))
+      .exclude('/api/docs/*')
       .forRoutes('*');
   }
 }
