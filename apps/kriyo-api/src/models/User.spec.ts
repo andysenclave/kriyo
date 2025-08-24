@@ -82,8 +82,8 @@ describe('User Model', () => {
       phoneVerified: false,
     };
 
-    expect(user.createdAt).toBeInstanceOf(Date);
-    expect(user.updatedAt).toBeInstanceOf(Date);
+    expect(typeof user.createdAt).toBe('string');
+    expect(typeof user.updatedAt).toBe('string');
     expect(user.createdAt).toBe(now);
     expect(user.updatedAt).toBe(now);
   });
