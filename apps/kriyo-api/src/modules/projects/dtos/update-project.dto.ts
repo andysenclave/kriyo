@@ -1,4 +1,4 @@
-export class UpdateProjectDto {
+class UpdateProjectDto {
   title?: string;
   description?: string;
   status?: string;
@@ -6,4 +6,7 @@ export class UpdateProjectDto {
   priority?: string;
   priorityRank?: number;
   assignedTo?: string;
+  tasks?: string[];
 }
+
+export default UpdateProjectDto;

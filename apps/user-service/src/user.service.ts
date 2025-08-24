@@ -62,7 +62,7 @@ export class UserService {
     const userData = await this.prisma.user.update({
       data: {
         ...data,
-        updatedAt: new Date(),
+        updatedAt: new Date().toISOString(),
       },
       where,
     });

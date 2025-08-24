@@ -3,7 +3,7 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { CurrentUser } from '../../auth/user.decorator';
 import type { AuthUser } from '../../auth/user.decorator';
 import { ProfileService } from './profile.service';
-import { User } from 'src/models';
+import { UpdateUserDto } from './dtos';
 
 @Controller('my/profile')
 @UseGuards(AuthGuard)
@@ -20,7 +20,7 @@ export class ProfileController {
   @Version('1')
   async updateMyProfile(
     @CurrentUser() user: AuthUser,
-    @Body() updateProfileDto: Partial<User>,
+    @Body() updateProfileDto: UpdateUserDto,
   ) {
     return this.profileService.updateProfile(user.id, updateProfileDto);
   }

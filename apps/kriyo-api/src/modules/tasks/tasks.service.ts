@@ -1,61 +1,102 @@
-/* eslint-disable @typescript-eslint/require-await */
-import { Injectable } from '@nestjs/common';
-import { CreateTaskDto, UpdateTaskDto } from './dto';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { CreateTaskDto, UpdateTaskDto } from './dtos';
+import { HttpClientService } from 'src/services/http-client.service';
+import { Task } from 'src/models';
 
 @Injectable()
 export class TasksService {
+  private readonly logger = new Logger(TasksService.name);
+
+  constructor(private readonly httpClientService: HttpClientService) {}
   async getTasksByUserId(userId: string) {
-    // TODO: Call tasks-service to get user's tasks
-    return {
-      tasks: [
-        {
-          id: '1',
-          title: 'Complete API Gateway',
-          description: 'Implement routing for all API endpoints',
-          dueDate: '2025-08-21',
-          status: 'pending',
-          priority: 'high',
-          createdBy: userId,
-        },
-        {
-          id: '2',
-          title: 'Review pull request',
-          description: 'Review the new feature implementation',
-          dueDate: '2025-08-22',
-          status: 'pending',
-          priority: 'medium',
-          createdBy: userId,
-        },
-      ],
-    };
+    try {
+      this.logger.log(`Fetching tasks for user ${userId}`);
+
+      const tasks: Task[] = await this.httpClientService.get(
+        'tasks',
+        `/tasks/user/${userId}`,
+      );
+
+      this.logger.log(`Fetched tasks for user ${userId}`);
+
+      return {
+        tasks,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch tasks for user ${userId}`,
+      );
+    }
   }
 
   async getTasksByUserAndDate(userId: string, dueDate: string) {
-    // TODO: Call tasks-service to get user's tasks by date
-    return {
-      date: dueDate,
-      tasks: [
-        {
-          id: '1',
-          title: 'Complete API Gateway',
-          description: 'Implement routing for all API endpoints',
-          dueDate: dueDate,
-          status: 'pending',
-          priority: 'high',
-          createdBy: userId,
-        },
-      ],
-    };
+    try {
+      this.logger.log(
+        `Fetching tasks for user ${userId} with due date ${dueDate}`,
+      );
+
+      const tasks: Task[] = await this.httpClientService.get(
+        'tasks',
+        `/tasks/user/${userId}/${dueDate}`,
+      );
+
+      this.logger.log(
+        `Fetched tasks for user ${userId} with due date ${dueDate}`,
+      );
+
+      return {
+        tasks,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks for user ${userId} with due date ${dueDate} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch tasks for user ${userId} with due date ${dueDate}`,
+      );
+    }
   }
 
   async createTask(userId: string, createTaskDto: CreateTaskDto) {
-    // TODO: Call tasks-service to create new task
-    return {
-      id: 'new-task-id',
-      ...createTaskDto,
-      createdBy: userId,
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      const taskDto = {
+        ...createTaskDto,
+        createdBy: userId,
+      } as Task;
+
+      this.logger.log(
+        `Creating new task for user ${userId} with content ${JSON.stringify(taskDto)}`,
+      );
+
+      const task: Task = await this.httpClientService.post(
+        'tasks',
+        `/tasks`,
+        taskDto,
+      );
+
+      this.logger.log(`Created task for user ${userId}`);
+
+      return {
+        task,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to create task for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to create task for user ${userId}`,
+      );
+    }
   }
 
   async updateTask(
@@ -63,37 +104,77 @@ export class TasksService {
     taskId: string,
     updateTaskDto: UpdateTaskDto,
   ) {
-    // TODO: Call tasks-service to update task (verify ownership)
-    return {
-      id: taskId,
-      ...updateTaskDto,
-      updatedAt: new Date().toISOString(),
-    };
+    try {
+      this.logger.log(
+        `Updating task for user ${userId} with content ${JSON.stringify(updateTaskDto)}`,
+      );
+
+      const task: Task = await this.httpClientService.put(
+        'tasks',
+        `/tasks/${taskId}`,
+        updateTaskDto,
+      );
+
+      this.logger.log(`Updated task for user ${userId}`);
+
+      return {
+        task,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to update task for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to update task for user ${userId}`,
+      );
+    }
   }
 
   async deleteTask(userId: string, taskId: string) {
-    // TODO: Call tasks-service to delete task (verify ownership)
-    return {
-      success: true,
-      message: `Task ${taskId} deleted successfully`,
-    };
+    try {
+      this.logger.log(`Deleting task ${taskId} by user ${userId}`);
+
+      await this.httpClientService.delete('tasks', `/tasks/${taskId}`);
+
+      this.logger.log(`Deleted task ${taskId} by user ${userId}`);
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete task ${taskId} by user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to delete task ${taskId} by user ${userId}`,
+      );
+    }
   }
 
   async searchTasks(searchTerm: string) {
-    // TODO: Call tasks-service to search tasks
-    return {
-      searchTerm,
-      tasks: [
-        {
-          id: '1',
-          title: 'Complete API Gateway',
-          description: 'Implement routing for all API endpoints',
-          dueDate: '2025-08-21',
-          status: 'pending',
-          priority: 'high',
-          createdBy: 'some-user-id',
-        },
-      ],
-    };
+    try {
+      this.logger.log(`Searching tasks with term "${searchTerm}"`);
+
+      const tasks: Task[] = await this.httpClientService.get(
+        'tasks',
+        `/tasks/search/${searchTerm}`,
+      );
+
+      this.logger.log(`Fetched tasks with term "${searchTerm}"`);
+
+      return {
+        tasks,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch tasks with term "${searchTerm}" from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch tasks with term "${searchTerm}"`,
+      );
+    }
   }
 }

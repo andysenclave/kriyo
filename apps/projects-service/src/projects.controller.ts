@@ -29,7 +29,35 @@ export class ProjectsController {
   ): Promise<ProjectModel[]> {
     this.logger.log(`Fetching my projects for user ${userId}`);
     return await this.projectsService.getAllProjects({
-      where: { owner: userId, assignedTo: userId },
+      where: {
+        OR: [{ owner: userId }, { assignedTo: userId }],
+      },
+    });
+  }
+
+  @Get('/search/:searchTerm')
+  async searchProjects(
+    @Param('searchTerm') searchTerm: string,
+  ): Promise<ProjectModel[]> {
+    this.logger.log(`Searching my projects with term "${searchTerm}"`);
+
+    return await this.projectsService.getAllProjects({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
     });
   }
 

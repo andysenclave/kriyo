@@ -13,7 +13,7 @@ import { AuthGuard } from '../../auth/auth.guard';
 import { CurrentUser } from '../../auth/user.decorator';
 import type { AuthUser } from '../../auth/user.decorator';
 import { TasksService } from './tasks.service';
-import { CreateTaskDto, UpdateTaskDto } from './dto';
+import { CreateTaskDto, UpdateTaskDto } from './dtos';
 
 @Controller()
 export class TasksController {
