@@ -23,6 +23,44 @@ export class ProjectsController {
     return await this.projectsService.findProject({ id });
   }
 
+  @Get('/user/:userId')
+  async getProjectsByUserId(
+    @Param('userId') userId: string,
+  ): Promise<ProjectModel[]> {
+    this.logger.log(`Fetching my projects for user ${userId}`);
+    return await this.projectsService.getAllProjects({
+      where: {
+        OR: [{ owner: userId }, { assignedTo: userId }],
+      },
+    });
+  }
+
+  @Get('/search/:searchTerm')
+  async searchProjects(
+    @Param('searchTerm') searchTerm: string,
+  ): Promise<ProjectModel[]> {
+    this.logger.log(`Searching my projects with term "${searchTerm}"`);
+
+    return await this.projectsService.getAllProjects({
+      where: {
+        OR: [
+          {
+            title: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+          {
+            description: {
+              contains: searchTerm,
+              mode: 'insensitive',
+            },
+          },
+        ],
+      },
+    });
+  }
+
   @Get('/')
   async getAllProjects(): Promise<ProjectModel[]> {
     this.logger.log('Fetching all projects');

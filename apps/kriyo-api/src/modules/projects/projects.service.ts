@@ -1,48 +1,73 @@
-/* eslint-disable @typescript-eslint/require-await */
-import { Injectable } from '@nestjs/common';
-import { CreateProjectDto, UpdateProjectDto } from './dto';
+import {
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { CreateProjectDto, UpdateProjectDto } from './dtos';
+import { HttpClientService } from '../../services/http-client.service';
+import { Project } from '../../models';
 
 @Injectable()
 export class ProjectsService {
+  private readonly logger = new Logger(ProjectsService.name);
+
+  constructor(private readonly httpClientService: HttpClientService) {}
   async getProjectsByUserId(userId: string) {
-    // TODO: Call projects-service to get user's projects
-    return {
-      projects: [
-        {
-          id: '1',
-          title: 'Kriyo Development',
-          description: 'Main development project for Kriyo app',
-          status: 'active',
-          tasks: ['task-1', 'task-2'],
-          targetDate: '2025-09-01',
-          priority: 'high',
-          owner: userId,
-          createdAt: '2025-08-15T10:00:00.000Z',
-        },
-        {
-          id: '2',
-          title: 'Documentation',
-          description: 'Create comprehensive documentation',
-          status: 'planning',
-          tasks: ['task-3'],
-          targetDate: '2025-08-30',
-          priority: 'medium',
-          owner: userId,
-          createdAt: '2025-08-18T15:30:00.000Z',
-        },
-      ],
-    };
+    try {
+      this.logger.log(`Fetching projects for user ${userId}`);
+
+      const projects: Project[] = await this.httpClientService.get(
+        'projects',
+        `/projects/user/${userId}`,
+      );
+
+      this.logger.log(`Fetched projects for user ${userId}`);
+
+      return {
+        projects,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch projects for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch projects for user ${userId}`,
+      );
+    }
   }
 
   async createProject(userId: string, createProjectDto: CreateProjectDto) {
-    // TODO: Call projects-service to create new project
-    return {
-      id: 'new-project-id',
-      ...createProjectDto,
-      owner: userId,
-      tasks: [],
-      createdAt: new Date().toISOString(),
-    };
+    try {
+      const projectDto = {
+        ...createProjectDto,
+        owner: userId,
+      } as Project;
+
+      this.logger.log(
+        `Creating new project for user ${userId} with content ${JSON.stringify(projectDto)}`,
+      );
+
+      const project: Project = await this.httpClientService.post(
+        'projects',
+        `/projects`,
+        projectDto,
+      );
+
+      this.logger.log(`Created project for user ${userId}`);
+
+      return {
+        project,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to create project for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to create project for user ${userId}`,
+      );
+    }
   }
 
   async updateProject(
@@ -50,36 +75,77 @@ export class ProjectsService {
     projectId: string,
     updateProjectDto: UpdateProjectDto,
   ) {
-    return {
-      id: projectId,
-      ...updateProjectDto,
-      updatedAt: new Date().toISOString(),
-    };
+    try {
+      this.logger.log(
+        `Updating project for user ${userId} with content ${JSON.stringify(updateProjectDto)}`,
+      );
+
+      const project: Project = await this.httpClientService.put(
+        'projects',
+        `/projects/${projectId}`,
+        updateProjectDto,
+      );
+
+      this.logger.log(`Updated project for user ${userId}`);
+
+      return {
+        project,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to update project for user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to update project for user ${userId}`,
+      );
+    }
   }
 
   async deleteProject(userId: string, projectId: string) {
-    return {
-      success: true,
-      message: `Project ${projectId} deleted successfully`,
-    };
+    try {
+      this.logger.log(`Deleting project ${projectId} by user ${userId}`);
+
+      await this.httpClientService.delete('projects', `/projects/${projectId}`);
+
+      this.logger.log(`Deleted project ${projectId} by user ${userId}`);
+
+      return {
+        success: true,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to delete project ${projectId} by user ${userId} from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to delete project ${projectId} by user ${userId}`,
+      );
+    }
   }
 
   async searchProjects(searchTerm: string) {
-    return {
-      searchTerm,
-      projects: [
-        {
-          id: '1',
-          title: 'Kriyo Development',
-          description: 'Main development project for Kriyo app',
-          status: 'active',
-          tasks: ['task-1', 'task-2'],
-          targetDate: '2025-09-01',
-          priority: 'high',
-          owner: 'some-user-id',
-          createdAt: '2025-08-15T10:00:00.000Z',
-        },
-      ],
-    };
+    try {
+      this.logger.log(`Searching projects with term "${searchTerm}"`);
+
+      const projects: Project[] = await this.httpClientService.get(
+        'projects',
+        `/projects/search/${searchTerm}`,
+      );
+
+      this.logger.log(`Fetched projects with term "${searchTerm}"`);
+
+      return {
+        projects,
+      };
+    } catch (error) {
+      this.logger.error(
+        `Failed to fetch projects with term "${searchTerm}" from core service`,
+        error.stack,
+      );
+      throw new InternalServerErrorException(
+        `Failed to fetch projects with term "${searchTerm}"`,
+      );
+    }
   }
 }

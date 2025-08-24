@@ -19,12 +19,15 @@ export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get('/:id')
-  async getUserById(@Param('id') id: string): Promise<UserModel | null> {
-    return await this.userService.findUser({ id });
+  async getUserById(
+    @Param('id') id: string,
+  ): Promise<Partial<UserModel> | null> {
+    return await this.userService.findUser({ betterAuthId: id });
   }
 
   @Get('/verifyPhone/:phone')
   async checkUserExists(@Param('phone') phone: string): Promise<boolean> {
+    this.logger.log(`Checking if user exists with phone: ${phone}`);
     const user = await this.userService.findUser({ phone });
     return !!user?.id;
   }
@@ -51,9 +54,9 @@ export class UserController {
   async updateUser(
     @Param('id') id: string,
     @Body() userData: Partial<UserModel>,
-  ): Promise<UserModel> {
+  ): Promise<Partial<UserModel>> {
     return await this.userService.updateUser({
-      where: { id },
+      where: { betterAuthId: id },
       data: userData,
     });
   }
