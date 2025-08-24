@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileService } from './profile.service';
 import { HttpClientService } from '../../services/http-client.service';
@@ -21,6 +22,9 @@ describe('ProfileService', () => {
     betterAuthId: 'auth-123',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    passwordHash: '',
+    emailVerified: false,
+    phoneVerified: false,
   };
 
   beforeEach(async () => {
@@ -100,7 +104,7 @@ describe('ProfileService', () => {
       try {
         await service.getProfile(userId);
       } catch (e) {
-        // Expected to throw
+        throw new Error(e.message);
       }
 
       expect(errorSpy).toHaveBeenCalledWith(
@@ -210,7 +214,7 @@ describe('ProfileService', () => {
       try {
         await service.updateProfile(userId, updateProfileDto);
       } catch (e) {
-        // Expected to throw
+        throw new Error(e.message);
       }
 
       expect(errorSpy).toHaveBeenCalledWith(

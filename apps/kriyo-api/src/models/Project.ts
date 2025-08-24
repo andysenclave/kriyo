@@ -9,5 +9,5 @@ export default interface Project {
   priority: string | null;
   priorityRank: number | null;
   assignedTo: string | null;
-  createdAt: Date;
+  createdAt: string;
 }

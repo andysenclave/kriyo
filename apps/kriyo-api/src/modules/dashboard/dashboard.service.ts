@@ -1,16 +1,31 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import { Project, Task } from '../../models';
 import { HttpClientService } from '../../services/http-client.service';
+import { CacheService } from '../../services/cache.service';
 import { Logger } from '@nestjs/common';
 
 @Injectable()
 export class DashboardService {
   private readonly logger = new Logger(DashboardService.name);
 
-  constructor(private readonly httpClientService: HttpClientService) {}
+  constructor(
+    private readonly httpClientService: HttpClientService,
+    private readonly cacheService: CacheService,
+  ) {}
 
   async getDashboardTasks(userId: string) {
     try {
+      const cacheKey = this.cacheService.generateCacheKey(
+        'dashboard_tasks',
+        userId,
+      );
+
+      const cachedTasks = await this.cacheService.get(cacheKey);
+      if (cachedTasks) {
+        this.logger.log(`Returning cached dashboard tasks for user ${userId}`);
+        return cachedTasks;
+      }
+
       this.logger.log(`Fetching dashboard tasks for user ${userId}`);
 
       const tasks: Task[] = await this.httpClientService.get(
@@ -39,11 +54,15 @@ export class DashboardService {
 
       this.logger.log('Dashboard Task model ready to use');
 
-      return {
+      const result = {
         overdue: overdueTasksCount,
         highPriority: highPriorityTasksCount,
         tasks: mostImportantPendingTasks,
       };
+
+      await this.cacheService.set(cacheKey, result, 300);
+
+      return result;
     } catch (error) {
       this.logger.error(
         `Failed to fetch dashboard tasks for user ${userId} from core service`,
@@ -55,6 +74,19 @@ export class DashboardService {
 
   async getDashboardProjects(userId: string) {
     try {
+      const cacheKey = this.cacheService.generateCacheKey(
+        'dashboard_projects',
+        userId,
+      );
+
+      const cachedProjects = await this.cacheService.get(cacheKey);
+      if (cachedProjects) {
+        this.logger.log(
+          `Returning cached dashboard projects for user ${userId}`,
+        );
+        return cachedProjects;
+      }
+
       this.logger.log(`Fetching dashboard projects for user ${userId}`);
 
       const projects: Project[] = await this.httpClientService.get(
@@ -64,9 +96,13 @@ export class DashboardService {
 
       this.logger.log(`Fetched ${projects.length} projects for user ${userId}`);
 
-      return {
+      const result = {
         projects,
       };
+
+      await this.cacheService.set(cacheKey, result, 300);
+
+      return result;
     } catch (error) {
       this.logger.error(
         `Failed to fetch dashboard projects for user ${userId} from core service`,

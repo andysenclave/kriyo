@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjectsService } from './projects.service';
 import { HttpClientService } from '../../services/http-client.service';
@@ -18,13 +19,16 @@ describe('ProjectsService', () => {
 
   const mockProject: Project = {
     id: 'project-123',
-    name: 'Test Project',
+    title: 'Test Project',
     description: 'Test project description',
     owner: 'user-123',
     tasks: [],
     priority: 'high',
     priorityRank: 1,
     createdAt: new Date().toISOString(),
+    status: '',
+    targetDate: null,
+    assignedTo: null,
   };
 
   beforeEach(async () => {
@@ -77,8 +81,12 @@ describe('ProjectsService', () => {
 
       await service.getProjectsByUserId(userId);
 
-      expect(logSpy).toHaveBeenCalledWith(`Fetching projects for user ${userId}`);
-      expect(logSpy).toHaveBeenCalledWith(`Fetched projects for user ${userId}`);
+      expect(logSpy).toHaveBeenCalledWith(
+        `Fetching projects for user ${userId}`,
+      );
+      expect(logSpy).toHaveBeenCalledWith(
+        `Fetched projects for user ${userId}`,
+      );
     });
 
     it('should handle empty projects array', async () => {
@@ -111,7 +119,7 @@ describe('ProjectsService', () => {
       try {
         await service.getProjectsByUserId(userId);
       } catch (e) {
-        // Expected to throw
+        throw new Error(e.message);
       }
 
       expect(errorSpy).toHaveBeenCalledWith(
@@ -254,7 +262,11 @@ describe('ProjectsService', () => {
 
       mockHttpClientService.put.mockResolvedValue(partiallyUpdatedProject);
 
-      const result = await service.updateProject(userId, projectId, partialUpdate);
+      const result = await service.updateProject(
+        userId,
+        projectId,
+        partialUpdate,
+      );
 
       expect(httpClientService.put).toHaveBeenCalledWith(
         'projects',

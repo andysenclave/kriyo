@@ -23,7 +23,9 @@ describe('AuthGuard', () => {
         'better-auth.session_token': 'valid-session-token',
       };
 
-      const result = guard.canActivate(mockExecutionContext as ExecutionContext);
+      const result = guard.canActivate(
+        mockExecutionContext as ExecutionContext,
+      );
 
       expect(result).toBe(true);
     });

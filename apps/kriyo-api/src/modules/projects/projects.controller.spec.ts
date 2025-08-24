@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProjectsController } from './projects.controller';
 import { ProjectsService } from './projects.service';
@@ -109,7 +110,10 @@ describe('ProjectsController', () => {
 
       mockProjectsService.createProject.mockResolvedValue(expectedResult);
 
-      const result = await controller.createMyProject(mockUser, createProjectDto);
+      const result = await controller.createMyProject(
+        mockUser,
+        createProjectDto,
+      );
 
       expect(projectsService.createProject).toHaveBeenCalledWith(
         'user-123',

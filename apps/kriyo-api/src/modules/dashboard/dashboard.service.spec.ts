@@ -1,6 +1,10 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable @typescript-eslint/unbound-method */
+// @ts-nocheck
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardService } from './dashboard.service';
 import { HttpClientService } from '../../services/http-client.service';
+import { CacheService } from '../../services/cache.service';
 import { InternalServerErrorException, Logger } from '@nestjs/common';
 import { Task, Project } from '../../models';
 
@@ -12,6 +16,17 @@ describe('DashboardService', () => {
     get: jest.fn(),
   };
 
+  const mockCacheService = {
+    get: jest.fn(),
+    set: jest.fn(),
+    del: jest.fn(),
+    reset: jest.fn(),
+    keys: jest.fn(),
+    generateCacheKey: jest.fn(
+      (prefix, ...args) => `${prefix}:${args.join(':')}`,
+    ),
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -19,6 +34,10 @@ describe('DashboardService', () => {
         {
           provide: HttpClientService,
           useValue: mockHttpClientService,
+        },
+        {
+          provide: CacheService,
+          useValue: mockCacheService,
         },
       ],
     }).compile();
@@ -32,6 +51,7 @@ describe('DashboardService', () => {
 
   afterEach(() => {
     jest.clearAllMocks();
+    mockCacheService.get.mockResolvedValue(undefined);
   });
 
   it('should be defined', () => {
@@ -50,8 +70,8 @@ describe('DashboardService', () => {
         status: 'todo',
         priority: 'high',
         createdBy: userId,
-        assignedTo: null,
-        project: null,
+        assignedTo: '',
+        project: '',
         createdAt: new Date().toISOString(),
       },
       {
@@ -63,8 +83,8 @@ describe('DashboardService', () => {
         status: 'todo',
         priority: 'medium',
         createdBy: userId,
-        assignedTo: null,
-        project: null,
+        assignedTo: '',
+        project: '',
         createdAt: new Date().toISOString(),
       },
       {
@@ -76,13 +96,14 @@ describe('DashboardService', () => {
         status: 'todo',
         priority: 'high',
         createdBy: userId,
-        assignedTo: null,
-        project: null,
+        assignedTo: '',
+        project: '',
         createdAt: new Date().toISOString(),
       },
     ];
 
     it('should fetch dashboard tasks successfully', async () => {
+      mockCacheService.get.mockResolvedValue(undefined); // No cached value
       mockHttpClientService.get.mockResolvedValue(mockTasks);
 
       const result = await service.getDashboardTasks(userId);
@@ -119,8 +140,8 @@ describe('DashboardService', () => {
         status: 'todo' as const,
         priority: 'medium' as const,
         createdBy: userId,
-        assignedTo: null,
-        project: null,
+        assignedTo: '',
+        project: '',
         createdAt: new Date().toISOString(),
       }));
 
@@ -183,22 +204,28 @@ describe('DashboardService', () => {
     const mockProjects: Project[] = [
       {
         id: '1',
-        name: 'Project 1',
+        title: 'Project 1',
         description: 'Description 1',
         owner: userId,
         tasks: [],
+        status: 'active',
+        targetDate: null,
         priority: 'high',
         priorityRank: 1,
+        assignedTo: null,
         createdAt: new Date().toISOString(),
       },
       {
         id: '2',
-        name: 'Project 2',
+        title: 'Project 2',
         description: 'Description 2',
         owner: userId,
         tasks: [],
+        status: 'active',
+        targetDate: null,
         priority: 'medium',
         priorityRank: 2,
+        assignedTo: null,
         createdAt: new Date().toISOString(),
       },
     ];

@@ -9,7 +9,7 @@ export default interface Task {
   status: string;
   priority: string;
   priorityRank: number;
-  project: string;
-  assignedTo: string;
+  project: string | null;
+  assignedTo: string | null;
   createdAt: string;
 }

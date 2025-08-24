@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { DashboardController } from './dashboard.controller';
 import { DashboardService } from './dashboard.service';
@@ -53,7 +54,9 @@ describe('DashboardController', () => {
 
       const result = await controller.getDashboardTasks(mockUser);
 
-      expect(dashboardService.getDashboardTasks).toHaveBeenCalledWith('user-123');
+      expect(dashboardService.getDashboardTasks).toHaveBeenCalledWith(
+        'user-123',
+      );
       expect(dashboardService.getDashboardTasks).toHaveBeenCalledTimes(1);
       expect(result).toEqual(expectedResult);
     });

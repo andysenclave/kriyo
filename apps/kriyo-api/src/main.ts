@@ -20,7 +20,6 @@ async function bootstrap() {
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI });
 
-  // Swagger configuration
   const config = new DocumentBuilder()
     .setTitle('Kriyo API')
     .setDescription(

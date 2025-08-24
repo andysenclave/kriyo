@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksService } from './tasks.service';
 import { HttpClientService } from '../../services/http-client.service';
@@ -114,7 +115,7 @@ describe('TasksService', () => {
       try {
         await service.getTasksByUserId(userId);
       } catch (e) {
-        // Expected to throw
+        throw new Error(e.message);
       }
 
       expect(errorSpy).toHaveBeenCalledWith(

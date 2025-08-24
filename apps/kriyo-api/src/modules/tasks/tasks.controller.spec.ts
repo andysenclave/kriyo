@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { TasksController } from './tasks.controller';
 import { TasksService } from './tasks.service';
@@ -253,9 +254,9 @@ describe('TasksController', () => {
       const error = new Error('Service error');
       mockTasksService.deleteTask.mockRejectedValue(error);
 
-      await expect(
-        controller.deleteMyTask(mockUser, taskId),
-      ).rejects.toThrow('Service error');
+      await expect(controller.deleteMyTask(mockUser, taskId)).rejects.toThrow(
+        'Service error',
+      );
     });
   });
 

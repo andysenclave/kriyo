@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/unbound-method */
 import { Test, TestingModule } from '@nestjs/testing';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
@@ -96,7 +97,10 @@ describe('ProfileController', () => {
 
       mockProfileService.updateProfile.mockResolvedValue(expectedResult);
 
-      const result = await controller.updateMyProfile(mockUser, updateProfileDto);
+      const result = await controller.updateMyProfile(
+        mockUser,
+        updateProfileDto,
+      );
 
       expect(profileService.updateProfile).toHaveBeenCalledWith(
         'user-123',

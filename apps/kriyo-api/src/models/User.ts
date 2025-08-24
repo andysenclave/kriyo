@@ -5,8 +5,8 @@ export default interface User {
   betterAuthId: string;
   name: string;
   passwordHash: string;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: string;
+  updatedAt: string;
   emailVerified: boolean;
   phoneVerified: boolean;
 }

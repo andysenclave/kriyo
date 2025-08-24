@@ -13,7 +13,7 @@ describe('Project Model', () => {
       priority: 'high',
       priorityRank: 1,
       assignedTo: 'user-456',
-      createdAt: new Date('2024-01-01'),
+      createdAt: new Date('2024-01-01').toISOString(),
     };
 
     expect(project.id).toBe('project-123');
@@ -41,7 +41,7 @@ describe('Project Model', () => {
       priority: null,
       priorityRank: null,
       assignedTo: null,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     expect(project.targetDate).toBeNull();
@@ -62,7 +62,7 @@ describe('Project Model', () => {
       priority: null,
       priorityRank: null,
       assignedTo: null,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     expect(project.tasks).toEqual([]);
@@ -83,7 +83,7 @@ describe('Project Model', () => {
       priority: 'medium',
       priorityRank: 2,
       assignedTo: 'user-456',
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     expect(project.tasks).toEqual(taskIds);
@@ -104,11 +104,11 @@ describe('Project Model', () => {
       priority: null,
       priorityRank: null,
       assignedTo: null,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     expect(Array.isArray(project.tasks)).toBe(true);
-    project.tasks.forEach(taskId => {
+    project.tasks.forEach((taskId) => {
       expect(typeof taskId).toBe('string');
     });
   });
@@ -125,7 +125,7 @@ describe('Project Model', () => {
       priority: null,
       priorityRank: null,
       assignedTo: null,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     const completedProject: Project = {
@@ -157,7 +157,7 @@ describe('Project Model', () => {
       priority: 'high',
       priorityRank: 1,
       assignedTo: null,
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     const lowPriorityProject: Project = {
@@ -174,7 +174,7 @@ describe('Project Model', () => {
   });
 
   it('should enforce Date type for createdAt', () => {
-    const now = new Date();
+    const now = new Date().toISOString();
     const project: Project = {
       id: 'project-123',
       owner: 'user-123',
@@ -205,7 +205,7 @@ describe('Project Model', () => {
       priority: '',
       priorityRank: 0,
       assignedTo: '',
-      createdAt: new Date(),
+      createdAt: new Date().toISOString(),
     };
 
     expect(typeof project.id).toBe('string');

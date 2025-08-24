@@ -30,7 +30,7 @@ describe('HttpClientService', () => {
     httpService = module.get<HttpService>(HttpService);
 
     jest.spyOn(Logger.prototype, 'log').mockImplementation();
-    
+
     // Set up environment variable for CLIENT_ID
     process.env.CLIENT_ID = 'test-client-id';
   });
@@ -208,9 +208,9 @@ describe('HttpClientService', () => {
       const error = new Error('POST failed');
       mockHttpService.post.mockReturnValue(throwError(() => error));
 
-      await expect(
-        service.post('tasks', '/tasks', postData),
-      ).rejects.toThrow('POST failed');
+      await expect(service.post('tasks', '/tasks', postData)).rejects.toThrow(
+        'POST failed',
+      );
     });
   });
 
@@ -257,9 +257,9 @@ describe('HttpClientService', () => {
       const error = new Error('PUT failed');
       mockHttpService.put.mockReturnValue(throwError(() => error));
 
-      await expect(
-        service.put('user', '/users/123', putData),
-      ).rejects.toThrow('PUT failed');
+      await expect(service.put('user', '/users/123', putData)).rejects.toThrow(
+        'PUT failed',
+      );
     });
   });
 
@@ -303,9 +303,9 @@ describe('HttpClientService', () => {
       const error = new Error('DELETE failed');
       mockHttpService.delete.mockReturnValue(throwError(() => error));
 
-      await expect(
-        service.delete('tasks', '/tasks/123'),
-      ).rejects.toThrow('DELETE failed');
+      await expect(service.delete('tasks', '/tasks/123')).rejects.toThrow(
+        'DELETE failed',
+      );
     });
   });
 

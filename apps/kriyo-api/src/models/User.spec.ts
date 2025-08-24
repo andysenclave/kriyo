@@ -9,8 +9,8 @@ describe('User Model', () => {
       betterAuthId: 'auth-123',
       name: 'Test User',
       passwordHash: 'hashed-password',
-      createdAt: new Date('2023-01-01'),
-      updatedAt: new Date('2023-01-02'),
+      createdAt: new Date('2023-01-01').toISOString(),
+      updatedAt: new Date('2023-01-02').toISOString(),
       emailVerified: true,
       phoneVerified: false,
     };
@@ -35,8 +35,8 @@ describe('User Model', () => {
       betterAuthId: '',
       name: '',
       passwordHash: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       emailVerified: false,
       phoneVerified: false,
     };
@@ -57,8 +57,8 @@ describe('User Model', () => {
       betterAuthId: 'auth-123',
       name: 'Test User',
       passwordHash: 'hashed-password',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
       emailVerified: true,
       phoneVerified: true,
     };
@@ -68,7 +68,7 @@ describe('User Model', () => {
   });
 
   it('should enforce Date types for timestamp fields', () => {
-    const now = new Date();
+    const now = new Date().toISOString();
     const user: User = {
       id: 'user-123',
       email: 'test@example.com',
