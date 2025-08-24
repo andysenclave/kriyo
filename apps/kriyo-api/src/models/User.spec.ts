@@ -21,8 +21,10 @@ describe('User Model', () => {
     expect(user.betterAuthId).toBe('auth-123');
     expect(user.name).toBe('Test User');
     expect(user.passwordHash).toBe('hashed-password');
-    expect(user.createdAt).toBeInstanceOf(Date);
-    expect(user.updatedAt).toBeInstanceOf(Date);
+    expect(typeof user.createdAt).toBe('string');
+    expect(typeof user.updatedAt).toBe('string');
+    expect(new Date(user.createdAt).toISOString()).toBe(user.createdAt);
+    expect(new Date(user.updatedAt).toISOString()).toBe(user.updatedAt);
     expect(user.emailVerified).toBe(true);
     expect(user.phoneVerified).toBe(false);
   });
