@@ -1,6 +1,6 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { Project, Task } from 'src/models';
-import { HttpClientService } from 'src/services/http-client.service';
+import { Project, Task } from '../../models';
+import { HttpClientService } from '../../services/http-client.service';
 import { Logger } from '@nestjs/common';
 
 @Injectable()

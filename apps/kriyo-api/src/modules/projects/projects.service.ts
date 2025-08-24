@@ -4,8 +4,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CreateProjectDto, UpdateProjectDto } from './dtos';
-import { HttpClientService } from 'src/services/http-client.service';
-import { Project } from 'src/models';
+import { HttpClientService } from '../../services/http-client.service';
+import { Project } from '../../models';
 
 @Injectable()
 export class ProjectsService {

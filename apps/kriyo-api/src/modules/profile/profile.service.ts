@@ -3,8 +3,8 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import { HttpClientService } from 'src/services/http-client.service';
-import { User } from 'src/models';
+import { HttpClientService } from '../../services/http-client.service';
+import { User } from '../../models';
 
 @Injectable()
 export class ProfileService {

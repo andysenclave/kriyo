@@ -4,8 +4,8 @@ import {
   Logger,
 } from '@nestjs/common';
 import { CreateTaskDto, UpdateTaskDto } from './dtos';
-import { HttpClientService } from 'src/services/http-client.service';
-import { Task } from 'src/models';
+import { HttpClientService } from '../../services/http-client.service';
+import { Task } from '../../models';
 
 @Injectable()
 export class TasksService {
