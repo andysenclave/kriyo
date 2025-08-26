@@ -2,27 +2,9 @@ import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { StatusLabel } from '@/app/components/labels';
-
-// Inline utility for relative date display
-const getRelativeDateToToday = (date?: string): string => {
-  if (!date) return '';
-  const d = new Date(date);
-  const today = new Date();
-  if (
-    d.getDate() === today.getDate() &&
-    d.getMonth() === today.getMonth() &&
-    d.getFullYear() === today.getFullYear()
-  ) {
-    return 'Today';
-  }
-  // Fallback: show days difference
-  const diff = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
-  if (diff > 0) return `in ${diff} day${diff > 1 ? 's' : ''}`;
-  if (diff < 0) return `${Math.abs(diff)} day${Math.abs(diff) > 1 ? 's' : ''} ago`;
-  return d.toLocaleDateString();
-};
 import Task from '@/app/providers/MyTasksProvider/models/Task';
 import AddNewTaskBtn from '../TaskActionArea/components/AddNewTask';
+import { dateUtils } from '@/app/utils';
 
 interface DayTasksModalProps {
   open: boolean;
@@ -50,7 +32,7 @@ const DayTasksModal: React.FC<DayTasksModalProps> = ({ open, onClose, date, task
                 <StatusLabel status={task.status} />
                 <span className="flex-1 ml-4 truncate text-sm font-medium">{task.title}</span>
                 <span className="text-xs px-2 py-1 bg-muted rounded-lg mx-2">
-                  {getRelativeDateToToday(task.dueDate)}
+                  {dateUtils.getRelativeDateToToday(task.dueDate)}
                 </span>
                 <Button
                   asChild

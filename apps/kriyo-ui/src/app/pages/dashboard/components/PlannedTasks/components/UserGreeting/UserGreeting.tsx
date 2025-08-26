@@ -1,11 +1,12 @@
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
+import { useDashboardTasks } from '../../../../hooks';
 
 interface UserGreetingProps {
   userName: string;
 }
 
 const UserGreeting: React.FC<UserGreetingProps> = ({ userName }) => {
-  const { tasksCount } = useMyTasks();
+  const { data } = useDashboardTasks();
+  const tasksCount = data?.tasks.length || 0;
 
   return (
     <div className="mb-2">

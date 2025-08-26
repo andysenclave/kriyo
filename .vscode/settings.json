@@ -1,6 +1,6 @@
 {
   "editor.defaultFormatter": "esbenp.prettier-vscode",
-  "workbench.colorTheme": "GitHub Dark Default",
+  "workbench.colorTheme": "Monokai Pro Light (Filter Sun)",
   "editor.formatOnSave": true,
   "editor.codeLens": true,
   "javascript.referencesCodeLens.enabled": true,

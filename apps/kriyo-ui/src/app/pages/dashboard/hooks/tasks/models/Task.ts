@@ -1,9 +1,9 @@
-interface ProjectInfo {
+export interface ProjectInfo {
   id: string;
   name: string;
 }
 
-interface UserInfo {
+export interface UserInfo {
   id: string;
   name: string;
 }
@@ -17,7 +17,7 @@ export default interface Task {
   priority?: 'low' | 'medium' | 'high';
   createdAt: string;
   updatedAt: string;
-  assignedTo?: UserInfo;
+  assignedTo?: string;
   createdBy: UserInfo;
-  project: ProjectInfo;
+  project?: string;
 }

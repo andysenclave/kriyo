@@ -1,31 +1,19 @@
 import { Button } from '@/components/ui/button';
-import React from 'react';
-import { sortBy } from 'lodash';
 import { StatusLabel } from '@/app/components/labels';
-import { isToday, formatDistanceToNow } from 'date-fns';
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
-
-const getRelativeDateToToday = (date?: string): string => {
-  return date
-    ? isToday(new Date(date))
-      ? 'Today'
-      : formatDistanceToNow(new Date(date), { addSuffix: true })
-    : '';
-};
+import { useDashboardTasks } from '../../../../hooks';
+import { dateUtils } from '@/app/utils';
 
 const PlannedTaskList: React.FC = () => {
-  const { scopedTasks } = useMyTasks();
-  const { pending } = scopedTasks || {};
-  const displayTasks = sortBy(pending, ['priorityRank', 'dueDate']).slice(0, 3);
+  const { data } = useDashboardTasks();
 
   return (
     <div className="divide-y divide-muted rounded-xl border bg-background p-4">
-      {displayTasks.map((task, idx) => (
+      {data?.tasks.map((task, idx) => (
         <div key={idx} className="flex items-center justify-between py-3">
           <StatusLabel status={task.status} />
           <span className="flex-1 ml-4 truncate text-sm font-medium">{task.title}</span>
           <span className="text-xs px-2 py-1 bg-muted rounded-lg mx-2">
-            {getRelativeDateToToday(task.dueDate)}
+            {dateUtils.getRelativeDateToToday(task.dueDate)}
           </span>
           <Button variant="link" className="text-primary px-0 text-xs h-auto cursor-pointer">
             Go to task

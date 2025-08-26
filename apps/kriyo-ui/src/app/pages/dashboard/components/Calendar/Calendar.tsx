@@ -3,7 +3,7 @@
 import React, { useState, useMemo } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import DayTasksModal from './DayTasksModal';
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
+import { useDashboardTasks } from '../../hooks';
 
 interface TaskCalendarState {
   selectedDate: Date;
@@ -18,7 +18,8 @@ const initialState: TaskCalendarState = {
 };
 
 const TaskCalendar: React.FC = () => {
-  const { tasks } = useMyTasks();
+  const { data } = useDashboardTasks();
+  const { tasks } = data || { tasks: [] };
   const [{ selectedDate, showDayTasksModal }, setTaskCalendarState] =
     useState<TaskCalendarState>(initialState);
 
@@ -52,7 +53,7 @@ const TaskCalendar: React.FC = () => {
 
   return (
     <div
-      className="rounded-2xl bg-white shadow w-full max-w-md h-[366px] border-none"
+      className="rounded-2xl bg-white shadow w-full max-w-md h-[426px] border-none"
       data-testid="task-calendar-root"
     >
       <Calendar

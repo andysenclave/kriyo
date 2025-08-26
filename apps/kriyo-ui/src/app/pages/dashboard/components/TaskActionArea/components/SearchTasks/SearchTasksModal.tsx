@@ -4,10 +4,10 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogClose,
+  // DialogClose,
 } from '@/components/ui/dialog';
-import { StatusLabel } from '@/app/components/labels';
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
+// import { StatusLabel } from '@/app/components/labels';
+// import { useMyTasks } from '@/app/providers/MyTasksProvider';
 
 interface SearchTasksModalProps {
   open: boolean;
@@ -16,10 +16,10 @@ interface SearchTasksModalProps {
 
 const SearchTasksModal: React.FC<SearchTasksModalProps> = ({ open, onClose }) => {
   const [query, setQuery] = useState('');
-  const { tasks } = useMyTasks();
-  const filtered = tasks.filter((task) => task.title.toLowerCase().includes(query.toLowerCase()));
+  // const { tasks } = useMyTasks();
+  // const filtered = tasks.filter((task) => task.title.toLowerCase().includes(query.toLowerCase()));
   const hasQuery = query.length > 0;
-  const hasResults = filtered.length > 0;
+  // const hasResults = filtered.length > 0;
 
   return (
     <Dialog open={open} onOpenChange={(open) => !open && onClose()}>
@@ -37,7 +37,7 @@ const SearchTasksModal: React.FC<SearchTasksModalProps> = ({ open, onClose }) =>
         />
         <ul className="flex-1 overflow-y-auto mb-4">
           {!hasQuery && <li className="text-gray-400">Start typing to search tasks.</li>}
-          {hasQuery &&
+          {/* {hasQuery &&
             hasResults &&
             filtered.map((task) => (
               <li
@@ -47,8 +47,8 @@ const SearchTasksModal: React.FC<SearchTasksModalProps> = ({ open, onClose }) =>
                 {task.title}
                 <StatusLabel status={task.status} />
               </li>
-            ))}
-          {hasQuery && !hasResults && <li className="text-gray-400">No results found.</li>}
+            ))} */}
+          {/* {hasQuery && !hasResults && <li className="text-gray-400">No results found.</li>} */}
         </ul>
       </DialogContent>
     </Dialog>
