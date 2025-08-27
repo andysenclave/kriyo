@@ -3,10 +3,10 @@
 import React from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { StatusLabel } from '@/app/components/labels';
-import AddNewTaskBtn from '../TaskActionArea/components/AddNewTask';
-import { useTasksByDate } from '../../hooks';
 import { useRouter } from 'next/navigation';
 import { ViewAllBtn } from '@/app/components/buttons';
+import { useTasksByDate } from '@/app/hooks';
+import { AddNewTaskBtn } from '@/app/components/task';
 
 interface DayTasksModalProps {
   open: boolean;

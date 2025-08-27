@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import DayTasksModal from './DayTasksModal';
 import { useDashboardTasks } from '../../hooks';
@@ -37,19 +37,6 @@ const TaskCalendar: React.FC = () => {
       showDayTasksModal: false,
     }));
   };
-
-  const dayTasks = useMemo(() => {
-    if (!selectedDate) return [];
-    return tasks.filter((task) => {
-      if (!task.dueDate) return false;
-      const taskDate = new Date(task.dueDate);
-      return (
-        taskDate.getDate() === selectedDate.getDate() &&
-        taskDate.getMonth() === selectedDate.getMonth() &&
-        taskDate.getFullYear() === selectedDate.getFullYear()
-      );
-    });
-  }, [selectedDate, tasks]);
 
   return (
     <div

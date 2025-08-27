@@ -1,4 +1,4 @@
-import Task from './Task';
+import { Task } from '@/app/hooks/tasks/models';
 
 export default interface GetDashboardTasksResponse {
   overdue: number;

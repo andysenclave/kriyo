@@ -2,8 +2,8 @@
 import PlannedTasks from './components/PlannedTasks';
 import ProjectList from './components/ProjectList';
 import Calendar from './components/Calendar';
-import TaskActionArea from './components/TaskActionArea';
 import { useAuth } from '@/app/providers/AuthProvider';
+import { TaskActions } from '@/app/components/task';
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
             <PlannedTasks userName={user?.name || 'User'} />
           </div>
           <div className="md:col-span-1">
-            <TaskActionArea />
+            <TaskActions />
             <Calendar />
           </div>
         </div>

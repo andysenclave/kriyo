@@ -2,7 +2,7 @@ import React from 'react';
 import SearchTasksField from './components/SearchTasks';
 import AddNewTaskBtn from './components/AddNewTask';
 
-const TaskActionArea: React.FC = () => {
+const TaskActions: React.FC = () => {
   return (
     <div
       data-testid="task-action-area"
@@ -14,4 +14,4 @@ const TaskActionArea: React.FC = () => {
   );
 };
 
-export default TaskActionArea;
+export default TaskActions;

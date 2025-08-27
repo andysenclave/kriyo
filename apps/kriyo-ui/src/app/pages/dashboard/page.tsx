@@ -1,9 +1,9 @@
 'use client';
 
-import DashboardPage from './Dashboard';
+import Dashboard from './Dashboard';
 
-const DashboardPageWithProvider: React.FC = () => {
-  return <DashboardPage />;
+const DashboardPage: React.FC = () => {
+  return <Dashboard />;
 };
 
-export default DashboardPageWithProvider;
+export default DashboardPage;

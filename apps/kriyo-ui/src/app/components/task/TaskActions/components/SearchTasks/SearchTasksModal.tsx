@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { StatusLabel } from '@/app/components/labels';
-import { useSearchTasks } from '@/app/pages/dashboard/hooks';
+import { useSearchTasks } from '@/app/hooks';
 
 interface SearchTasksModalProps {
   open: boolean;

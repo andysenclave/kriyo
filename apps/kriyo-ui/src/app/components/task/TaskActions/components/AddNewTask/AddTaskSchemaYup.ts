@@ -1,4 +1,4 @@
-import { Task } from '@/app/providers/MyTasksProvider/models';
+import Task from '@/app/hooks/tasks/models/Task';
 import * as Yup from 'yup';
 
 export const AddTaskSchema = Yup.object<Task>({

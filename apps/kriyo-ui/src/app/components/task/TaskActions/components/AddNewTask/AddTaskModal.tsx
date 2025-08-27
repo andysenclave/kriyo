@@ -7,8 +7,8 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import { AddTaskSchema, AddTaskFormValues } from './AddTaskSchemaYup';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import { useAddMyTask } from '@/app/pages/dashboard/hooks';
-import { Task } from '../../../PlannedTasks/hooks/tasks/models';
+import Task from '@/app/hooks/tasks/models/Task';
+import { useAddMyTask } from '@/app/hooks';
 
 interface AddTaskModalProps {
   selectedDate?: Date;
