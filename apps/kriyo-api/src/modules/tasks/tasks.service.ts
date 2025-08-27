@@ -60,9 +60,7 @@ export class TasksService {
         `Failed to fetch tasks for user ${userId} with due date ${dueDate} from core service`,
         error.stack,
       );
-      throw new InternalServerErrorException(
-        `Failed to fetch tasks for user ${userId} with due date ${dueDate}`,
-      );
+      throw new InternalServerErrorException(`Failed to fetch tasks for user`);
     }
   }
 
@@ -93,9 +91,7 @@ export class TasksService {
         `Failed to create task for user ${userId} from core service`,
         error.stack,
       );
-      throw new InternalServerErrorException(
-        `Failed to create task for user ${userId}`,
-      );
+      throw new InternalServerErrorException(`Failed to create task for user`);
     }
   }
 
@@ -125,9 +121,7 @@ export class TasksService {
         `Failed to update task for user ${userId} from core service`,
         error.stack,
       );
-      throw new InternalServerErrorException(
-        `Failed to update task for user ${userId}`,
-      );
+      throw new InternalServerErrorException(`Failed to update task for user`);
     }
   }
 
@@ -148,7 +142,7 @@ export class TasksService {
         error.stack,
       );
       throw new InternalServerErrorException(
-        `Failed to delete task ${taskId} by user ${userId}`,
+        `Failed to delete task ${taskId} by user`,
       );
     }
   }

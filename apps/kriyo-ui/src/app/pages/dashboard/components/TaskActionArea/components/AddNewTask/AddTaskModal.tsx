@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 
 import React from 'react';
@@ -5,8 +6,9 @@ import { useForm, Controller, SubmitHandler, FieldPath } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { AddTaskSchema, AddTaskFormValues } from './AddTaskSchemaYup';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { useAddTask } from './hooks';
 import { Button } from '@/components/ui/button';
+import { useAddMyTask } from '@/app/pages/dashboard/hooks';
+import { Task } from '../../../PlannedTasks/hooks/tasks/models';
 
 interface AddTaskModalProps {
   selectedDate?: Date;
@@ -34,7 +36,9 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
   onClose,
   selectedDate = new Date(),
 }) => {
-  const { addMyTask } = useAddTask();
+  const { data, addMyTask, isPending } = useAddMyTask();
+
+  console.log({ data });
 
   const selectedTaskDate = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
@@ -58,10 +62,14 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
     },
   });
 
-  const onSubmit: SubmitHandler<AddTaskFormValues> = async (data: AddTaskFormValues) => {
-    await addMyTask(data);
-    reset();
-    onClose();
+  const onSubmit: SubmitHandler<AddTaskFormValues> = (data: Partial<Task>) => {
+    const { assignedTo, project, ...payload } = data;
+    addMyTask(payload, {
+      onSuccess: () => {
+        reset();
+        onClose();
+      },
+    });
   };
 
   return (
@@ -168,7 +176,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
                   type="text"
                   placeholder="Project ID"
                   className="w-full border rounded px-3 py-2"
-                  required
                 />
               )}
             />
@@ -181,7 +188,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
                   type="text"
                   placeholder="Project Name"
                   className="w-full border rounded px-3 py-2"
-                  required
                 />
               )}
             />
@@ -196,10 +202,11 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
             </Button>
             <Button
               type="submit"
+              disabled={isPending}
               className="flex items-center gap-2 px-5 py-2 cursor-pointer text-base font-semibold"
               size="lg"
             >
-              Add Task
+              {isPending ? 'Adding...' : 'Add Task'}
             </Button>
           </div>
         </form>

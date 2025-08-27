@@ -68,7 +68,6 @@ const TaskCalendar: React.FC = () => {
         open={showDayTasksModal}
         onClose={handleDayTasksModalClose}
         date={selectedDate}
-        tasks={dayTasks}
         data-testid="day-tasks-modal"
       />
     </div>

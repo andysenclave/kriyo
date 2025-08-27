@@ -14,9 +14,9 @@ export const AddTaskSchema = Yup.object<Task>({
     name: Yup.string(),
   }).optional(),
   project: Yup.object({
-    id: Yup.string().required('Project ID is required'),
-    name: Yup.string().required('Project Name is required'),
-  }).required('Project is required'),
+    id: Yup.string().optional(),
+    name: Yup.string().optional(),
+  }).optional(),
 });
 
 export type AddTaskFormValues = Yup.InferType<typeof AddTaskSchema>;

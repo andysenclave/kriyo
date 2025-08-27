@@ -81,7 +81,7 @@ export class TasksController {
     return this.tasksService.getTasksByUserId(user.id);
   }
 
-  @Get('my/tasks/:dueDate')
+  @Get('my/tasks/dueDate/:dueDate')
   @Version('1')
   @UseGuards(AuthGuard)
   @ApiBearerAuth('better-auth.session_token')
