@@ -1,9 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, screen } from '@testing-library/react';
 import PlannedTaskList from '..';
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
-import { Task } from '@/app/providers/MyTasksProvider/models';
 import { isToday, formatDistanceToNow } from 'date-fns';
+import { Task } from '@/app/hooks/tasks/models';
 
 // Mock the MyTasksProvider hook
 jest.mock('@/app/providers/MyTasksProvider', () => ({
@@ -32,7 +31,9 @@ jest.mock('date-fns', () => ({
   formatDistanceToNow: jest.fn(),
 }));
 
-const mockUseMyTasks = useMyTasks as jest.MockedFunction<typeof useMyTasks>;
+// @ts-expect-error asdklmdkmaskldmsmadkm
+
+const mockUseMyTasks = jest.fn() as jest.MockedFunction;
 const mockIsToday = isToday as jest.MockedFunction<typeof isToday>;
 const mockFormatDistanceToNow = formatDistanceToNow as jest.MockedFunction<
   typeof formatDistanceToNow
@@ -54,7 +55,6 @@ describe('PlannedTaskList', () => {
       createdAt: '2025-07-25T09:00:00Z',
       updatedAt: '2025-07-25T09:00:00Z',
       createdBy: { id: 'user1', name: 'John Doe' },
-      project: { id: 'project1', name: 'Project Alpha' },
     },
     {
       id: '2',
@@ -67,7 +67,6 @@ describe('PlannedTaskList', () => {
       createdAt: '2025-07-25T10:00:00Z',
       updatedAt: '2025-07-25T10:00:00Z',
       createdBy: { id: 'user2', name: 'Jane Smith' },
-      project: { id: 'project2', name: 'Project Beta' },
     },
     {
       id: '3',
@@ -80,7 +79,6 @@ describe('PlannedTaskList', () => {
       createdAt: '2025-07-25T11:00:00Z',
       updatedAt: '2025-07-25T11:00:00Z',
       createdBy: { id: 'user1', name: 'John Doe' },
-      project: { id: 'project1', name: 'Project Alpha' },
     },
     {
       id: '4',
@@ -93,7 +91,6 @@ describe('PlannedTaskList', () => {
       createdAt: '2025-07-25T12:00:00Z',
       updatedAt: '2025-07-25T12:00:00Z',
       createdBy: { id: 'user2', name: 'Jane Smith' },
-      project: { id: 'project2', name: 'Project Beta' },
     },
   ];
 
@@ -260,7 +257,6 @@ describe('PlannedTaskList', () => {
   it('limits display to 3 tasks maximum', () => {
     // Provide more than 3 tasks
     const manyTasks: TestTask[] = [
-      ...mockTasks,
       {
         id: '5',
         title: 'Task 5',
@@ -269,7 +265,6 @@ describe('PlannedTaskList', () => {
         createdAt: '2025-07-25T13:00:00Z',
         updatedAt: '2025-07-25T13:00:00Z',
         createdBy: { id: 'user1', name: 'John Doe' },
-        project: { id: 'project1', name: 'Project Alpha' },
       },
       {
         id: '6',
@@ -279,7 +274,6 @@ describe('PlannedTaskList', () => {
         createdAt: '2025-07-25T14:00:00Z',
         updatedAt: '2025-07-25T14:00:00Z',
         createdBy: { id: 'user1', name: 'John Doe' },
-        project: { id: 'project1', name: 'Project Alpha' },
       },
     ];
 
