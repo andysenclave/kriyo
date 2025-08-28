@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
-import { useSearchTasks } from '@/app/pages/dashboard/hooks';
-import Task from '@/app/pages/dashboard/hooks/tasks/models/Task';
+import { Task } from '@/app/hooks/tasks/models';
+import { useSearchTasks } from '@/app/hooks';
 
 export const useTasksFiltered = (filter: string) => {
   const { data, error, isLoading } = useSearchTasks('');

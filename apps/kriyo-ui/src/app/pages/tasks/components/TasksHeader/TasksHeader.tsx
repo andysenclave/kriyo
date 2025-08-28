@@ -1,5 +1,6 @@
 'use client';
 
+import { TaskActions } from '@/app/components/task';
 import { useRouter } from 'next/navigation';
 
 interface TasksHeaderProps {
@@ -7,9 +8,9 @@ interface TasksHeaderProps {
 }
 
 const filterOptions = [
-  { key: 'all', label: 'All Tasks', path: '/tasks' },
-  { key: 'overdue', label: 'Overdue', path: '/tasks?filter=overdue' },
-  { key: 'high-priority', label: 'High Priority', path: '/tasks?filter=high-priority' },
+  { key: 'all', label: 'My Tasks', path: '/tasks' },
+  { key: 'overdue', label: 'Overdue', path: '/tasks/overdue' },
+  { key: 'high-priority', label: 'High Priority', path: '/tasks/high-priority' },
 ];
 
 export const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
@@ -19,21 +20,21 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
     router.push(path);
   };
 
-  const getTitle = () => {
-    const option = filterOptions.find(opt => opt.key === currentFilter);
-    return option?.label || 'All Tasks';
-  };
-
   return (
     <div className="mb-8">
-      <h1 className="text-3xl font-bold text-gray-900 mb-6">{getTitle()}</h1>
-      
+      <div className="grid w-full grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="md:col-span-3 flex flex-col gap-6">
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">My Tasks</h1>
+        </div>
+        <div className="md:col-span-1">
+          <TaskActions />
+        </div>
+      </div>
       <div className="border-b border-gray-200">
         <nav className="-mb-px flex space-x-8">
           {filterOptions.map((option) => {
-            const isActive = 
-              (option.key === 'all' && currentFilter === 'all') ||
-              (option.key === currentFilter);
+            const isActive =
+              (option.key === 'all' && currentFilter === 'all') || option.key === currentFilter;
 
             return (
               <button

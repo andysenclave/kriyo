@@ -21,7 +21,6 @@ const useTasksByDate = (date: string) => {
     placeholderData: (previousData) => previousData,
   });
 
-  console.log({ data, error, isLoading, config });
   return {
     data,
     error,

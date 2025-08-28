@@ -38,8 +38,6 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
 }) => {
   const { data, addMyTask, isPending } = useAddMyTask();
 
-  console.log({ data });
-
   const selectedTaskDate = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
     month: '2-digit',

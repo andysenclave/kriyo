@@ -1,7 +1,7 @@
+import { Task } from '@/app/hooks/tasks/models';
 import { get } from '@/services/api/axios';
 import config from '@/services/api/config';
 import { useQuery } from '@tanstack/react-query';
-import Task from '@/app/pages/dashboard/hooks/tasks/models/Task';
 
 const getTaskDetailPath = (taskId: string) => {
   return `${config.apiBaseUrl}protected/tasks/${taskId}`;

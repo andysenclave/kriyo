@@ -27,7 +27,6 @@ const useDashboardTasks = () => {
     select: transform,
   });
 
-  console.log({ data, error, isLoading, config });
   return { data, error, isLoading };
 };
 

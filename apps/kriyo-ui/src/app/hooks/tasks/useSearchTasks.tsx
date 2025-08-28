@@ -24,7 +24,6 @@ const useSearchTasks = (searchTerm: string) => {
     placeholderData: (previousData) => previousData,
   });
 
-  console.log({ data, error, isLoading, config });
   return {
     data: shouldSearch ? data : { tasks: [] },
     error,
