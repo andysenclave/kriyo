@@ -2,18 +2,24 @@
 
 import { TaskActions } from '@/app/components/task';
 import { useRouter } from 'next/navigation';
+import { TaskFilter } from '../../../hooks';
 
 interface TasksHeaderProps {
-  currentFilter: string;
+  currentFilter: TaskFilter;
 }
 
 const filterOptions = [
-  { key: 'all', label: 'My Tasks', path: '/tasks' },
-  { key: 'overdue', label: 'Overdue', path: '/tasks/overdue' },
-  { key: 'high-priority', label: 'High Priority', path: '/tasks/high-priority' },
+  { key: 'all', label: 'My Tasks', path: '/tasks', header: 'My Tasks' },
+  { key: 'overdue', label: 'Overdue', path: '/tasks/overdue', header: 'Overdue Tasks' },
+  {
+    key: 'high-priority',
+    label: 'High Priority',
+    path: '/tasks/high-priority',
+    header: 'High Priority Tasks',
+  },
 ];
 
-export const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
+const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
   const router = useRouter();
 
   const handleFilterChange = (path: string) => {
@@ -24,7 +30,9 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
     <div className="mb-8">
       <div className="grid w-full grid-cols-1 md:grid-cols-4 gap-4">
         <div className="md:col-span-3 flex flex-col gap-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">My Tasks</h1>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            {filterOptions.find((opt) => opt.key === currentFilter)?.header}
+          </h1>
         </div>
         <div className="md:col-span-1">
           <TaskActions />
@@ -55,3 +63,5 @@ export const TasksHeader: React.FC<TasksHeaderProps> = ({ currentFilter }) => {
     </div>
   );
 };
+
+export default TasksHeader;

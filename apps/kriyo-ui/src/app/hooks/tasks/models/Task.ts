@@ -10,14 +10,16 @@ export interface UserInfo {
 
 export default interface Task {
   id: string;
+  createdBy: string | UserInfo;
+
   title: string;
-  description?: string;
-  dueDate?: string;
+  description: string;
+
+  dueDate: string;
   status: 'todo' | 'in-progress' | 'in-review' | 'done' | 'blocked' | 'cancelled';
-  priority?: 'low' | 'medium' | 'high';
+  priority: 'low' | 'medium' | 'high';
+  priorityRank: number;
+  project: string | null;
+  assignedTo: string | null;
   createdAt: string;
-  updatedAt: string;
-  assignedTo?: string;
-  createdBy: UserInfo;
-  project?: string;
 }

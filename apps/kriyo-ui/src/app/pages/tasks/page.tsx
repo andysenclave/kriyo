@@ -1,6 +1,6 @@
 'use client';
 
-import Tasks from './Tasks';
+import { Tasks } from './components';
 
 const TasksPage: React.FC = () => {
   return <Tasks />;

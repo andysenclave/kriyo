@@ -1,4 +1,4 @@
-import Tasks from '../Tasks';
+import { Tasks } from '../components';
 
 export default function OverduePage() {
   return <Tasks filter="overdue" />;

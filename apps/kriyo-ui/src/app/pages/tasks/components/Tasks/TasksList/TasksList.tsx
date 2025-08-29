@@ -3,43 +3,28 @@
 import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { AgGridReact } from 'ag-grid-react';
-import { ColDef, GridReadyEvent } from 'ag-grid-community';
-import { useTasksFiltered } from '../../hooks/useTasksFiltered';
+import {
+  ColDef,
+  GridReadyEvent,
+  ModuleRegistry,
+  AllCommunityModule,
+  IRowNode,
+} from 'ag-grid-community';
 import { TasksListSkeleton } from './TasksListSkeleton';
-
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Task } from '@/app/hooks/tasks/models';
+import { TaskFilter, useGetMyTasks } from '../../../hooks';
+import { StatusLabel } from '@/app/components/labels';
+
+ModuleRegistry.registerModules([AllCommunityModule]);
 
 interface TasksListProps {
-  filter: string;
+  filter: TaskFilter;
 }
 
 const StatusRenderer = ({ value }: { value: string }) => {
-  const getStatusColor = (status: string) => {
-    switch (status) {
-      case 'done':
-        return 'bg-green-100 text-green-800';
-      case 'in-progress':
-        return 'bg-blue-100 text-blue-800';
-      case 'in-review':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'blocked':
-        return 'bg-red-100 text-red-800';
-      case 'cancelled':
-        return 'bg-gray-100 text-gray-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-
-  return (
-    <span
-      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getStatusColor(value)}`}
-    >
-      {value}
-    </span>
-  );
+  return <StatusLabel status={value} />;
 };
 
 const PriorityRenderer = ({ value }: { value: string }) => {
@@ -57,12 +42,13 @@ const PriorityRenderer = ({ value }: { value: string }) => {
         return 'bg-gray-100 text-gray-800';
     }
   };
+  const priorityLabel = `${value.slice(0, 1).toUpperCase()}${value.substring(1)}`;
 
   return (
     <span
       className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(value)}`}
     >
-      {value}
+      {priorityLabel}
     </span>
   );
 };
@@ -72,9 +58,9 @@ const DateRenderer = ({ value }: { value: string }) => {
   return new Date(value).toLocaleDateString();
 };
 
-export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
+const TasksList: React.FC<TasksListProps> = ({ filter }) => {
   const router = useRouter();
-  const { data, isLoading, error } = useTasksFiltered(filter);
+  const { data, isLoading, error } = useGetMyTasks(filter);
 
   const columnDefs: ColDef<Task>[] = useMemo(
     () => [
@@ -100,6 +86,11 @@ export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         headerName: 'Priority',
         width: 100,
         cellRenderer: PriorityRenderer,
+        comparator: (valA, valB, rowA: IRowNode<Task>, rowB: IRowNode<Task>) => {
+          const priorityRankA = rowA?.data?.priorityRank ?? 0;
+          const priorityRankB = rowB?.data?.priorityRank ?? 0;
+          return priorityRankA - priorityRankB;
+        },
         filter: true,
       },
       {
@@ -114,13 +105,16 @@ export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
           if (!dateB) return -1;
           return new Date(dateA).getTime() - new Date(dateB).getTime();
         },
+        filter: 'agDateColumnFilter',
       },
       {
-        field: 'createdAt',
-        headerName: 'Created',
+        field: 'assignedTo',
+        headerName: 'Assigned To',
         width: 120,
-        cellRenderer: DateRenderer,
-        sort: 'desc',
+        cellRenderer: ({ value }: { value: string }) => {
+          if (!value) return <span className="text-gray-400">-</span>;
+          return value.slice(0, 4);
+        },
       },
     ],
     [router],
@@ -147,7 +141,7 @@ export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
     );
   }
 
-  if (!data?.tasks || data.tasks.length === 0) {
+  if ((!data || data.length === 0) && !isLoading) {
     return (
       <div className="text-center py-12">
         <div className="text-gray-400 mb-2">
@@ -173,16 +167,15 @@ export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
   return (
     <div className="space-y-4">
       <div className="text-sm text-gray-600 mb-4">
-        {data.tasks.length} task{data.tasks.length !== 1 ? 's' : ''} found
+        {data?.length} task{data?.length !== 1 ? 's' : ''} found
       </div>
 
-      <div className="ag-theme-alpine w-full" style={{ height: 600 }}>
+      <div className="ag-theme-alpine w-full h-139">
         <AgGridReact<Task>
-          rowData={data.tasks}
+          rowData={data}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
-          pagination={true}
-          paginationPageSize={20}
+          theme="legacy"
           animateRows={true}
           enableCellTextSelection={true}
           onGridReady={(params: GridReadyEvent) => {
@@ -193,3 +186,5 @@ export const TasksList: React.FC<TasksListProps> = ({ filter }) => {
     </div>
   );
 };
+
+export default TasksList;

@@ -4,7 +4,7 @@ import config from '@/services/api/config';
 import { useQuery } from '@tanstack/react-query';
 
 const getTaskDetailPath = (taskId: string) => {
-  return `${config.apiBaseUrl}protected/tasks/${taskId}`;
+  return `${config.apiBaseUrl}my/tasks/${taskId}`;
 };
 
 const getTaskDetail = async (taskId: string): Promise<Task> => {
@@ -13,8 +13,8 @@ const getTaskDetail = async (taskId: string): Promise<Task> => {
 };
 
 export const useTaskDetail = (taskId: string) => {
-  const { data, error, isLoading } = useQuery<Task>({
-    queryKey: ['task', taskId],
+  const { data, error, isLoading, refetch } = useQuery<Task>({
+    queryKey: ['taskDetail', taskId],
     queryFn: () => getTaskDetail(taskId),
     enabled: !!taskId,
   });
@@ -23,5 +23,6 @@ export const useTaskDetail = (taskId: string) => {
     data,
     error,
     isLoading,
+    refetch,
   };
 };

@@ -21,12 +21,14 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children, menuItems }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="h-screen bg-gray-50 flex flex-col overflow-hidden">
       <Header />
-      <div className="flex">
+      <div className="flex flex-1 min-h-0">
         <Navigation items={menuItems} />
         <ProtectedRoute>
-          <div className="flex-1">{children}</div>
+          <div className="flex-1 overflow-auto">
+            {children}
+          </div>
         </ProtectedRoute>
       </div>
     </div>

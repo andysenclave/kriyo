@@ -23,7 +23,7 @@ const useAddMyTask = () => {
   const { data, mutate, isPending } = useMutation<AddNewTaskResponse, Error, NewTask>({
     mutationFn: addMyTask,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['dashboardTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboardTasks', 'getMyTasks'] });
     },
   });
 

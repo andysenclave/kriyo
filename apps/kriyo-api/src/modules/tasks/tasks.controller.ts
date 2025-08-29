@@ -305,4 +305,29 @@ export class TasksController {
   async searchTasks(@Param('search') searchTerm: string) {
     return this.tasksService.searchTasks(searchTerm);
   }
+
+  @Get('my/tasks/:id')
+  @Version('1')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth('better-auth.session_token')
+  @ApiOperation({
+    summary: 'Get task details',
+    description: 'Retrieve detailed information about a specific task',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Task ID to retrieve',
+    example: '60f1b2b3c1d4f1a2b3c4d5e6',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Task Details retrieved successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found - Task not found with id',
+  })
+  async getTaskDetails(@Param('id') taskId: string) {
+    return await this.tasksService.getTasksById(taskId);
+  }
 }

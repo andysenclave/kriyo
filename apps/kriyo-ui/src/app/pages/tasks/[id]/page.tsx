@@ -1,15 +1,11 @@
 'use client';
 
-import TaskDetail from './TaskDetail';
+import { useParams } from 'next/navigation';
+import { TaskDetails } from '../components/Tasks';
 
-interface TaskDetailPageProps {
-  params: {
-    id: string;
-  };
-}
-
-const TaskDetailPage: React.FC<TaskDetailPageProps> = ({ params }) => {
-  return <TaskDetail taskId={params.id} />;
+const TaskDetailPage: React.FC = () => {
+  const params = useParams<{ id: string }>();
+  return <TaskDetails taskId={params.id} />;
 };
 
 export default TaskDetailPage;
