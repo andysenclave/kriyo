@@ -1,4 +1,4 @@
-import { Task } from '@/app/providers/MyTasksProvider/models';
+import { Task } from '@/app/hooks/tasks/models';
 
 interface StatusLabelProps {
   status: Task['status'];
@@ -31,15 +31,17 @@ const STATUS_MAP = Object.freeze({
   },
 });
 
-const StatusLabel: React.FC<StatusLabelProps> = ({ status }) => {
+const StatusLabel: React.FC<StatusLabelProps> = ({
+  status,
+}: {
+  status: keyof typeof STATUS_MAP;
+}) => {
   const statusInfo = STATUS_MAP[status] || STATUS_MAP.todo;
 
   return (
-    <div className="w-24">
-      <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
-        {statusInfo.display}
-      </span>
-    </div>
+    <span className={`px-2 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
+      {statusInfo.display}
+    </span>
   );
 };
 

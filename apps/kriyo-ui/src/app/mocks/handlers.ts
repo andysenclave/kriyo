@@ -1,6 +1,8 @@
 import { JsonBodyType, HttpResponseInit, http, HttpResponse } from 'msw';
 import seedGetMyPendingTasks from './seedData/tasksHandlers/seedGetMyPendingTasks';
 import seedPostMyTask from './seedData/tasksHandlers/seedPostMyTask';
+import seedGetTasks from './seedData/tasksHandlers/seedGetTasks';
+import seedGetTaskDetail from './seedData/tasksHandlers/seedGetTaskDetail';
 
 const mockRequestGet = (url: string, response: JsonBodyType, init?: HttpResponseInit) => {
   return http.get(url, () => {
@@ -41,6 +43,17 @@ const mockRequestGetXml = (url: string, response: string, init?: HttpResponseIni
 const seedHandlers = [
   mockRequestGet(seedGetMyPendingTasks.url, seedGetMyPendingTasks.response),
   mockRequestPost(seedPostMyTask.url, seedPostMyTask.response),
+  mockRequestGet(seedGetTasks.url, seedGetTasks.response),
+  http.get('*/protected/tasks/:id', ({ params }) => {
+    const taskId = params.id as string;
+    const response = seedGetTaskDetail.response(taskId);
+    
+    if ('error' in response) {
+      return HttpResponse.json(response, { status: 404 });
+    }
+    
+    return HttpResponse.json(response);
+  }),
 ];
 
 export default seedHandlers;

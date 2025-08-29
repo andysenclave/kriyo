@@ -5,7 +5,7 @@ const getBaseConfig = (additionalConfig: Record<string, unknown> = {}) => {
   return {
     withCredentials: true,
     headers: {
-      'CLIENT_ID': config.clientId,
+      CLIENT_ID: config.clientId,
       ...(additionalConfig.headers as Record<string, unknown>),
     },
     ...additionalConfig,
@@ -29,9 +29,9 @@ export const post = async (
   return await axios.post(url, data, requestConfig);
 };
 
-export const patch = async (url: string, data: unknown) => {
+export const put = async (url: string, data: unknown) => {
   const requestConfig = getBaseConfig();
-  return await axios.patch(url, data, requestConfig);
+  return await axios.put(url, data, requestConfig);
 };
 
 /* istanbul ignore next */

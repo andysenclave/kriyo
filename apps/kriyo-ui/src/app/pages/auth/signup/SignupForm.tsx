@@ -35,7 +35,6 @@ const SignupForm: React.FC = () => {
     try {
       setIsLoading(true);
       setError(null);
-      console.log({ data });
 
       const result = await signup(data);
 
