@@ -19,7 +19,7 @@ const getMyTasks = async (): Promise<Task[]> => {
 const transform = (data: Task[], filter: TaskFilter) => {
   switch (filter) {
     case 'overdue':
-      return data.filter((task) => new Date(task?.dueDate ?? '') < new Date());
+      return data.filter((task) => new Date(task?.dueDate ?? null) < new Date());
     case 'high-priority':
       return data.filter((task) => task.priorityRank === 1);
     default:

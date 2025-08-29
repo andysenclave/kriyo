@@ -196,7 +196,7 @@ const EditTaskDetails = ({ taskId, onStopEditing, task }: EditTaskDetailsProps) 
             className="flex items-center gap-2 px-5 py-2 cursor-pointer text-base font-semibold"
             size="lg"
           >
-            {isPending ? 'Adding...' : 'Save Task'}
+            {isPending ? 'Saving...' : 'Save Task'}
           </Button>
         </div>
       </form>

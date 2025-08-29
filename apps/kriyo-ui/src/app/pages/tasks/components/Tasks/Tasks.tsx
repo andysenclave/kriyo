@@ -23,7 +23,7 @@ const Tasks: React.FC<TasksProps> = ({ filter }) => {
   }
 
   return (
-    <div className=" bg-gray-50">
+    <div className="bg-gray-50">
       <div className="p-4 w-full">
         <TasksHeader currentFilter={appliedFilter} />
         <TasksList filter={appliedFilter} />
