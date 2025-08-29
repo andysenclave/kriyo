@@ -5,6 +5,7 @@ import MSWInitializer from './MSWInitializer';
 import AuthProvider from './providers/AuthProvider';
 import { AppLayout } from './components/auth';
 import AppMenuItems from './AppMenuItems';
+import QueryProvider from './providers/QueryProvider';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,9 +34,11 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <MSWInitializer />
-        <AuthProvider>
-          <AppLayout menuItems={AppMenuItems}>{children}</AppLayout>
-        </AuthProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <AppLayout menuItems={AppMenuItems}>{children}</AppLayout>
+          </AuthProvider>
+        </QueryProvider>
       </body>
     </html>
   );

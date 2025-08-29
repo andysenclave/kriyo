@@ -1,13 +1,13 @@
-import MyTasksProvider from '@/app/providers/MyTasksProvider';
 import { render, screen } from '@testing-library/react';
 import PlannedTaskList from '..';
+import QueryProvider from '@/app/providers/QueryProvider';
 
 describe('PlannedTaskList', () => {
   const renderComponent = () => {
     return render(
-      <MyTasksProvider>
+      <QueryProvider>
         <PlannedTaskList userName="Andy" />
-      </MyTasksProvider>
+      </QueryProvider>,
     );
   };
 

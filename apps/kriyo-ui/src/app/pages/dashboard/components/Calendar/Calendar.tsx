@@ -1,9 +1,9 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import DayTasksModal from './DayTasksModal';
-import { useMyTasks } from '@/app/providers/MyTasksProvider';
+import { useDashboardTasks } from '../../hooks';
 
 interface TaskCalendarState {
   selectedDate: Date;
@@ -18,7 +18,8 @@ const initialState: TaskCalendarState = {
 };
 
 const TaskCalendar: React.FC = () => {
-  const { tasks } = useMyTasks();
+  const { data } = useDashboardTasks();
+  const { tasks } = data || { tasks: [] };
   const [{ selectedDate, showDayTasksModal }, setTaskCalendarState] =
     useState<TaskCalendarState>(initialState);
 
@@ -37,22 +38,9 @@ const TaskCalendar: React.FC = () => {
     }));
   };
 
-  const dayTasks = useMemo(() => {
-    if (!selectedDate) return [];
-    return tasks.filter((task) => {
-      if (!task.dueDate) return false;
-      const taskDate = new Date(task.dueDate);
-      return (
-        taskDate.getDate() === selectedDate.getDate() &&
-        taskDate.getMonth() === selectedDate.getMonth() &&
-        taskDate.getFullYear() === selectedDate.getFullYear()
-      );
-    });
-  }, [selectedDate, tasks]);
-
   return (
     <div
-      className="rounded-2xl bg-white shadow w-full max-w-md h-[366px] border-none"
+      className="rounded-2xl bg-white shadow w-full max-w-md h-[426px] border-none"
       data-testid="task-calendar-root"
     >
       <Calendar
@@ -67,7 +55,6 @@ const TaskCalendar: React.FC = () => {
         open={showDayTasksModal}
         onClose={handleDayTasksModalClose}
         date={selectedDate}
-        tasks={dayTasks}
         data-testid="day-tasks-modal"
       />
     </div>

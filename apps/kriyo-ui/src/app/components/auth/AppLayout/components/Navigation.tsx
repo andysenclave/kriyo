@@ -14,6 +14,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
   const [open, setOpen] = useState(false);
   const ref = useClickOutside(() => setOpen(false));
   const router = useRouter();
+  const mainPath = useMemo(() => `/${pathname.split('/')[1]}`, [pathname]);
 
   const styles = useMemo(
     () => ({
@@ -40,7 +41,7 @@ const Navigation: React.FC<NavigationProps> = ({ items }) => {
               <button
                 onClick={() => handleItemClick(item.id)}
                 className={`${styles.item} cursor-pointer text-xs ${
-                  pathname === item.route
+                  mainPath === item.route
                     ? 'bg-gradient-to-br from-[#6D5DF61A] to-[#4B3DF61A] text-gray-900 font-semibold'
                     : 'text-gray-600'
                 }`}
