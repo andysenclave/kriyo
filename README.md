@@ -262,12 +262,80 @@ npm run clean        # Clean all build artifacts
 
 ---
 
-## 🔌 API Documentation
+## 🏗️ API Architecture Documentation
 
 ### API Gateway (Port 8000)
 
 - **Swagger UI**: http://localhost:8000/api/docs
 - **Health Check**: http://localhost:8000/api/health
+
+### 🌐 Gateway Flow
+
+```mermaid
+sequenceDiagram
+    participant UI as 🖥️ Kriyo UI
+    participant GW as 🌐 API Gateway
+    participant AUTH as 🔐 Auth Service
+    participant TASKS as ✅ Tasks Service
+    participant PROJ as 📁 Projects Service
+    participant USER as 👤 User Service
+
+    UI->>GW: API Request + Session Cookie
+    GW->>GW: Validate Session
+    alt Authentication Required
+        GW->>AUTH: Verify Session
+        AUTH-->>GW: Session Valid
+    end
+    GW->>TASKS: Forward Request
+    TASKS-->>GW: Service Response
+    GW-->>UI: Formatted Response
+```
+
+### 🎯 Route Categories
+
+| Route Pattern      | Access Level         | Description                               |
+| ------------------ | -------------------- | ----------------------------------------- |
+| **`/my/*`**        | 👤 **User-Owned**    | Resources belonging to authenticated user |
+| **`/protected/*`** | 🔐 **Authenticated** | Any authenticated user can access         |
+| **`/public/*`**    | 🌍 **Public**        | No authentication required                |
+
+---
+
+## 📡 API Endpoints
+
+### 🏠 Health & System
+
+- **`GET /api/v1/health`** - Service health check
+- **`GET /api/v1/version`** - API version information
+
+### 📊 Dashboard
+
+- **`GET /api/v1/my/dashboard/tasks`** - Personal task analytics
+- **`GET /api/v1/my/dashboard/projects`** - Project overview
+
+### ✅ Tasks Management
+
+- **`GET /api/v1/my/tasks`** - Get user's tasks
+- **`POST /api/v1/my/tasks`** - Create new task
+- **`PUT /api/v1/my/tasks/:id`** - Update task
+- **`DELETE /api/v1/my/tasks/:id`** - Delete task
+- **`GET /api/v1/my/tasks/:dueDate`** - Tasks by due date
+- **`GET /api/v1/protected/tasks/search/:search`** - Search tasks
+
+### 📁 Projects Management
+
+- **`GET /api/v1/my/projects`** - Get user's projects
+- **`POST /api/v1/my/projects`** - Create new project
+- **`PUT /api/v1/my/projects/:id`** - Update project
+- **`DELETE /api/v1/my/projects/:id`** - Delete project
+- **`GET /api/v1/protected/projects/search/:search`** - Search projects
+
+### 👤 User Profile
+
+- **`GET /api/v1/my/profile`** - Get user profile
+- **`PUT /api/v1/my/profile`** - Update profile
+
+> 📖 **Detailed API Documentation:** [View Complete API Routes Guide](./API_ROUTES.md)
 
 ### Key API Routes
 
