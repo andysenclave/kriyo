@@ -274,21 +274,25 @@ npm run clean        # Clean all build artifacts
 ```mermaid
 sequenceDiagram
     participant UI as 🖥️ Kriyo UI
-    participant GW as 🌐 API Gateway
+    participant API as 🌐 Kriyo API
     participant AUTH as 🔐 Auth Service
     participant TASKS as ✅ Tasks Service
     participant PROJ as 📁 Projects Service
     participant USER as 👤 User Service
 
-    UI->>GW: API Request + Session Cookie
-    GW->>GW: Validate Session
+    UI->>API: API Request + Session Cookie
+    API->>AUTH: Validate Session
     alt Authentication Required
-        GW->>AUTH: Verify Session
-        AUTH-->>GW: Session Valid
+        API->>AUTH: Verify Session
+        AUTH-->>API: Session Valid
     end
-    GW->>TASKS: Forward Request
-    TASKS-->>GW: Service Response
-    GW-->>UI: Formatted Response
+    API->>TASKS: Forward Request
+    TASKS-->>API: Service Response
+    API->>PROJ: Forward Request
+    PROJ-->>API: Service Response
+    API->>USER: Forward Request
+    USER-->>API: Service Response
+    API-->>UI: Formatted Response
 ```
 
 ### 🎯 Route Categories
