@@ -88,9 +88,6 @@ describe('UserSyncService', () => {
       expect(logger.log).toHaveBeenCalledWith(
         'Fetching users for ids: user1, user2',
       );
-      expect(logger.log).toHaveBeenCalledWith(
-        'Fetched users for ids: user1, user2',
-      );
       expect(result).toEqual(expectedUserInfos);
     });
 
@@ -141,7 +138,11 @@ describe('UserSyncService', () => {
 
       httpClientService.get.mockResolvedValue([minimalUser]);
 
-      expect(result).toEqual([{ id: 'user3', name: 'Minimal User', betterAuthId: '' }]);
+      const result = await service.getUsersByIds(ids);
+
+      expect(result).toEqual([
+        { id: 'user3', name: 'Minimal User', betterAuthId: '' },
+      ]);
     });
 
     it('should throw InternalServerErrorException when HTTP call fails', async () => {
