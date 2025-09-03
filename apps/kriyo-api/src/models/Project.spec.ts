@@ -4,7 +4,10 @@ describe('Project Model', () => {
   it('should define Project interface correctly', () => {
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Test Project',
       description: 'Test project description',
       status: 'active',
@@ -12,7 +15,10 @@ describe('Project Model', () => {
       targetDate: '2025-06-01T00:00:00.000Z',
       priority: 'high',
       priorityRank: 1,
-      assignedTo: 'user-456',
+      assignedTo: {
+        id: 'user-456',
+        name: 'John Doe',
+      },
       createdAt: new Date('2024-01-01').toISOString(),
     };
 
@@ -32,7 +38,10 @@ describe('Project Model', () => {
   it('should allow nullable fields to be null', () => {
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Minimal Project',
       description: 'Project with null optional fields',
       status: 'inactive',
@@ -53,7 +62,10 @@ describe('Project Model', () => {
   it('should support empty tasks array', () => {
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Empty Project',
       description: 'Project with no tasks',
       status: 'new',
@@ -74,7 +86,10 @@ describe('Project Model', () => {
     const taskIds = ['task-1', 'task-2', 'task-3', 'task-4', 'task-5'];
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Multi-task Project',
       description: 'Project with multiple tasks',
       status: 'active',
@@ -82,7 +97,10 @@ describe('Project Model', () => {
       targetDate: '2025-12-31T23:59:59.000Z',
       priority: 'medium',
       priorityRank: 2,
-      assignedTo: 'user-456',
+      assignedTo: {
+        id: 'user-456',
+        name: 'John Doe',
+      },
       createdAt: new Date().toISOString(),
     };
 
@@ -95,7 +113,10 @@ describe('Project Model', () => {
   it('should enforce string array type for tasks', () => {
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Test Project',
       description: 'Test description',
       status: 'active',
@@ -116,7 +137,10 @@ describe('Project Model', () => {
   it('should support different status values', () => {
     const activeProject: Project = {
       id: 'project-1',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Active Project',
       description: 'An active project',
       status: 'active',
@@ -148,7 +172,10 @@ describe('Project Model', () => {
   it('should support different priority values and ranks', () => {
     const highPriorityProject: Project = {
       id: 'project-1',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'High Priority Project',
       description: 'Critical project',
       status: 'active',
@@ -177,7 +204,10 @@ describe('Project Model', () => {
     const now = new Date().toISOString();
     const project: Project = {
       id: 'project-123',
-      owner: 'user-123',
+      owner: {
+        id: 'user-123',
+        name: 'Project Owner',
+      },
       title: 'Test Project',
       description: 'Test description',
       status: 'active',
@@ -196,7 +226,10 @@ describe('Project Model', () => {
   it('should allow string properties to be empty strings', () => {
     const project: Project = {
       id: '',
-      owner: '',
+      owner: {
+        id: '',
+        name: '',
+      },
       title: '',
       description: '',
       status: '',
@@ -204,7 +237,7 @@ describe('Project Model', () => {
       targetDate: '',
       priority: '',
       priorityRank: 0,
-      assignedTo: '',
+      assignedTo: null,
       createdAt: new Date().toISOString(),
     };
 

@@ -25,7 +25,7 @@ const ViewTaskDetails = ({ task }: ViewTaskDetailsProps) => {
         <div className="space-y-4">
           <div className="flex items-center text-gray-600">
             <User className="w-4 h-4 mr-2" />
-            <span className="text-sm">Created by: {task.createdBy as string}</span>
+            <span className="text-sm">Created by: {task.createdBy?.name as string}</span>
           </div>
 
           <div className="flex items-center text-gray-600">
@@ -47,7 +47,7 @@ const ViewTaskDetails = ({ task }: ViewTaskDetailsProps) => {
           {task.assignedTo && (
             <div className="flex items-center text-gray-600">
               <User className="w-4 h-4 mr-2" />
-              <span className="text-sm">Assigned to: {task.assignedTo}</span>
+              <span className="text-sm">Assigned to: {task.assignedTo?.name}</span>
             </div>
           )}
         </div>

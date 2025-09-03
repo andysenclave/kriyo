@@ -131,18 +131,6 @@ const EditTaskDetails = ({ taskId, onStopEditing, task }: EditTaskDetailsProps) 
         />
         <div className="flex gap-2">
           <Controller
-            name={'assignedTo.id' as FieldPath<EditTaskFormValues>}
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="Assignee ID (optional)"
-                className="w-full border rounded px-3 py-2"
-              />
-            )}
-          />
-          <Controller
             name={'assignedTo.name' as FieldPath<EditTaskFormValues>}
             control={control}
             render={({ field }) => (
@@ -155,7 +143,7 @@ const EditTaskDetails = ({ taskId, onStopEditing, task }: EditTaskDetailsProps) 
             )}
           />
         </div>
-        <div className="flex gap-2">
+        {/* <div className="flex gap-2">
           <Controller
             name={'project.id' as FieldPath<EditTaskFormValues>}
             control={control}
@@ -180,7 +168,7 @@ const EditTaskDetails = ({ taskId, onStopEditing, task }: EditTaskDetailsProps) 
               />
             )}
           />
-        </div>
+        </div> */}
         <div className="flex justify-end gap-2">
           <Button
             type="button"

@@ -10,7 +10,7 @@ export interface UserInfo {
 
 export default interface Task {
   id: string;
-  createdBy: string | UserInfo;
+  createdBy: UserInfo;
 
   title: string;
   description: string;
@@ -20,6 +20,6 @@ export default interface Task {
   priority: 'low' | 'medium' | 'high';
   priorityRank: number;
   project: string | null;
-  assignedTo: string | null;
+  assignedTo: UserInfo | null;
   createdAt: string;
 }

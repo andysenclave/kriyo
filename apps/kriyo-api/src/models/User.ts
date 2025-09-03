@@ -10,3 +10,9 @@ export default interface User {
   emailVerified: boolean;
   phoneVerified: boolean;
 }
+
+export interface UserInfo {
+  id: string;
+  name: string;
+  betterAuthId?: string;
+}
