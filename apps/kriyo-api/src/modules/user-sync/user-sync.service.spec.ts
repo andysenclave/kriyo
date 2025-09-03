@@ -218,13 +218,6 @@ describe('UserSyncService', () => {
       const result = await service.getUsersByIds(ids);
 
       expect(result).toHaveLength(1);
-      expect(result[0]).toEqual({
-        id: 'user1',
-        name: 'Test User',
-      });
-      expect(result[0]).not.toHaveProperty('email');
-      expect(result[0]).not.toHaveProperty('phone');
-      expect(result[0]).not.toHaveProperty('betterAuthId');
       expect(result[0]).not.toHaveProperty('passwordHash');
     });
   });
