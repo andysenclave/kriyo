@@ -141,9 +141,7 @@ describe('UserSyncService', () => {
 
       httpClientService.get.mockResolvedValue([minimalUser]);
 
-      const result = await service.getUsersByIds(ids);
-
-      expect(result).toEqual([{ id: 'user3', name: 'Minimal User' }]);
+      expect(result).toEqual([{ id: 'user3', name: 'Minimal User', betterAuthId: '' }]);
     });
 
     it('should throw InternalServerErrorException when HTTP call fails', async () => {
