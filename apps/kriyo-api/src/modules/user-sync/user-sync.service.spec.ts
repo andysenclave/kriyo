@@ -38,8 +38,8 @@ describe('UserSyncService', () => {
   ];
 
   const expectedUserInfos: UserInfo[] = [
-    { id: 'user1', name: 'John Doe' },
-    { id: 'user2', name: 'Jane Smith' },
+    { id: 'user1', name: 'John Doe', betterAuthId: 'auth1' },
+    { id: 'user2', name: 'Jane Smith', betterAuthId: 'auth2' },
   ];
 
   beforeEach(async () => {
