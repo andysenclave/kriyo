@@ -1,6 +1,8 @@
+import { UserInfo } from './User';
+
 export default interface Task {
   id: string;
-  createdBy: string;
+  createdBy: UserInfo;
 
   title: string;
   description: string;
@@ -10,6 +12,11 @@ export default interface Task {
   priority: string;
   priorityRank: number;
   project: string | null;
-  assignedTo: string | null;
+  assignedTo: UserInfo | null;
   createdAt: string;
+}
+
+export interface FlatTask extends Omit<Task, 'createdBy' | 'assignedTo'> {
+  createdBy: string;
+  assignedTo: string | null;
 }

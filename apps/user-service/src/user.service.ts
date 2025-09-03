@@ -19,7 +19,7 @@ export class UserService {
       where: userWhereUniqueInput,
     });
 
-    const { betterAuthId, passwordHash, ...user } = userData as User;
+    const { passwordHash, ...user } = userData as User;
 
     return user;
   }
@@ -32,7 +32,7 @@ export class UserService {
     orderBy?: Prisma.UserOrderByWithRelationInput;
   }): Promise<User[]> {
     const { skip, take, cursor, where, orderBy } = params;
-    return this.prisma.user.findMany({
+    return await this.prisma.user.findMany({
       skip,
       take,
       cursor,

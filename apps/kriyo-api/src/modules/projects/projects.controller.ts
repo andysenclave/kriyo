@@ -79,7 +79,32 @@ export class ProjectsController {
     description: 'Unauthorized - Authentication required',
   })
   async getMyProjects(@CurrentUser() user: AuthUser) {
-    return this.projectsService.getProjectsByUserId(user.id);
+    return await this.projectsService.getProjectsByUserId(user.id);
+  }
+
+  @Get('my/projects/:id')
+  @Version('1')
+  @UseGuards(AuthGuard)
+  @ApiBearerAuth('better-auth.session_token')
+  @ApiOperation({
+    summary: 'Get project details',
+    description: 'Retrieve detailed information about a specific project',
+  })
+  @ApiParam({
+    name: 'id',
+    description: 'Project ID to retrieve',
+    example: '60f1b2b3c1d4f1a2b3c4d5e6',
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Project Details retrieved successfully',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Not Found - Project not found with id',
+  })
+  async getProjectDetails(@Param('id') projectId: string) {
+    return await this.projectsService.getProjectById(projectId);
   }
 
   @Post('my/projects')
