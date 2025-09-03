@@ -16,6 +16,7 @@ import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Task } from '@/app/hooks/tasks/models';
 import { TaskFilter, useGetMyTasks } from '../../../hooks';
 import { StatusLabel } from '@/app/components/labels';
+import { UserInfo } from '@/app/hooks/tasks/models/Task';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
@@ -23,7 +24,7 @@ interface TasksListProps {
   filter: TaskFilter;
 }
 
-const StatusRenderer = ({ value }: { value: string }) => {
+const StatusRenderer = ({ value }: { value: Task['status'] }) => {
   return <StatusLabel status={value} />;
 };
 
@@ -111,9 +112,9 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         field: 'assignedTo',
         headerName: 'Assigned To',
         width: 120,
-        cellRenderer: ({ value }: { value: string }) => {
+        cellRenderer: ({ value }: { value: UserInfo | null }) => {
           if (!value) return <span className="text-gray-400">-</span>;
-          return value.slice(0, 4);
+          return <span className="text-gray-800">{value.name}</span>;
         },
       },
     ],

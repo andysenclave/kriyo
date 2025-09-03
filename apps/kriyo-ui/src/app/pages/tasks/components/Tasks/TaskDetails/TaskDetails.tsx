@@ -24,6 +24,8 @@ const TaskDetails = ({ taskId }: TaskDetailProps) => {
     refetch();
   };
 
+  console.log({ task });
+
   if (isLoading) return <TaskDetailsSkeleton />;
 
   return (

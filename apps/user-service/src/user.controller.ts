@@ -32,6 +32,27 @@ export class UserController {
     return !!user?.id;
   }
 
+  @Get('/ids/:ids')
+  async getUsersByIds(@Param('ids') ids: string): Promise<UserModel[]> {
+    this.logger.log(`Fetching users with ids: ${ids}`);
+
+    const userIds = ids.split(',').map((id) => id.trim());
+    this.logger.log(`Parsed user IDs: ${JSON.stringify(userIds)}`);
+
+    const result = await this.userService.getAllUsers({
+      where: { betterAuthId: { in: userIds } },
+    });
+
+    this.logger.log(
+      `Found ${result.length} users for IDs: ${JSON.stringify(userIds)}`,
+    );
+    this.logger.log(
+      `Query result: ${JSON.stringify(result.map((u) => ({ id: u.id, name: u.name })))}`,
+    );
+
+    return result;
+  }
+
   @Get('/')
   async getAllUsers(): Promise<UserModel[]> {
     this.logger.log('Fetching all users');

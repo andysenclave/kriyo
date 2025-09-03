@@ -5,25 +5,93 @@ import {
 } from '@nestjs/common';
 import { CreateTaskDto, UpdateTaskDto } from './dtos';
 import { HttpClientService } from '../../services/http-client.service';
-import { Task } from '../../models';
+import { FlatTask, Task, UserInfo } from '../../models';
+import { UserSyncService } from '../user-sync/user-sync.service';
 
 @Injectable()
 export class TasksService {
   private readonly logger = new Logger(TasksService.name);
 
-  constructor(private readonly httpClientService: HttpClientService) {}
-  async getTasksById(id: string) {
+  constructor(
+    private readonly httpClientService: HttpClientService,
+    private readonly userSyncService: UserSyncService,
+  ) {}
+
+  private getUserById = async (
+    userId: string,
+  ): Promise<UserInfo | undefined> => {
+    this.logger.log(`Fetching user info for user ID ${userId}`);
+    return await this.userSyncService.getUserById(userId);
+  };
+
+  private getAllRelatedUserIdsInTask = (task: FlatTask): string[] => {
+    const userIds = [task.createdBy, task?.assignedTo] as string[];
+    this.logger.log(
+      `Fetching related user IDs ${userIds.join(', ')} for task ${task.id}`,
+    );
+    return [...new Set([...userIds])];
+  };
+
+  private async updateUserInfoInTasks(tasks: FlatTask[]): Promise<Task[]> {
+    const accumulatedUserIds = new Set<string>();
+
+    tasks.forEach((task) => {
+      this.getAllRelatedUserIdsInTask(task).forEach((userId) =>
+        accumulatedUserIds.add(userId),
+      );
+    });
+
+    this.logger.log(
+      `Related user IDs for tasks(${tasks.length}): ${Array.from(accumulatedUserIds).join(', ')}`,
+    );
+
+    const accumulatedUserInfos = await Promise.all(
+      Array.from(accumulatedUserIds).map((userId) => this.getUserById(userId)),
+    );
+
+    this.logger.log(
+      `Related user infos fetched successfully accumulatedUserInfos: ${JSON.stringify(accumulatedUserInfos)}`,
+    );
+
+    return tasks.map((task) => {
+      const createdBy = accumulatedUserInfos.find(
+        (userInfo) => userInfo?.betterAuthId === task.createdBy,
+      ) as UserInfo;
+      const assignedTo =
+        accumulatedUserInfos.find(
+          (userInfo) => userInfo?.betterAuthId === task.assignedTo,
+        ) || null;
+
+      this.logger.log(
+        `User infos updated for task ${JSON.stringify(task)}, createdBy: ${JSON.stringify(createdBy)}, assignedTo: ${JSON.stringify(assignedTo)}`,
+      );
+
+      return {
+        ...task,
+        createdBy,
+        assignedTo,
+      };
+    });
+  }
+  async getTaskById(id: string) {
     try {
       this.logger.log(`Fetching tasks for id ${id}`);
 
-      const task: Task = await this.httpClientService.get(
+      const task: FlatTask = await this.httpClientService.get(
         'tasks',
         `/tasks/${id}`,
       );
 
       this.logger.log(`Fetched tasks for id ${id}`);
+      this.logger.log(`Fetching user details for tasks with task id ${id}`);
 
-      return task;
+      const updatedTask = await this.updateUserInfoInTasks([task]);
+
+      this.logger.log(
+        `Fetched user details for tasks with task id ${id}, taskDetail: ${JSON.stringify(updatedTask[0])}`,
+      );
+
+      return updatedTask[0];
     } catch (error) {
       this.logger.error(
         `Failed to fetch task detail for ${id} from core service`,
@@ -34,19 +102,27 @@ export class TasksService {
       );
     }
   }
+
   async getTasksByUserId(userId: string) {
     try {
       this.logger.log(`Fetching tasks for user ${userId}`);
 
-      const tasks: Task[] = await this.httpClientService.get(
+      const tasks: FlatTask[] = await this.httpClientService.get(
         'tasks',
         `/tasks/user/${userId}`,
       );
 
       this.logger.log(`Fetched tasks for user ${userId}`);
+      this.logger.log(
+        `Fetching user details for tasks with task ids ${tasks.map((task) => task.id).join(', ')}`,
+      );
+
+      const updatedTasks = await this.updateUserInfoInTasks(tasks);
+
+      this.logger.log(`Fetched tasks for user ${userId}`);
 
       return {
-        tasks,
+        tasks: updatedTasks,
       };
     } catch (error) {
       this.logger.error(
@@ -63,7 +139,7 @@ export class TasksService {
         `Fetching tasks for user ${userId} with due date ${dueDate}`,
       );
 
-      const tasks: Task[] = await this.httpClientService.get(
+      const tasks: FlatTask[] = await this.httpClientService.get(
         'tasks',
         `/tasks/user/${userId}/${dueDate}`,
       );
@@ -71,9 +147,14 @@ export class TasksService {
       this.logger.log(
         `Fetched tasks for user ${userId} with due date ${dueDate}`,
       );
+      this.logger.log(
+        `Fetching user details for tasks with task ids ${tasks.map((task) => task.id).join(', ')}`,
+      );
+
+      const updatedTasks = await this.updateUserInfoInTasks(tasks);
 
       return {
-        tasks,
+        tasks: updatedTasks,
       };
     } catch (error) {
       this.logger.error(
@@ -89,22 +170,29 @@ export class TasksService {
       const taskDto = {
         ...createTaskDto,
         createdBy: userId,
-      } as Task;
+      } as Partial<CreateTaskDto>;
 
       this.logger.log(
         `Creating new task for user ${userId} with content ${JSON.stringify(taskDto)}`,
       );
 
-      const task: Task = await this.httpClientService.post(
+      const task: FlatTask = await this.httpClientService.post(
         'tasks',
         `/tasks`,
         taskDto,
       );
 
       this.logger.log(`Created task for user ${userId}`);
+      this.logger.log(`Fetching user details with task id ${task.id}`);
+
+      const updatedTask = await this.updateUserInfoInTasks([task]);
+
+      this.logger.log(
+        `Fetched user details for tasks with task id ${task.id}, taskDetail: ${JSON.stringify(updatedTask[0])}`,
+      );
 
       return {
-        task,
+        task: updatedTask[0],
       };
     } catch (error) {
       this.logger.error(
@@ -125,16 +213,23 @@ export class TasksService {
         `Updating task for user ${userId} with content ${JSON.stringify(updateTaskDto)}`,
       );
 
-      const task: Task = await this.httpClientService.put(
+      const task: FlatTask = await this.httpClientService.put(
         'tasks',
         `/tasks/${taskId}`,
         updateTaskDto,
       );
 
       this.logger.log(`Updated task for user ${userId}`);
+      this.logger.log(`Fetching user details with task id ${task.id}`);
+
+      const updatedTask = await this.updateUserInfoInTasks([task]);
+
+      this.logger.log(
+        `Fetched user details for tasks with task id ${task.id}, taskDetail: ${JSON.stringify(updatedTask[0])}`,
+      );
 
       return {
-        task,
+        task: updatedTask[0],
       };
     } catch (error) {
       this.logger.error(
@@ -171,15 +266,20 @@ export class TasksService {
     try {
       this.logger.log(`Searching tasks with term "${searchTerm}"`);
 
-      const tasks: Task[] = await this.httpClientService.get(
+      const tasks: FlatTask[] = await this.httpClientService.get(
         'tasks',
         `/tasks/search/${searchTerm}`,
       );
 
       this.logger.log(`Fetched tasks with term "${searchTerm}"`);
+      this.logger.log(
+        `Fetching user details for tasks with task ids ${tasks.map((task) => task.id).join(', ')}`,
+      );
+
+      const updatedTasks = await this.updateUserInfoInTasks(tasks);
 
       return {
-        tasks,
+        tasks: updatedTasks,
       };
     } catch (error) {
       this.logger.error(
