@@ -1,7 +1,9 @@
 'use client';
 
+import { Projects } from './components';
+
 const ProjectsPage: React.FC = () => {
-  return <h1>This is the projects page</h1>;
+  return <Projects />;
 };
 
 export default ProjectsPage;

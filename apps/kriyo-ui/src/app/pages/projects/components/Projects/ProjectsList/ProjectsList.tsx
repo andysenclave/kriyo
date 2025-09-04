@@ -10,26 +10,26 @@ import {
   AllCommunityModule,
   IRowNode,
 } from 'ag-grid-community';
-import { TasksListSkeleton } from './TasksListSkeleton';
+import { ProjectsListSkeleton } from './ProjectsListSkeleton';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
-import { Task } from '@/app/hooks/tasks/models';
-import { TaskFilter, useGetMyTasks } from '../../../hooks';
+import { ProjectFilter, useGetMyProjects } from '../../../hooks';
 import { PriorityLabel, StatusLabel } from '@/app/components/labels';
 import { UserInfo } from '@/app/hooks/tasks/models/Task';
+import { Project } from '@/app/hooks/projects/models';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
 
-interface TasksListProps {
-  filter: TaskFilter;
+interface ProjectsListProps {
+  filter: ProjectFilter;
 }
 
-const StatusRenderer = ({ value }: { value: Task['status'] }) => {
+const StatusRenderer = ({ value }: { value: Project['status'] }) => {
   return <StatusLabel status={value} />;
 };
 
-const PriorityRenderer = ({ value }: { value: Task['priority'] }) => {
-  return <PriorityLabel priority={value} />;
+const PriorityRenderer = ({ value }: { value: Project['priority'] }) => {
+  return <PriorityLabel priority={value || 'none'} />;
 };
 
 const DateRenderer = ({ value }: { value: string }) => {
@@ -37,11 +37,11 @@ const DateRenderer = ({ value }: { value: string }) => {
   return new Date(value).toLocaleDateString();
 };
 
-const TasksList: React.FC<TasksListProps> = ({ filter }) => {
+const ProjectsList: React.FC<ProjectsListProps> = ({ filter }) => {
   const router = useRouter();
-  const { data, isLoading, error } = useGetMyTasks(filter);
+  const { data, isLoading, error } = useGetMyProjects(filter);
 
-  const columnDefs: ColDef<Task>[] = useMemo(
+  const columnDefs: ColDef<Project>[] = useMemo(
     () => [
       {
         field: 'title',
@@ -50,7 +50,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         minWidth: 200,
         cellStyle: { cursor: 'pointer', fontWeight: '500' },
         onCellClicked: (params) => {
-          router.push(`/tasks/${params.data?.id}`);
+          router.push(`/projects/${params.data?.id}`);
         },
       },
       {
@@ -65,7 +65,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         headerName: 'Priority',
         width: 100,
         cellRenderer: PriorityRenderer,
-        comparator: (valA, valB, rowA: IRowNode<Task>, rowB: IRowNode<Task>) => {
+        comparator: (valA, valB, rowA: IRowNode<Project>, rowB: IRowNode<Project>) => {
           const priorityRankA = rowA?.data?.priorityRank ?? 0;
           const priorityRankB = rowB?.data?.priorityRank ?? 0;
           return priorityRankA - priorityRankB;
@@ -73,8 +73,8 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         filter: true,
       },
       {
-        field: 'dueDate',
-        headerName: 'Due Date',
+        field: 'targetDate',
+        headerName: 'Target Date',
         width: 120,
         cellRenderer: DateRenderer,
         sort: 'asc',
@@ -109,7 +109,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
   );
 
   if (isLoading) {
-    return <TasksListSkeleton />;
+    return <ProjectsListSkeleton />;
   }
 
   if (error) {
@@ -150,7 +150,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
       </div>
 
       <div className="ag-theme-alpine w-full h-139">
-        <AgGridReact<Task>
+        <AgGridReact<Project>
           rowData={data}
           columnDefs={columnDefs}
           defaultColDef={defaultColDef}
@@ -166,4 +166,4 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
   );
 };
 
-export default TasksList;
+export default ProjectsList;

@@ -1,9 +1,4 @@
-import { Task } from '@/app/hooks/tasks/models';
 import { ChevronsDown, ChevronsUp, EqualApproximately } from 'lucide-react';
-
-interface PriorityLabelProps {
-  priority: Task['priority'];
-}
 
 const PRIORITY_MAP = Object.freeze({
   high: {
@@ -21,7 +16,15 @@ const PRIORITY_MAP = Object.freeze({
     Icon: ChevronsDown,
     color: 'bg-green-100 text-green-800 border-green-200',
   },
+  none: {
+    display: 'None',
+    Icon: EqualApproximately,
+    color: 'bg-gray-100 text-gray-800 border-gray-200',
+  },
 });
+interface PriorityLabelProps {
+  priority: keyof typeof PRIORITY_MAP;
+}
 
 const PriorityLabel: React.FC<PriorityLabelProps> = ({
   priority,
