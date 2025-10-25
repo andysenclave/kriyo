@@ -133,11 +133,11 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ filter }) => {
             />
           </svg>
         </div>
-        <h3 className="text-lg font-medium text-gray-900 mb-2">No tasks found</h3>
+        <h3 className="text-lg font-medium text-gray-900 mb-2">No projects found</h3>
         <p className="text-gray-500">
           {filter === 'all'
-            ? "You don't have any tasks yet."
-            : `No tasks match the "${filter}" filter.`}
+            ? "You don't have any projects yet."
+            : `No projects match the "${filter}" filter.`}
         </p>
       </div>
     );
@@ -148,8 +148,18 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ filter }) => {
       <div className="text-sm text-gray-600 mb-4">
         {data?.length} task{data?.length !== 1 ? 's' : ''} found
       </div>
-
-      <div className="ag-theme-alpine w-full h-139">
+      <div className="ag-theme-alpine w-full h-139 projects-grid">
+        <style>{`
+          .projects-grid .ag-cell {
+            justify-content: center;
+          }
+          .projects-grid .ag-cell-wrapper {
+            height: 100%;
+          }
+          .projects-grid .ag-cell-value {
+            display: flex;
+          }
+        `}</style>
         <AgGridReact<Project>
           rowData={data}
           columnDefs={columnDefs}

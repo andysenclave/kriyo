@@ -16,7 +16,7 @@ const transform = (data: GetDashboardTasksResponse) => {
   return {
     overdue: data.overdue,
     highPriority: data.highPriority,
-    tasks: data.tasks.slice(0, 4),
+    tasks: data.tasks.slice(0, 5),
   };
 };
 

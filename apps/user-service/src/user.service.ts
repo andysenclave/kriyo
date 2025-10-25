@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { PrismaService } from './prisma/prisma.service';
 import { Prisma, User } from 'generated/prisma';
 import { PasswordService } from './password/password.service';
@@ -7,6 +7,8 @@ import { CreateUserDto } from './dtos';
 
 @Injectable()
 export class UserService {
+  private readonly logger = new Logger(UserService.name);
+
   constructor(
     private prisma: PrismaService,
     private passwordService: PasswordService,
@@ -19,7 +21,11 @@ export class UserService {
       where: userWhereUniqueInput,
     });
 
-    const { passwordHash, ...user } = userData as User;
+    if (!userData) {
+      return null;
+    }
+
+    const { passwordHash, ...user } = userData;
 
     return user;
   }

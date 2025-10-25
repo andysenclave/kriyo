@@ -63,7 +63,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
       {
         field: 'priority',
         headerName: 'Priority',
-        width: 100,
+        width: 120,
         cellRenderer: PriorityRenderer,
         comparator: (valA, valB, rowA: IRowNode<Task>, rowB: IRowNode<Task>) => {
           const priorityRankA = rowA?.data?.priorityRank ?? 0;
@@ -149,7 +149,18 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         {data?.length} task{data?.length !== 1 ? 's' : ''} found
       </div>
 
-      <div className="ag-theme-alpine w-full h-139">
+      <div className="ag-theme-alpine w-full h-139 tasks-grid">
+        <style>{`
+          .tasks-grid .ag-cell {
+            justify-content: center;
+          }
+          .tasks-grid .ag-cell-wrapper {
+            height: 100%;
+          }
+          .tasks-grid .ag-cell-value {
+            display: flex;
+          }
+        `}</style>
         <AgGridReact<Task>
           rowData={data}
           columnDefs={columnDefs}
@@ -160,6 +171,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
           onGridReady={(params: GridReadyEvent) => {
             params.api.sizeColumnsToFit();
           }}
+          className="ag-theme-alpine"
         />
       </div>
     </div>

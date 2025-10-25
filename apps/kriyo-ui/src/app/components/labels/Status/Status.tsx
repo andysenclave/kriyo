@@ -1,5 +1,3 @@
-import { Task } from '@/app/hooks/tasks/models';
-
 const STATUS_MAP = Object.freeze({
   planning: {
     display: 'To Do',

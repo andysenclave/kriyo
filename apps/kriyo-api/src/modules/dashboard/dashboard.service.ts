@@ -24,6 +24,10 @@ export class DashboardService {
   };
 
   private async updateUserInfoInTasks(tasks: FlatTask[]): Promise<Task[]> {
+    if (tasks.length === 0) {
+      return [];
+    }
+
     const accumulatedUserIds = new Set<string>();
 
     tasks.forEach((task) => {
@@ -76,6 +80,10 @@ export class DashboardService {
   private async updateUserInfoInProjects(
     projects: FlatProject[],
   ): Promise<Project[]> {
+    if (projects.length === 0) {
+      return [];
+    }
+
     const accumulatedUserIds = new Set<string>();
 
     projects.forEach((project) => {

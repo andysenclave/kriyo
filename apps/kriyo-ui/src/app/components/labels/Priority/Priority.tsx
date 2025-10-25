@@ -22,6 +22,7 @@ const PRIORITY_MAP = Object.freeze({
     color: 'bg-gray-100 text-gray-800 border-gray-200',
   },
 });
+
 interface PriorityLabelProps {
   priority: keyof typeof PRIORITY_MAP;
 }
