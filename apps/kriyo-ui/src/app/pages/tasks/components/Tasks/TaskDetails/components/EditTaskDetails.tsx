@@ -143,32 +143,6 @@ const EditTaskDetails = ({ taskId, onStopEditing, task }: EditTaskDetailsProps) 
             )}
           />
         </div>
-        {/* <div className="flex gap-2">
-          <Controller
-            name={'project.id' as FieldPath<EditTaskFormValues>}
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="Project ID"
-                className="w-full border rounded px-3 py-2"
-              />
-            )}
-          />
-          <Controller
-            name={'project.name' as FieldPath<EditTaskFormValues>}
-            control={control}
-            render={({ field }) => (
-              <input
-                {...field}
-                type="text"
-                placeholder="Project Name"
-                className="w-full border rounded px-3 py-2"
-              />
-            )}
-          />
-        </div> */}
         <div className="flex justify-end gap-2">
           <Button
             type="button"

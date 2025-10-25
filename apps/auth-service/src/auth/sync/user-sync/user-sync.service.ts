@@ -52,6 +52,7 @@ export class UserSyncService {
         method: 'GET',
         headers: {
           'content-type': 'application/json',
+          CLIENT_ID: this.CLIENT_ID,
         },
       });
 

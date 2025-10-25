@@ -26,9 +26,9 @@ const statusOptions = [
 ];
 
 const priorityOptions = [
-  { label: 'Low', value: 'low' },
-  { label: 'Medium', value: 'medium' },
-  { label: 'High', value: 'high' },
+  { label: 'Low', value: 'low', rank: 3 },
+  { label: 'Medium', value: 'medium', rank: 2 },
+  { label: 'High', value: 'high', rank: 1 },
 ];
 
 const AddTaskModal: React.FC<AddTaskModalProps> = ({
@@ -62,6 +62,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({
 
   const onSubmit: SubmitHandler<AddTaskFormValues> = (data: Partial<Task>) => {
     const { assignedTo, project, ...payload } = data;
+    payload.priorityRank = priorityOptions.find((opt) => opt.value === data.priority)?.rank;
     addMyTask(payload, {
       onSuccess: () => {
         reset();
