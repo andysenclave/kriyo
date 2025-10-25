@@ -6,7 +6,6 @@ import { useForm, Controller, SubmitHandler, FieldPath } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
-import Task from '@/app/hooks/tasks/models/Task';
 import { useAddMyProject } from '@/app/hooks/projects';
 import { AddProjectFormValues, AddProjectSchemaYup } from './AddProjectSchemaYup';
 import { Project } from '@/app/hooks/projects/models';
@@ -36,7 +35,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
   onClose,
   selectedDate = new Date(),
 }) => {
-  const { data, addMyProject, isPending } = useAddMyProject();
+  const { addMyProject, isPending } = useAddMyProject();
 
   const selectedProjectDate = new Intl.DateTimeFormat('en-US', {
     year: 'numeric',
@@ -52,8 +51,8 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
     defaultValues: {
       title: '',
       description: '',
-      dueDate: formattedDate,
-      status: 'todo',
+      targetDate: formattedDate,
+      status: 'planning',
       priority: 'medium',
       assignedTo: { id: '', name: '' },
       project: { id: '', name: '' },
@@ -87,7 +86,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
                 <input
                   {...field}
                   type="text"
-                  placeholder="Task title"
+                  placeholder="Project title"
                   className="w-full border rounded px-3 py-2"
                   required
                 />
@@ -154,32 +153,6 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
               )}
             />
           </div>
-          {/* <div className="flex gap-2">
-            <Controller
-              name={'project.id' as FieldPath<AddTaskFormValues>}
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  placeholder="Project ID"
-                  className="w-full border rounded px-3 py-2"
-                />
-              )}
-            />
-            <Controller
-              name={'project.name' as FieldPath<AddTaskFormValues>}
-              control={control}
-              render={({ field }) => (
-                <input
-                  {...field}
-                  type="text"
-                  placeholder="Project Name"
-                  className="w-full border rounded px-3 py-2"
-                />
-              )}
-            />
-          </div> */}
           <div className="flex justify-end gap-2">
             <Button
               onClick={onClose}
@@ -194,7 +167,7 @@ const AddProjectModal: React.FC<AddProjectModalProps> = ({
               className="flex items-center gap-2 px-5 py-2 cursor-pointer text-base font-semibold"
               size="lg"
             >
-              {isPending ? 'Adding...' : 'Add Task'}
+              {isPending ? 'Adding...' : 'Add Project'}
             </Button>
           </div>
         </form>

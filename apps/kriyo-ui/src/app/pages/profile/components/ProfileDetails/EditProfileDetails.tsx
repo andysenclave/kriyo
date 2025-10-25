@@ -13,21 +13,6 @@ interface EditProfileDetailsProps {
   onStopEditing: () => void;
 }
 
-const statusOptions = [
-  { label: 'To Do', value: 'todo' },
-  { label: 'In Progress', value: 'in-progress' },
-  { label: 'In Review', value: 'in-review' },
-  { label: 'Done', value: 'done' },
-  { label: 'Blocked', value: 'blocked' },
-  { label: 'Cancelled', value: 'cancelled' },
-];
-
-const priorityOptions = [
-  { label: 'Low', value: 'low', rank: 3 },
-  { label: 'Medium', value: 'medium', rank: 2 },
-  { label: 'High', value: 'high', rank: 1 },
-];
-
 const EditProfileDetails = ({ onStopEditing, user }: EditProfileDetailsProps) => {
   const { updateProfile, isPending } = useUpdateMyProfile();
 

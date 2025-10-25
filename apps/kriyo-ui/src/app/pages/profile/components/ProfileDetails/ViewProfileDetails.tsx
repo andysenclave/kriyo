@@ -9,7 +9,6 @@ import {
   SquareX,
 } from 'lucide-react';
 import { MyProfile } from '../../models';
-import { da } from 'date-fns/locale';
 
 interface ViewProfileDetailsProps {
   user: MyProfile;

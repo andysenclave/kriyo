@@ -5,7 +5,6 @@ import ProfileHeader from './ProfileHeader';
 import { EditProfileDetails, ViewProfileDetails } from './ProfileDetails';
 import { useGetMyProfile } from '../hooks';
 import { GetMyProfileResponse } from '../models';
-import { is } from 'date-fns/locale';
 
 const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState<boolean>(false);

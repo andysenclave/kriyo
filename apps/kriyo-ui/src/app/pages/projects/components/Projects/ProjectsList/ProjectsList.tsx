@@ -146,7 +146,7 @@ const ProjectsList: React.FC<ProjectsListProps> = ({ filter }) => {
   return (
     <div className="space-y-4">
       <div className="text-sm text-gray-600 mb-4">
-        {data?.length} task{data?.length !== 1 ? 's' : ''} found
+        {data?.length} projects{data?.length !== 1 ? 's' : ''} found
       </div>
       <div className="ag-theme-alpine w-full h-139 projects-grid">
         <style>{`
