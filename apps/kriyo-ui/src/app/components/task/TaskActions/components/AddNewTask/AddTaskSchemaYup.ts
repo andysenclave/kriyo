@@ -9,6 +9,7 @@ export const AddTaskSchema = Yup.object<Task>({
     .oneOf(['todo', 'in-progress', 'in-review', 'done', 'blocked', 'cancelled'])
     .required('Status is required'),
   priority: Yup.string().oneOf(['low', 'medium', 'high']),
+  priorityRank: Yup.number().min(1).max(3).required('Priority rank is required'),
   assignedTo: Yup.object({
     id: Yup.string(),
     name: Yup.string(),

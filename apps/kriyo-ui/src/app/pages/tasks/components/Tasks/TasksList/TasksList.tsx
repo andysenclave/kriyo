@@ -15,7 +15,7 @@ import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import { Task } from '@/app/hooks/tasks/models';
 import { TaskFilter, useGetMyTasks } from '../../../hooks';
-import { StatusLabel } from '@/app/components/labels';
+import { PriorityLabel, StatusLabel } from '@/app/components/labels';
 import { UserInfo } from '@/app/hooks/tasks/models/Task';
 
 ModuleRegistry.registerModules([AllCommunityModule]);
@@ -28,30 +28,8 @@ const StatusRenderer = ({ value }: { value: Task['status'] }) => {
   return <StatusLabel status={value} />;
 };
 
-const PriorityRenderer = ({ value }: { value: string }) => {
-  if (!value) return <span className="text-gray-400">-</span>;
-
-  const getPriorityColor = (priority: string) => {
-    switch (priority) {
-      case 'high':
-        return 'bg-red-100 text-red-800';
-      case 'medium':
-        return 'bg-yellow-100 text-yellow-800';
-      case 'low':
-        return 'bg-green-100 text-green-800';
-      default:
-        return 'bg-gray-100 text-gray-800';
-    }
-  };
-  const priorityLabel = `${value.slice(0, 1).toUpperCase()}${value.substring(1)}`;
-
-  return (
-    <span
-      className={`inline-flex px-2 py-1 text-xs font-medium rounded-full ${getPriorityColor(value)}`}
-    >
-      {priorityLabel}
-    </span>
-  );
+const PriorityRenderer = ({ value }: { value: Task['priority'] }) => {
+  return <PriorityLabel priority={value} />;
 };
 
 const DateRenderer = ({ value }: { value: string }) => {
@@ -85,7 +63,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
       {
         field: 'priority',
         headerName: 'Priority',
-        width: 100,
+        width: 120,
         cellRenderer: PriorityRenderer,
         comparator: (valA, valB, rowA: IRowNode<Task>, rowB: IRowNode<Task>) => {
           const priorityRankA = rowA?.data?.priorityRank ?? 0;
@@ -171,7 +149,18 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
         {data?.length} task{data?.length !== 1 ? 's' : ''} found
       </div>
 
-      <div className="ag-theme-alpine w-full h-139">
+      <div className="ag-theme-alpine w-full h-139 tasks-grid">
+        <style>{`
+          .tasks-grid .ag-cell {
+            justify-content: center;
+          }
+          .tasks-grid .ag-cell-wrapper {
+            height: 100%;
+          }
+          .tasks-grid .ag-cell-value {
+            display: flex;
+          }
+        `}</style>
         <AgGridReact<Task>
           rowData={data}
           columnDefs={columnDefs}
@@ -182,6 +171,7 @@ const TasksList: React.FC<TasksListProps> = ({ filter }) => {
           onGridReady={(params: GridReadyEvent) => {
             params.api.sizeColumnsToFit();
           }}
+          className="ag-theme-alpine"
         />
       </div>
     </div>
